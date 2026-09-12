@@ -1,66 +1,71 @@
-import { OnboardingDraft, OnboardingRecord } from '../types/onboarding';
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
+import { db } from './firebase';
+import { OnboardingDraft, OnboardingRecord, Organization } from '../types/onboarding';
 
-/**
- * Persistence layer for the MSME onboarding flow.
- *
- * Everything is `async` on purpose, even though the current implementation
- * is synchronous localStorage. That keeps the call sites (OnboardingWizard)
- * identical to how they'd look calling a real backend, so swapping this
- * module's internals for e.g.
- *
- *   POST /api/business/profile
- *   GET  /api/business/profile/draft
- *
- * later requires no changes to the onboarding UI.
- */
-
-const DRAFT_KEY = 'bizpilot.onboarding.draft.v1';
-const RECORD_KEY = 'bizpilot.onboarding.record.v1';
-
-function readJSON<T>(key: string): T | null {
-  try {
-    const raw = window.localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as T) : null;
-  } catch {
-    // Corrupt or inaccessible storage should never crash the app.
-    return null;
-  }
+function organizationCollection() {
+  return collection(db, 'organizations');
 }
 
-function writeJSON(key: string, value: unknown): boolean {
-  try {
-    window.localStorage.setItem(key, JSON.stringify(value));
-    return true;
-  } catch {
-    return false;
-  }
+function draftDocument() {
+  return doc(db, 'appSettings', 'onboardingDraft');
 }
 
-/** Save in-progress wizard state so a refresh mid-flow doesn't lose answers. */
+function selectedOrganizationDocument() {
+  return doc(db, 'appSettings', 'preferences');
+}
+
 export async function saveOnboardingDraft(draft: OnboardingDraft): Promise<void> {
-  writeJSON(DRAFT_KEY, draft);
+  await setDoc(draftDocument(), { ...draft, updatedAt: new Date().toISOString() });
 }
 
-/** Load any previously saved in-progress wizard state. */
 export async function loadOnboardingDraft(): Promise<OnboardingDraft | null> {
-  return readJSON<OnboardingDraft>(DRAFT_KEY);
+  const snapshot = await getDoc(draftDocument());
+  return snapshot.exists() ? (snapshot.data() as OnboardingDraft) : null;
 }
 
 export async function clearOnboardingDraft(): Promise<void> {
-  window.localStorage.removeItem(DRAFT_KEY);
+  await deleteDoc(draftDocument());
 }
 
-/** Persist the completed organization/business profile. */
 export async function saveOrganizationRecord(record: OnboardingRecord): Promise<OnboardingRecord> {
-  writeJSON(RECORD_KEY, record);
-  return record;
+  const organization = { ...record.organization, updatedAt: new Date().toISOString() };
+  const savedRecord: OnboardingRecord = {
+    user: record.user,
+    organization,
+  };
+  await setDoc(doc(organizationCollection(), organization.id), savedRecord);
+  await saveSelectedOrganizationId(organization.id);
+  return savedRecord;
 }
 
-/** Load a previously completed organization/business profile, if any. */
-export async function loadOrganizationRecord(): Promise<OnboardingRecord | null> {
-  return readJSON<OnboardingRecord>(RECORD_KEY);
+export async function loadOrganizationRecords(): Promise<OnboardingRecord[]> {
+  const snapshot = await getDocs(organizationCollection());
+  return snapshot.docs
+    .map((item) => item.data() as OnboardingRecord)
+    .sort((a, b) => b.organization.updatedAt.localeCompare(a.organization.updatedAt));
 }
 
-export async function hasCompletedOnboarding(): Promise<boolean> {
-  return (await loadOrganizationRecord()) !== null;
+export async function loadOrganizationRecord(organizationId?: string): Promise<OnboardingRecord | null> {
+  if (organizationId) {
+    const snapshot = await getDoc(doc(organizationCollection(), organizationId));
+    return snapshot.exists() ? (snapshot.data() as OnboardingRecord) : null;
+  }
+  const records = await loadOrganizationRecords();
+  return records[0] ?? null;
+}
+
+export async function updateOrganizationRecord(organization: Organization): Promise<void> {
+  await updateDoc(doc(organizationCollection(), organization.id), {
+    ...organization,
+    updatedAt: new Date().toISOString(),
+  });
+}
+
+export async function saveSelectedOrganizationId(organizationId: string): Promise<void> {
+  await setDoc(selectedOrganizationDocument(), { selectedOrganizationId: organizationId }, { merge: true });
+}
+
+export async function loadSelectedOrganizationId(): Promise<string | null> {
+  const snapshot = await getDoc(selectedOrganizationDocument());
+  return snapshot.exists() ? (snapshot.data().selectedOrganizationId as string) : null;
 }

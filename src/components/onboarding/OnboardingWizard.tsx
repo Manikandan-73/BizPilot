@@ -102,10 +102,20 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
   // Resume any in-progress draft on mount so a refresh doesn't lose answers.
   useEffect(() => {
     let cancelled = false;
-    loadOnboardingDraft().then((saved) => {
-      if (!cancelled && saved) setDraft(saved);
-      if (!cancelled) setIsHydrated(true);
-    });
+    loadOnboardingDraft()
+      .then((saved) => {
+        if (!cancelled && saved) setDraft(saved);
+      })
+      .catch((error) => {
+        if (!cancelled) {
+          setErrors({
+            submit: error instanceof Error ? error.message : 'Unable to load your saved onboarding draft.',
+          });
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setIsHydrated(true);
+      });
     return () => {
       cancelled = true;
     };
@@ -114,7 +124,11 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
   // Autosave the draft as the user progresses.
   useEffect(() => {
     if (!isHydrated) return;
-    saveOnboardingDraft(draft);
+    saveOnboardingDraft(draft).catch((error) => {
+      setErrors({
+        submit: error instanceof Error ? error.message : 'Unable to save your onboarding draft.',
+      });
+    });
   }, [draft, isHydrated]);
 
   const updateBusiness = <K extends keyof BusinessProfile>(field: K, value: BusinessProfile[K]) => {
@@ -211,15 +225,21 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
     };
 
     const record: OnboardingRecord = {
-      // No real auth yet — a local placeholder user until accounts exist.
-      user: { id: 'local-user', name: draft.businessProfile.businessName || 'Business Owner', email: '' },
+      user: { id: '', name: draft.businessProfile.businessName || 'Business Owner', email: '' },
       organization,
     };
 
-    await saveOrganizationRecord(record);
-    await clearOnboardingDraft();
-    setCompletedOrganization(organization);
-    setIsSubmitting(false);
+    try {
+      await saveOrganizationRecord(record);
+      await clearOnboardingDraft();
+      setCompletedOrganization(organization);
+    } catch (error) {
+      setErrors({
+        submit: error instanceof Error ? error.message : 'Unable to save this business. Please try again.',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (completedOrganization) {
@@ -232,6 +252,11 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
 
   return (
     <OnboardingShell onExit={onExit} showExit>
+      {errors.submit && (
+        <div className="mb-4 rounded-xl border border-rose-500/30 bg-rose-950/30 p-3 text-xs text-rose-200">
+          {errors.submit}
+        </div>
+      )}
       <OnboardingProgress currentStep={draft.currentStep} />
 
       <div className="mt-8">

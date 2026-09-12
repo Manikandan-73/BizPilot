@@ -1,0 +1,19 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Temporary local/demo mode only. Anyone with the project ID can read/write.
+    match /organizations/{organizationId} {
+      allow read, write: if true;
+    }
+
+    match /appSettings/{document=**} {
+      allow read, write: if true;
+    }
+
+    // Temporary unauthenticated demo mode: publish these rules in Firebase Console.
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}

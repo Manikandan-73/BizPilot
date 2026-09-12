@@ -8,9 +8,8 @@
  *                                -> ComplianceProfile
  *                                -> GoalsProfile
  *
- * These types intentionally mirror what a future `POST /api/business/profile`
- * payload would look like, so the persistence layer can be swapped from
- * localStorage to a real API without reshaping the onboarding UI.
+ * These types are stored directly in the user-scoped Firestore organization
+ * documents without reshaping the onboarding UI.
  */
 
 export const BUSINESS_TYPES = [

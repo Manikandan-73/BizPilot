@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   NavigationTab,
   LanguageCode,
   MSMEProfile
 } from './types';
-
-import { PROFILES } from './data/mockData';
+import { Organization, OnboardingRecord } from './types/business';
+import { analyzeOrganization } from './analytics/financialAnalysis';
+import { DEMO_ORGANIZATIONS, getDemoOrganization } from './analytics/demoOrganizations';
 import {
   loadOrganizationRecords,
   loadSelectedOrganizationId,
   saveSelectedOrganizationId,
   updateOrganizationRecord
-} from './lib/onboardingStorage';
-import { OnboardingRecord } from './types/onboarding';
+} from './services/organizationService';
+import { formatINR } from './lib/currency';
 
 import { Header } from './components/layout/Header';
 import { Sidebar } from './components/layout/Sidebar';
@@ -35,233 +36,182 @@ import { SettingsView } from './components/dashboard/SettingsView';
 
 export const App: React.FC = () => {
   const [isAppMode, setIsAppMode] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
+  const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>('en');
+  const [isPassportModalOpen, setIsPassportModalOpen] = useState<boolean>(false);
+  const [showOnboarding, setShowOnboarding] = useState<boolean>(false);
 
-  const [activeTab, setActiveTab] =
-    useState<NavigationTab>('dashboard');
-
-  const [currentProfile, setCurrentProfile] =
-    useState<MSMEProfile>(PROFILES[0]);
-
-  const [currentLanguage, setCurrentLanguage] =
-    useState<LanguageCode>('en');
-
-  const [isPassportModalOpen, setIsPassportModalOpen] =
-    useState<boolean>(false);
-
-  const [showOnboarding, setShowOnboarding] =
-    useState<boolean>(false);
-
-  const [allProfiles, setAllProfiles] =
-    useState<MSMEProfile[]>(PROFILES);
-  const [organizations, setOrganizations] = useState<OnboardingRecord[]>([]);
+  const [records, setRecords] = useState<OnboardingRecord[]>([]);
+  const [selectedOrgId, setSelectedOrgId] = useState<string>(DEMO_ORGANIZATIONS[0].id);
   const [dataError, setDataError] = useState<string | null>(null);
 
-  /*
-   * Convert saved onboarding data into the profile format
-   * already used by the dashboard.
-   */
-  const createProfileFromSavedBusiness = (
-    record: OnboardingRecord,
-    previousProfile: MSMEProfile = PROFILES[0]
-  ): MSMEProfile | null => {
-    if (!record) return null;
-
-    const business = record.organization.businessProfile;
-
-    return {
-      ...previousProfile,
-
-      id: record.organization.id,
-
-      name:
-        business.businessName ||
-        previousProfile.name,
-
-      industry:
-        business.industry ||
-        previousProfile.industry,
-
-      sector:
-        business.businessType ||
-        previousProfile.sector,
-
-      incorporationYear:
-        typeof business.yearEstablished === 'number'
-          ? business.yearEstablished
-          : previousProfile.incorporationYear,
-
-      location:
-        business.location ||
-        previousProfile.location,
-
-      employees:
-        typeof business.numberOfEmployees === 'number'
-          ? business.numberOfEmployees
-          : previousProfile.employees,
-
-      turnover:
-        typeof business.annualTurnover === 'number'
-          ? `₹${business.annualTurnover.toLocaleString('en-IN')}`
-          : previousProfile.turnover,
-
-      /*
-       * These values still use the existing demo values.
-       * We will make these real from the financial data next.
-       */
-      udyamNumber:
-        previousProfile.udyamNumber,
-
-      gstin:
-        previousProfile.gstin,
-
-      creditScore:
-        previousProfile.creditScore,
-
-      healthScore:
-        previousProfile.healthScore,
-
-      fundingReadinessScore:
-        previousProfile.fundingReadinessScore,
-
-      revenueGrowth:
-        previousProfile.revenueGrowth,
-
-      cashFlowStability:
-        previousProfile.cashFlowStability,
-
-      loanEligibility:
-        previousProfile.loanEligibility,
-
-      estimatedCreditLimit:
-        previousProfile.estimatedCreditLimit,
-
-      dscrRatio:
-        previousProfile.dscrRatio,
-
-      runwayMonths:
-        previousProfile.runwayMonths
-    };
-  };
-
-  /*
-   * Load saved business whenever the application starts.
-   */
+  // Load organizations and active selection from Firestore on initial mount
   useEffect(() => {
-    const loadSavedOrganizations = async () => {
+    const initOrganizations = async () => {
       try {
         setDataError(null);
-        const records = await loadOrganizationRecords();
-        setOrganizations(records);
-        if (records.length === 0) return;
+        const loadedRecords = await loadOrganizationRecords();
+        setRecords(loadedRecords);
 
-        const selectedId = await loadSelectedOrganizationId();
-        const selectedRecord = records.find((record) => record.organization.id === selectedId) ?? records[0];
-        const savedProfile = createProfileFromSavedBusiness(selectedRecord);
-        setCurrentProfile(savedProfile ?? PROFILES[0]);
-        setAllProfiles([
-          ...records.map((record) => createProfileFromSavedBusiness(record)).filter((profile): profile is MSMEProfile => profile !== null),
-          ...PROFILES.filter((profile) => !records.some((record) => record.organization.id === profile.id)),
-        ]);
-        setIsAppMode(true);
-        setActiveTab('dashboard');
+        const savedId = await loadSelectedOrganizationId();
+        if (savedId) {
+          setSelectedOrgId(savedId);
+          setIsAppMode(true);
+        } else if (loadedRecords.length > 0) {
+          setSelectedOrgId(loadedRecords[0].organization.id);
+          setIsAppMode(true);
+        } else {
+          setSelectedOrgId(DEMO_ORGANIZATIONS[0].id);
+        }
       } catch (error) {
-        setDataError(error instanceof Error ? error.message : 'Unable to load your businesses.');
+        setDataError(error instanceof Error ? error.message : 'Unable to connect to business records.');
       }
     };
 
-    loadSavedOrganizations();
+    initOrganizations();
   }, []);
 
-  /*
-   * Update the current profile.
-   * Also save the changes back to the selected Firestore organization.
-   */
-  const handleUpdateProfile = async (
-    updated: Partial<MSMEProfile>
-  ) => {
-    setCurrentProfile((prev) => ({
-      ...prev,
-      ...updated
-    }));
-
-    /*
-     * Update the profile shown in the dropdown as well.
-     */
-    setAllProfiles((prevProfiles) =>
-      prevProfiles.map((profile) =>
-        profile.id === currentProfile.id
-          ? {
-              ...profile,
-              ...updated
-            }
-          : profile
-      )
+  // Combined list of user-created Firestore organizations + default demo MSMEs
+  const allOrganizations: Organization[] = useMemo(() => {
+    const userOrgs = records.map((r) => r.organization);
+    // Keep user organizations first, followed by demo profiles
+    const demoRemainder = DEMO_ORGANIZATIONS.filter(
+      (demo) => !userOrgs.some((u) => u.id === demo.id)
     );
+    return [...userOrgs, ...demoRemainder];
+  }, [records]);
 
-    /*
-     * Persist editable business information.
-     */
-    const record = organizations.find((item) => item.organization.id === currentProfile.id);
-    if (!record) return;
+  // The active selected organization
+  const activeOrg: Organization = useMemo(() => {
+    const found = allOrganizations.find((org) => org.id === selectedOrgId);
+    return found || records[0]?.organization || DEMO_ORGANIZATIONS[0];
+  }, [allOrganizations, selectedOrgId, records]);
 
-    const business = record.organization.businessProfile;
+  // SINGLE CENTRAL ANALYSIS ENGINE EXECUTION:
+  // All dashboard features consume this single calculated analysis object
+  const analysis = useMemo(() => {
+    return analyzeOrganization(activeOrg);
+  }, [activeOrg]);
 
-    const turnoverNumber =
-      typeof updated.turnover === 'string'
-        ? Number(
-            updated.turnover.replace(/[^\d.]/g, '')
-          )
-        : business.annualTurnover;
+  // Dynamic MSMEProfile synthesized from activeOrg and calculated analysis
+  const currentProfile: MSMEProfile = useMemo(() => {
+    const turnoverNum = typeof activeOrg.businessProfile.annualTurnover === 'number'
+      ? activeOrg.businessProfile.annualTurnover
+      : analysis.financials.annualRevenue;
 
-    record.organization.businessProfile = {
-      ...business,
-
-      businessName:
-        updated.name ??
-        business.businessName,
-
-      location:
-        updated.location ??
-        business.location,
-
-      numberOfEmployees:
-        typeof updated.employees === 'number'
-          ? updated.employees
-          : business.numberOfEmployees,
-
-      annualTurnover:
-        Number.isFinite(turnoverNumber)
-          ? turnoverNumber
-          : business.annualTurnover
+    return {
+      id: activeOrg.id,
+      name: activeOrg.businessProfile.businessName || activeOrg.name,
+      industry: activeOrg.businessProfile.industry || 'Enterprise',
+      sector: activeOrg.businessProfile.businessType || 'MSME',
+      udyamNumber: 'UDYAM-REGISTERED',
+      gstin: activeOrg.complianceProfile.gstRegistered ? '27AABCS1429B1ZX' : 'NOT-REGISTERED',
+      incorporationYear: typeof activeOrg.businessProfile.yearEstablished === 'number' 
+        ? activeOrg.businessProfile.yearEstablished 
+        : 2020,
+      location: activeOrg.businessProfile.location || 'India',
+      employees: typeof activeOrg.businessProfile.numberOfEmployees === 'number' 
+        ? activeOrg.businessProfile.numberOfEmployees 
+        : 10,
+      turnover: formatINR(turnoverNum),
+      creditScore: Math.round(550 + (analysis.health.overallScore * 2.5)),
+      healthScore: analysis.health.overallScore,
+      fundingReadinessScore: analysis.funding.overallScore,
+      revenueGrowth: analysis.financials.operatingMarginPercent ? Math.min(25, Math.max(5, analysis.financials.operatingMarginPercent)) : 12.4,
+      cashFlowStability: Math.min(99, Math.max(60, analysis.health.overallScore + 5)),
+      loanEligibility: analysis.funding.eligibilityTier === 'High' ? 'High' : analysis.funding.eligibilityTier === 'Medium' ? 'Medium' : 'Low',
+      estimatedCreditLimit: analysis.funding.estimatedCreditLimit,
+      dscrRatio: analysis.financials.dscr ?? 2.0,
+      runwayMonths: analysis.financials.runwayMonths ?? 6,
     };
+  }, [activeOrg, analysis]);
 
-    record.organization.name =
-      record.organization.businessProfile.businessName;
+  // Synthesize MSMEProfiles list for dropdown switcher in Header
+  const allProfiles: MSMEProfile[] = useMemo(() => {
+    return allOrganizations.map((org) => {
+      const orgAnalysis = analyzeOrganization(org);
+      const turnoverNum = typeof org.businessProfile.annualTurnover === 'number'
+        ? org.businessProfile.annualTurnover
+        : orgAnalysis.financials.annualRevenue;
 
-    record.organization.updatedAt = new Date().toISOString();
+      return {
+        id: org.id,
+        name: org.businessProfile.businessName || org.name,
+        industry: org.businessProfile.industry || 'Enterprise',
+        sector: org.businessProfile.businessType || 'MSME',
+        udyamNumber: 'UDYAM-REGISTERED',
+        gstin: org.complianceProfile.gstRegistered ? '27AABCS1429B1ZX' : 'NOT-REGISTERED',
+        incorporationYear: typeof org.businessProfile.yearEstablished === 'number' 
+          ? org.businessProfile.yearEstablished 
+          : 2020,
+        location: org.businessProfile.location || 'India',
+        employees: typeof org.businessProfile.numberOfEmployees === 'number' 
+          ? org.businessProfile.numberOfEmployees 
+          : 10,
+        turnover: formatINR(turnoverNum),
+        creditScore: Math.round(550 + (orgAnalysis.health.overallScore * 2.5)),
+        healthScore: orgAnalysis.health.overallScore,
+        fundingReadinessScore: orgAnalysis.funding.overallScore,
+        revenueGrowth: orgAnalysis.financials.operatingMarginPercent ? Math.min(25, Math.max(5, orgAnalysis.financials.operatingMarginPercent)) : 12.4,
+        cashFlowStability: Math.min(99, Math.max(60, orgAnalysis.health.overallScore + 5)),
+        loanEligibility: orgAnalysis.funding.eligibilityTier === 'High' ? 'High' : orgAnalysis.funding.eligibilityTier === 'Medium' ? 'Medium' : 'Low',
+        estimatedCreditLimit: orgAnalysis.funding.estimatedCreditLimit,
+        dscrRatio: orgAnalysis.financials.dscr ?? 2.0,
+        runwayMonths: orgAnalysis.financials.runwayMonths ?? 6,
+      };
+    });
+  }, [allOrganizations]);
+
+  // Handle switching active organization
+  const handleSelectProfile = (profile: MSMEProfile) => {
+    setSelectedOrgId(profile.id);
+    void saveSelectedOrganizationId(profile.id);
+    setIsAppMode(true);
+    setActiveTab('dashboard');
+  };
+
+  // Handle updates from Settings
+  const handleUpdateOrganization = async (updatedOrg: Organization) => {
     try {
-      await updateOrganizationRecord(record.organization);
-      setOrganizations((previous) => previous.map((item) => item.organization.id === record.organization.id ? record : item));
+      await updateOrganizationRecord(updatedOrg);
+      setRecords((prev) =>
+        prev.map((r) =>
+          r.organization.id === updatedOrg.id ? { ...r, organization: updatedOrg } : r
+        )
+      );
     } catch (error) {
-      setDataError(error instanceof Error ? error.message : 'Unable to save business changes.');
+      setDataError(error instanceof Error ? error.message : 'Unable to save changes to Firestore.');
     }
   };
 
-  /*
-   * Render the active dashboard page.
-   */
+  const handleUpdateProfileLegacy = (updated: Partial<MSMEProfile>) => {
+    // Legacy support for simple profile field edits
+    if (activeOrg) {
+      const modified: Organization = {
+        ...activeOrg,
+        name: updated.name ?? activeOrg.name,
+        businessProfile: {
+          ...activeOrg.businessProfile,
+          businessName: updated.name ?? activeOrg.businessProfile.businessName,
+          location: updated.location ?? activeOrg.businessProfile.location,
+          numberOfEmployees: typeof updated.employees === 'number' ? updated.employees : activeOrg.businessProfile.numberOfEmployees,
+        },
+        updatedAt: new Date().toISOString(),
+      };
+      void handleUpdateOrganization(modified);
+    }
+  };
+
+  // Render the active dashboard module with real calculated analysis
   const renderActiveDashboardView = () => {
     switch (activeTab) {
       case 'dashboard':
         return (
           <ExecutiveDashboard
             profile={currentProfile}
-            onNavigate={(tab) =>
-              setActiveTab(tab)
-            }
-            onOpenPassport={() =>
-              setIsPassportModalOpen(true)
-            }
+            analysis={analysis}
+            onNavigate={(tab) => setActiveTab(tab)}
+            onOpenPassport={() => setIsPassportModalOpen(true)}
           />
         );
 
@@ -269,9 +219,8 @@ export const App: React.FC = () => {
         return (
           <FinancialHealthView
             profile={currentProfile}
-            onNavigate={(tab) =>
-              setActiveTab(tab)
-            }
+            analysis={analysis}
+            onNavigate={(tab) => setActiveTab(tab)}
           />
         );
 
@@ -279,9 +228,8 @@ export const App: React.FC = () => {
         return (
           <CashFlowForecastView
             profile={currentProfile}
-            onNavigate={(tab) =>
-              setActiveTab(tab)
-            }
+            analysis={analysis}
+            onNavigate={(tab) => setActiveTab(tab)}
           />
         );
 
@@ -289,12 +237,9 @@ export const App: React.FC = () => {
         return (
           <FundingReadinessView
             profile={currentProfile}
-            onOpenPassport={() =>
-              setIsPassportModalOpen(true)
-            }
-            onNavigate={(tab) =>
-              setActiveTab(tab)
-            }
+            analysis={analysis}
+            onOpenPassport={() => setIsPassportModalOpen(true)}
+            onNavigate={(tab) => setActiveTab(tab)}
           />
         );
 
@@ -302,9 +247,8 @@ export const App: React.FC = () => {
         return (
           <MSMECreditPassportView
             profile={currentProfile}
-            onOpenModal={() =>
-              setIsPassportModalOpen(true)
-            }
+            analysis={analysis}
+            onOpenModal={() => setIsPassportModalOpen(true)}
           />
         );
 
@@ -312,9 +256,8 @@ export const App: React.FC = () => {
         return (
           <WhatIfSimulatorView
             profile={currentProfile}
-            onNavigate={(tab) =>
-              setActiveTab(tab)
-            }
+            analysis={analysis}
+            onNavigate={(tab) => setActiveTab(tab)}
           />
         );
 
@@ -322,9 +265,8 @@ export const App: React.FC = () => {
         return (
           <GrowthIntelligenceView
             profile={currentProfile}
-            onNavigate={(tab) =>
-              setActiveTab(tab)
-            }
+            analysis={analysis}
+            onNavigate={(tab) => setActiveTab(tab)}
           />
         );
 
@@ -332,11 +274,10 @@ export const App: React.FC = () => {
         return (
           <AIAssistantView
             profile={currentProfile}
+            analysis={analysis}
             currentLanguage={currentLanguage}
             onSelectLanguage={setCurrentLanguage}
-            onNavigate={(tab) =>
-              setActiveTab(tab)
-            }
+            onNavigate={(tab) => setActiveTab(tab)}
           />
         );
 
@@ -344,9 +285,8 @@ export const App: React.FC = () => {
         return (
           <ReportsView
             profile={currentProfile}
-            onOpenPassport={() =>
-              setIsPassportModalOpen(true)
-            }
+            analysis={analysis}
+            onOpenPassport={() => setIsPassportModalOpen(true)}
           />
         );
 
@@ -354,7 +294,10 @@ export const App: React.FC = () => {
         return (
           <SettingsView
             profile={currentProfile}
-            onUpdateProfile={handleUpdateProfile}
+            organization={activeOrg}
+            analysis={analysis}
+            onUpdateProfile={handleUpdateProfileLegacy}
+            onUpdateOrganization={handleUpdateOrganization}
           />
         );
 
@@ -362,48 +305,30 @@ export const App: React.FC = () => {
         return (
           <ExecutiveDashboard
             profile={currentProfile}
-            onNavigate={(tab) =>
-              setActiveTab(tab)
-            }
-            onOpenPassport={() =>
-              setIsPassportModalOpen(true)
-            }
+            analysis={analysis}
+            onNavigate={(tab) => setActiveTab(tab)}
+            onOpenPassport={() => setIsPassportModalOpen(true)}
           />
         );
     }
   };
 
-  /*
-   * Onboarding screen
-   */
+  // Onboarding screen overlay
   if (showOnboarding) {
     return (
       <OnboardingWizard
-        onExit={() =>
-          setShowOnboarding(false)
-        }
-
+        onExit={() => setShowOnboarding(false)}
         onGoToDashboard={async () => {
-          const records = await loadOrganizationRecords();
-          setOrganizations(records);
-          const record = records[0];
-          if (record) {
-            const savedProfile = createProfileFromSavedBusiness(record, currentProfile);
-            if (savedProfile) setCurrentProfile(savedProfile);
-            setAllProfiles([
-              ...records.map((item) => createProfileFromSavedBusiness(item)).filter((profile): profile is MSMEProfile => profile !== null),
-              ...PROFILES.filter((profile) => !records.some((item) => item.organization.id === profile.id)),
-            ]);
+          const loaded = await loadOrganizationRecords();
+          setRecords(loaded);
+          if (loaded.length > 0) {
+            setSelectedOrgId(loaded[0].organization.id);
+            void saveSelectedOrganizationId(loaded[0].organization.id);
           }
-
           setShowOnboarding(false);
           setIsAppMode(true);
           setActiveTab('dashboard');
-
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
       />
     );
@@ -411,27 +336,18 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0F172A] text-slate-100 font-sans">
-
+      
       {/* Header */}
       <Header
         currentProfile={currentProfile}
         profiles={allProfiles}
-        onSelectProfile={(profile) => {
-          setCurrentProfile(profile);
-          void saveSelectedOrganizationId(profile.id);
-          setIsAppMode(true);
-          setActiveTab('dashboard');
-        }}
+        onSelectProfile={handleSelectProfile}
         currentLanguage={currentLanguage}
         onSelectLanguage={setCurrentLanguage}
         isAppMode={isAppMode}
         onToggleAppMode={setIsAppMode}
-        onOpenCreditPassport={() =>
-          setIsPassportModalOpen(true)
-        }
-        onStartOnboarding={() =>
-          setShowOnboarding(true)
-        }
+        onOpenCreditPassport={() => setIsPassportModalOpen(true)}
+        onStartOnboarding={() => setShowOnboarding(true)}
       />
 
       {dataError && (
@@ -447,53 +363,40 @@ export const App: React.FC = () => {
             onLaunchDemo={() => {
               setIsAppMode(true);
               setActiveTab('dashboard');
-
-              window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-              });
+              window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            onOpenCreditPassport={() =>
-              setIsPassportModalOpen(true)
-            }
+            onOpenCreditPassport={() => setIsPassportModalOpen(true)}
           />
         </main>
       ) : (
         <div className="flex-1 flex overflow-hidden">
-
+          
           {/* Sidebar */}
           <Sidebar
             activeTab={activeTab}
             onSelectTab={(tab) => {
               setActiveTab(tab);
-
-              window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-              });
+              window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            fundingScore={
-              currentProfile.fundingReadinessScore
-            }
+            fundingScore={analysis.funding.overallScore}
           />
 
-          {/* Dashboard */}
+          {/* Dashboard Viewport */}
           <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
             {renderActiveDashboardView()}
           </main>
         </div>
       )}
 
-      {/* Footer */}
+      {/* Footer (Landing mode only) */}
       {!isAppMode && <Footer />}
 
       {/* Credit Passport Modal */}
       <CreditPassportModal
         isOpen={isPassportModalOpen}
-        onClose={() =>
-          setIsPassportModalOpen(false)
-        }
+        onClose={() => setIsPassportModalOpen(false)}
         profile={currentProfile}
+        analysis={analysis}
       />
     </div>
   );

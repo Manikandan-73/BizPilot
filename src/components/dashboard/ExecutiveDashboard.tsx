@@ -1,28 +1,17 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { MSMEProfile } from '../../types';
-import { 
-  REVENUE_EXPENSE_DATA, 
-  FINANCIAL_HEALTH_METRICS 
-} from '../../data/mockData';
-import { ScoreGauge } from '../common/ScoreGauge';
+import { BusinessAnalysis } from '../../types/business';
 import { AIInsightBadge } from '../common/AIInsightBadge';
 import { 
   HeartPulse, 
   Award, 
   TrendingUp, 
-  ShieldCheck, 
   Coins, 
-  AlertTriangle, 
   ArrowUpRight, 
-  ArrowDownRight, 
   Sparkles, 
   Zap, 
   FileText, 
-  ChevronRight,
-  Landmark,
-  Layers,
-  Calendar,
-  DollarSign
+  Landmark
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -39,19 +28,62 @@ import {
 
 interface ExecutiveDashboardProps {
   profile: MSMEProfile;
+  analysis?: BusinessAnalysis;
   onNavigate: (tab: any) => void;
   onOpenPassport: () => void;
 }
 
 export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
   profile,
+  analysis,
   onNavigate,
   onOpenPassport
 }) => {
   const [chartView, setChartView] = useState<'area' | 'bar'>('area');
   const [timeframe, setTimeframe] = useState<'12m' | '6m'>('12m');
 
-  const chartData = timeframe === '6m' ? REVENUE_EXPENSE_DATA.slice(6) : REVENUE_EXPENSE_DATA;
+  // Generate dynamic 12-month chart data derived from actual monthly financials
+  const fullChartData = useMemo(() => {
+    const revL = analysis ? analysis.financials.monthlyRevenue / 100000 : 48.5;
+    const expL = analysis ? analysis.financials.totalMonthlyExpenses / 100000 : 38.5;
+    const profitL = analysis ? analysis.financials.monthlyNetCashFlow / 100000 : 10.0;
+
+    const monthNames = [
+      'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
+      'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'
+    ];
+
+    return monthNames.map((month, idx) => {
+      // Apply subtle realistic seasonality factor (-4% to +6%)
+      const factor = 1 + ((idx - 5) * 0.012);
+      const revenue = parseFloat((revL * factor).toFixed(1));
+      const expense = parseFloat((expL * (1 + ((idx - 5) * 0.008))).toFixed(1));
+      const profit = parseFloat((revenue - expense).toFixed(1));
+
+      return {
+        month,
+        revenue,
+        expense,
+        profit,
+        cashFlow: profit,
+      };
+    });
+  }, [analysis]);
+
+  const chartData = timeframe === '6m' ? fullChartData.slice(6) : fullChartData;
+
+  const healthScore = analysis ? analysis.health.overallScore : profile.healthScore;
+  const fundingScore = analysis ? analysis.funding.overallScore : profile.fundingReadinessScore;
+  const creditLimit = analysis ? analysis.funding.estimatedCreditLimit : profile.estimatedCreditLimit;
+  const runwayMonths = analysis ? (analysis.financials.runwayMonths ?? 0) : profile.runwayMonths;
+  const loanEligibility = analysis ? analysis.funding.eligibilityTier : profile.loanEligibility;
+
+  const grossMargin = analysis?.financials.grossMarginPercent ?? 34.2;
+  const netMargin = analysis?.financials.netMarginPercent ?? 9.4;
+  const opMargin = analysis?.financials.operatingMarginPercent ?? 16.8;
+
+  const topRisks = analysis?.growth.keyRisks ?? [];
+  const topRecs = analysis?.growth.recommendations ?? [];
 
   return (
     <div className="space-y-6 pb-12">
@@ -61,15 +93,15 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
-              Active Portfolio
+              Active Business Portfolio
             </span>
-            <span className="text-xs text-slate-400">UDYAM: {profile.udyamNumber}</span>
+            <span className="text-xs text-slate-400">UDYAM: {profile.udyamNumber || 'UDYAM-REGISTERED'}</span>
           </div>
           <h1 className="text-2xl font-black text-white">
-            {profile.name}
+            {analysis?.organizationName || profile.name}
           </h1>
           <p className="text-xs text-slate-300">
-            {profile.sector} • {profile.location} • Turnover: <strong className="text-purple-300">{profile.turnover}</strong>
+            {analysis?.businessType || profile.sector} • {analysis?.location || profile.location} • Turnover: <strong className="text-purple-300">{profile.turnover}</strong>
           </p>
         </div>
 
@@ -105,14 +137,14 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
             <HeartPulse className="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl font-black text-white">{profile.healthScore}</span>
+            <span className="text-2xl font-black text-white">{healthScore}</span>
             <span className="text-xs text-slate-400">/100</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
             <span className="text-emerald-400 font-semibold flex items-center">
-              <ArrowUpRight className="w-3 h-3 mr-0.5" /> +4 pts MoM
+              <ArrowUpRight className="w-3 h-3 mr-0.5" /> {analysis?.health.rating || 'Optimal'}
             </span>
-            <span className="text-slate-400">Tier-A Prime</span>
+            <span className="text-slate-400">{healthScore >= 75 ? 'Tier-A Prime' : 'Monitored'}</span>
           </div>
         </div>
 
@@ -128,54 +160,58 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
             <Award className="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl font-black text-purple-300">{profile.fundingReadinessScore}</span>
+            <span className="text-2xl font-black text-purple-300">{fundingScore}</span>
             <span className="text-xs text-slate-400">/100</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
-            <span className="text-purple-300 font-semibold">Pre-Qualified</span>
-            <span className="text-slate-400">{profile.estimatedCreditLimit}</span>
+            <span className="text-purple-300 font-semibold">{loanEligibility}</span>
+            <span className="text-slate-400">{creditLimit}</span>
           </div>
         </div>
 
-        {/* KPI 3: Revenue Growth */}
+        {/* KPI 3: Operating Margin */}
         <div 
-          onClick={() => onNavigate('cash-flow')}
+          onClick={() => onNavigate('financial-health')}
           className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/50 transition-all cursor-pointer group shadow-lg"
         >
           <div className="flex items-center justify-between text-xs text-slate-400">
-            <span className="font-semibold">Revenue Growth</span>
+            <span className="font-semibold">Operating Margin</span>
             <TrendingUp className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl font-black text-emerald-400">+{profile.revenueGrowth}%</span>
-            <span className="text-xs text-slate-400">YoY</span>
+            <span className="text-2xl font-black text-emerald-400">{opMargin}%</span>
+            <span className="text-xs text-slate-400">EBITDA</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
-            <span className="text-slate-300 font-medium">CMGR 2.1%</span>
-            <span className="text-emerald-400">Above Benchmark</span>
+            <span className="text-slate-300 font-medium">Gross: {grossMargin}%</span>
+            <span className="text-emerald-400">{opMargin >= 12 ? 'Healthy' : 'Needs Focus'}</span>
           </div>
         </div>
 
-        {/* KPI 4: Cash Flow Stability */}
+        {/* KPI 4: Cash Runway */}
         <div 
           onClick={() => onNavigate('cash-flow')}
           className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/50 transition-all cursor-pointer group shadow-lg"
         >
           <div className="flex items-center justify-between text-xs text-slate-400">
-            <span className="font-semibold">Cash Flow Stability</span>
+            <span className="font-semibold">Cash Runway</span>
             <Coins className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl font-black text-white">{profile.cashFlowStability}%</span>
-            <span className="text-xs text-slate-400">Index</span>
+            <span className="text-2xl font-black text-white">{runwayMonths}</span>
+            <span className="text-xs text-slate-400">Months</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
-            <span className="text-slate-300 font-medium">Runway: {profile.runwayMonths} Mo</span>
-            <span className="text-emerald-400 font-semibold">Stable</span>
+            <span className="text-slate-300 font-medium">
+              Net: ₹{analysis ? (analysis.financials.monthlyNetCashFlow / 100000).toFixed(1) : '10.0'}L/mo
+            </span>
+            <span className={runwayMonths >= 3 ? 'text-emerald-400 font-semibold' : 'text-amber-400 font-semibold'}>
+              {runwayMonths >= 3 ? 'Stable' : 'Vulnerable'}
+            </span>
           </div>
         </div>
 
-        {/* KPI 5: Loan Eligibility */}
+        {/* KPI 5: Loan Eligibility Tier */}
         <div 
           onClick={() => onNavigate('funding-readiness')}
           className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 transition-all cursor-pointer group shadow-lg"
@@ -185,11 +221,11 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
             <Landmark className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl font-black text-emerald-400">{profile.loanEligibility}</span>
+            <span className="text-2xl font-black text-emerald-400">{loanEligibility}</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
-            <span className="text-slate-300">CGTMSE Guarantee</span>
-            <span className="text-purple-300 font-semibold">PSB59 Ready</span>
+            <span className="text-slate-300">CGTMSE Coverage</span>
+            <span className="text-purple-300 font-semibold">Bank Ready</span>
           </div>
         </div>
 
@@ -207,7 +243,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
                 Revenue, Expense & Cash Generation
                 <span className="text-xs font-normal text-slate-400">(in ₹ Lakhs)</span>
               </h3>
-              <p className="text-xs text-slate-400">Reconciled with 12 Months GSTR-3B & Current Account statements</p>
+              <p className="text-xs text-slate-400">Based on active operational financial data and recurring expense structures</p>
             </div>
 
             <div className="flex items-center gap-2 text-xs">
@@ -279,7 +315,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
                   />
                   <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
                   <Area type="monotone" dataKey="revenue" name="Revenue (₹L)" stroke="#8B5CF6" strokeWidth={2.5} fillOpacity={1} fill="url(#revGrad)" />
-                  <Area type="monotone" dataKey="expense" name="OPEX (₹L)" stroke="#38BDF8" strokeWidth={2} fillOpacity={1} fill="url(#expGrad)" />
+                  <Area type="monotone" dataKey="expense" name="Cost (₹L)" stroke="#38BDF8" strokeWidth={2} fillOpacity={1} fill="url(#expGrad)" />
                   <Area type="monotone" dataKey="cashFlow" name="Net Cash (₹L)" stroke="#10B981" strokeWidth={2} fillOpacity={1} fill="url(#cashGrad)" />
                 </AreaChart>
               ) : (
@@ -293,7 +329,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
                   />
                   <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
                   <Bar dataKey="revenue" name="Revenue (₹L)" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="expense" name="OPEX (₹L)" fill="#38BDF8" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="expense" name="Cost (₹L)" fill="#38BDF8" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="profit" name="Net Profit (₹L)" fill="#10B981" radius={[4, 4, 0, 0]} />
                 </BarChart>
               )}
@@ -303,15 +339,15 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
           <div className="pt-2 flex flex-wrap items-center justify-between text-xs text-slate-400 border-t border-slate-800">
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-purple-400"></span>
-              Average Gross Margin: <strong className="text-white">34.2%</strong>
+              Gross Margin: <strong className="text-white">{grossMargin}%</strong>
             </span>
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-              Net Profit Margin: <strong className="text-white">9.4%</strong>
+              Operating Margin: <strong className="text-white">{opMargin}%</strong>
             </span>
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-sky-400"></span>
-              Operating Cash Conversion: <strong className="text-white">88.5%</strong>
+              Net Profit Margin: <strong className="text-white">{netMargin}%</strong>
             </span>
           </div>
 
@@ -330,51 +366,63 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
               </span>
             </div>
 
-            <AIInsightBadge 
-              type="recommendation" 
-              title="Working Capital Opportunity"
-              actionText="View TReDS Playbook"
-              onAction={() => onNavigate('growth-intelligence')}
-            >
-              "Your business has healthy 12.4% revenue growth but high 58-day receivable lag. Unlocking TReDS invoice discounting can release ₹14.2L in immediate liquidity."
-            </AIInsightBadge>
+            {topRecs.length > 0 && (
+              <AIInsightBadge 
+                type="recommendation" 
+                title="Strategic Recommendation"
+                actionText="View Playbook"
+                onAction={() => onNavigate('growth-intelligence')}
+              >
+                {`"${topRecs[0]}"`}
+              </AIInsightBadge>
+            )}
 
-            <AIInsightBadge 
-              type="warning" 
-              title="Day 45 Cash Runway Warning"
-              actionText="Inspect Cash Forecast"
-              onAction={() => onNavigate('cash-flow')}
-            >
-              "Q2 crop harvest procurement cycle in late May will require an estimated ₹18.5L raw material buffer. Current projected deficit: ₹3.2L without short-term credit line."
-            </AIInsightBadge>
+            {topRisks.length > 0 && (
+              <AIInsightBadge 
+                type="warning" 
+                title="Business Risk Observation"
+                actionText="Inspect Cash Forecast"
+                onAction={() => onNavigate('cash-flow')}
+              >
+                {`"${topRisks[0]}"`}
+              </AIInsightBadge>
+            )}
 
             <AIInsightBadge 
               type="positive" 
-              title="Bank Loan Fast-Track Eligible"
+              title="Borrowing Capacity"
               actionText="View Bank Matches"
               onAction={() => onNavigate('funding-readiness')}
             >
-              "With DSCR at 1.84x and CMR-3 credit score, you qualify for ₹85 Lakhs collateral-free credit under CGTMSE guarantee at SBI & HDFC."
+              {`"Based on current turnover and DSCR of ${analysis?.financials.dscr ?? 'clean leverage'}, estimated credit capacity stands at ${creditLimit}."`}
             </AIInsightBadge>
           </div>
 
-          {/* Quick Benchmark Card */}
+          {/* Business Diagnostics Summary */}
           <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
             <div className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
-              MSME Peer Benchmark ({profile.sector})
+              Financial Diagnostics Breakdown
             </div>
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between">
-                <span className="text-slate-400">Revenue Growth</span>
-                <span className="text-emerald-400 font-semibold">12.4% vs 8.6% Median</span>
+                <span className="text-slate-400">Monthly Revenue</span>
+                <span className="text-white font-semibold">₹{analysis ? (analysis.financials.monthlyRevenue / 100000).toFixed(2) : '48.5'}L</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">EBITDA Margin</span>
-                <span className="text-emerald-400 font-semibold">16.8% vs 14.2% Median</span>
+                <span className="text-slate-400">Total Monthly Cost</span>
+                <span className="text-slate-300 font-semibold">₹{analysis ? (analysis.financials.totalMonthlyExpenses / 100000).toFixed(2) : '38.5'}L</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Debtor Days</span>
-                <span className="text-amber-400 font-semibold">58 Days vs 45 Days Median</span>
+                <span className="text-slate-400">Working Capital</span>
+                <span className={analysis && analysis.financials.workingCapital >= 0 ? 'text-emerald-400 font-semibold' : 'text-rose-400 font-semibold'}>
+                  ₹{analysis ? (analysis.financials.workingCapital / 100000).toFixed(2) : '34.0'}L
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">DSCR Coverage</span>
+                <span className="text-purple-300 font-semibold">
+                  {analysis?.financials.dscr ? `${analysis.financials.dscr}x` : 'Debt-Free'}
+                </span>
               </div>
             </div>
           </div>

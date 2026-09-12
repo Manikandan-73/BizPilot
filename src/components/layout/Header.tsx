@@ -150,6 +150,19 @@ export const Header: React.FC<HeaderProps> = ({
                     )}
                   </button>
                 ))}
+
+                <div className="border-t border-slate-800 my-1 pt-1">
+                  <button
+                    onClick={() => {
+                      onStartOnboarding();
+                      setProfileDropdownOpen(false);
+                    }}
+                    className="w-full text-left p-2 rounded-lg text-xs font-semibold text-purple-300 hover:bg-purple-950/40 flex items-center gap-2 transition-all"
+                  >
+                    <PlusCircle className="w-3.5 h-3.5" />
+                    <span>+ Add New Business</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>

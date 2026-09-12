@@ -1,31 +1,41 @@
 import React from 'react';
 import { MSMEProfile } from '../../types';
-import { FINANCIAL_HEALTH_METRICS } from '../../data/mockData';
+import { BusinessAnalysis } from '../../types/business';
 import { ScoreGauge } from '../common/ScoreGauge';
-import { AIInsightBadge } from '../common/AIInsightBadge';
 import { 
   HeartPulse, 
   ShieldCheck, 
   Sparkles, 
-  TrendingUp, 
-  DollarSign, 
   Scale, 
   Layers, 
   CheckCircle2, 
-  AlertCircle,
-  HelpCircle,
-  ArrowRight
+  ArrowRight,
+  AlertTriangle
 } from 'lucide-react';
 
 interface FinancialHealthViewProps {
   profile: MSMEProfile;
+  analysis?: BusinessAnalysis;
   onNavigate: (tab: any) => void;
 }
 
 export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
   profile,
+  analysis,
   onNavigate
 }) => {
+  const healthScore = analysis ? analysis.health.overallScore : profile.healthScore;
+  const rating = analysis ? analysis.health.rating : 'Optimal';
+  const summary = analysis ? analysis.health.summary : 'Holistic financial diagnostic evaluated from your active operational and financial data.';
+  const metrics = analysis ? analysis.health.metrics : [];
+  const runwayMonths = analysis?.financials.runwayMonths ?? profile.runwayMonths;
+  const dscr = analysis?.financials.dscr;
+  const opMargin = analysis?.financials.operatingMarginPercent ?? 16.8;
+  const isTaxCompliant = analysis ? analysis.compliance.isFullyCompliant : true;
+
+  const underwritingGrade =
+    healthScore >= 80 ? 'Prime (Tier A)' : healthScore >= 65 ? 'Sound (Tier B)' : healthScore >= 50 ? 'Moderate (Tier C)' : 'High Risk';
+
   return (
     <div className="space-y-6 pb-12">
       
@@ -40,13 +50,17 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
             Financial Health Score & Diagnostics
           </h2>
           <p className="text-xs text-slate-400 mt-0.5">
-            Holistic underwriting assessment synthesized from GSTR-1, GSTR-3B, Bank AA telemetry and audited balance sheets.
+            Holistic underwriting assessment synthesized from active revenue, cost structures, working capital, and loan telemetry.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-medium px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5" /> 100% Tax Compliant
+          <span className={`text-xs font-medium px-3 py-1 rounded-lg flex items-center gap-1 border ${
+            isTaxCompliant 
+              ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' 
+              : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+          }`}>
+            <ShieldCheck className="w-3.5 h-3.5" /> {isTaxCompliant ? 'Fully Compliant' : 'Compliance Pending'}
           </span>
         </div>
       </div>
@@ -66,11 +80,11 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
 
           <div className="py-2">
             <ScoreGauge 
-              score={profile.healthScore} 
+              score={healthScore} 
               size={200} 
               strokeWidth={14} 
               label="Business Health" 
-              sublabel="Tier-A Prime MSME" 
+              sublabel={underwritingGrade} 
               colorScheme="purple"
             />
           </div>
@@ -78,15 +92,15 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
           <div className="w-full pt-3 border-t border-slate-800 text-xs space-y-2">
             <div className="flex justify-between text-slate-300">
               <span className="text-slate-400">Underwriting Grade</span>
-              <span className="font-bold text-purple-300">Prime (Tier A)</span>
+              <span className="font-bold text-purple-300">{underwritingGrade}</span>
             </div>
             <div className="flex justify-between text-slate-300">
-              <span className="text-slate-400">Solvency Risk Index</span>
-              <span className="font-bold text-emerald-400">Very Low (&lt; 2.1%)</span>
+              <span className="text-slate-400">Health Status</span>
+              <span className="font-bold text-emerald-400">{rating}</span>
             </div>
             <div className="flex justify-between text-slate-300">
               <span className="text-slate-400">Audited Cash Runway</span>
-              <span className="font-bold text-white">{profile.runwayMonths} Months</span>
+              <span className="font-bold text-white">{runwayMonths} Months</span>
             </div>
           </div>
         </div>
@@ -96,49 +110,49 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-purple-400" /> Explainable AI Diagnostic Summary
+                <Sparkles className="w-4 h-4 text-purple-400" /> Explainable Diagnostic Summary
               </span>
-              <span className="text-[10px] text-slate-400">Updated today</span>
+              <span className="text-[10px] text-slate-400">Active Business Data</span>
             </div>
 
             {/* Central Explainable Callout */}
             <div className="p-4 rounded-xl bg-purple-950/30 border border-purple-500/30 text-slate-200 space-y-2">
               <div className="text-base font-bold text-white flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-purple-300" />
-                "Your business has healthy revenue growth (+12.4%) and strong gross margins (34.2%), but carries high inventory carrying costs and extended debtor cycles."
+                {`"${summary}"`}
               </div>
               <p className="text-xs text-slate-300 leading-relaxed">
-                By shrinking your average collection period from 58 days down to 42 days, you will boost your liquidity score by +8 points and increase annual available free cash flow by ₹8.4 Lakhs.
+                {analysis?.growth.recommendations[0] || 'Optimizing collection cycles and maintaining debt discipline will improve your institutional credit profile.'}
               </p>
             </div>
 
             {/* Quick 4 Sub-Pillar Status Pills */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
               <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
-                <div className="text-[10px] text-slate-400">Revenue Stability</div>
-                <div className="text-lg font-black text-sky-400">86/100</div>
-                <div className="text-[10px] text-emerald-400 font-semibold">Low Concentration</div>
-              </div>
-              <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
                 <div className="text-[10px] text-slate-400">Operating Margin</div>
-                <div className="text-lg font-black text-purple-400">79/100</div>
-                <div className="text-[10px] text-emerald-400 font-semibold">16.8% EBITDA</div>
+                <div className="text-lg font-black text-purple-400">{opMargin}%</div>
+                <div className="text-[10px] text-emerald-400 font-semibold">{opMargin >= 12 ? 'Healthy EBITDA' : 'Margin Pressure'}</div>
               </div>
               <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
-                <div className="text-[10px] text-slate-400">Liquidity & DSCR</div>
-                <div className="text-lg font-black text-emerald-400">84/100</div>
-                <div className="text-[10px] text-slate-300 font-semibold">1.84x DSCR</div>
+                <div className="text-[10px] text-slate-400">Cash Runway</div>
+                <div className="text-lg font-black text-sky-400">{runwayMonths} Mo</div>
+                <div className="text-[10px] text-emerald-400 font-semibold">{runwayMonths >= 3 ? 'Safe Buffer' : 'Tight Buffer'}</div>
               </div>
               <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
-                <div className="text-[10px] text-slate-400">Expense Efficiency</div>
-                <div className="text-lg font-black text-amber-400">78/100</div>
-                <div className="text-[10px] text-amber-300 font-semibold">Raw Material Lag</div>
+                <div className="text-[10px] text-slate-400">Debt DSCR</div>
+                <div className="text-lg font-black text-emerald-400">{dscr ? `${dscr}x` : 'N/A'}</div>
+                <div className="text-[10px] text-slate-300 font-semibold">{dscr ? (dscr >= 1.3 ? 'Bankable' : 'Strained') : 'Debt-Free'}</div>
+              </div>
+              <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
+                <div className="text-[10px] text-slate-400">Current Ratio</div>
+                <div className="text-lg font-black text-amber-400">{analysis?.financials.currentRatio ? `${analysis.financials.currentRatio}x` : '1.8x'}</div>
+                <div className="text-[10px] text-amber-300 font-semibold">{analysis?.financials.workingCapital && analysis.financials.workingCapital > 0 ? 'Positive Working Capital' : 'Working Capital Deficit'}</div>
               </div>
             </div>
           </div>
 
           <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
-            <span className="text-slate-400">Benchmark comparison against 2,400+ Indian {profile.sector} peers</span>
+            <span className="text-slate-400">Diagnostic calculated from active financial inputs</span>
             <button
               onClick={() => onNavigate('what-if-simulator')}
               className="text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1"
@@ -151,7 +165,7 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
 
       </div>
 
-      {/* 4 Detailed Health Dimension Cards */}
+      {/* Detailed Health Dimension Cards */}
       <div className="space-y-4">
         <h3 className="text-base font-bold text-white flex items-center gap-2">
           <Layers className="w-4 h-4 text-purple-400" />
@@ -159,53 +173,53 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {FINANCIAL_HEALTH_METRICS.map((metric, idx) => (
+          {metrics.map((metric, idx) => (
             <div 
               key={idx}
-              className="p-5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-all space-y-3 shadow-lg"
+              className="p-5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-purple-500/30 transition-all space-y-3"
             >
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-purple-600/10 border border-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs">
-                    0{idx + 1}
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-white">{metric.category}</h4>
-                    <span className="text-[10px] text-slate-400">Pillar Weight: {metric.weight}%</span>
-                  </div>
+                <div>
+                  <h4 className="text-sm font-bold text-white">{metric.category}</h4>
+                  <div className="text-[10px] text-slate-400">Diagnostic Weight: {metric.weight}%</div>
                 </div>
-
-                <div className="text-right">
-                  <div className="text-xl font-black text-white">{metric.score}<span className="text-xs text-slate-400">/100</span></div>
-                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
-                    metric.status === 'Optimal' || metric.status === 'Healthy'
-                      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
-                      : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
+                <div className="flex items-center gap-2">
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                    metric.status === 'Optimal' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' :
+                    metric.status === 'Healthy' ? 'bg-sky-500/10 text-sky-400 border-sky-500/30' :
+                    metric.status === 'Moderate' ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' :
+                    'bg-rose-500/10 text-rose-400 border-rose-500/30'
                   }`}>
                     {metric.status}
                   </span>
+                  <span className="text-base font-black text-white">{metric.score}/100</span>
                 </div>
               </div>
 
               {/* Progress bar */}
-              <div className="w-full h-2 bg-slate-950 rounded-full overflow-hidden">
+              <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
                 <div 
-                  className={`h-full rounded-full transition-all duration-700 ${
-                    metric.score >= 80 ? 'bg-gradient-to-r from-purple-500 to-sky-400' : 'bg-gradient-to-r from-amber-500 to-orange-400'
+                  className={`h-full rounded-full ${
+                    metric.score >= 80 ? 'bg-emerald-500' :
+                    metric.score >= 65 ? 'bg-sky-500' :
+                    metric.score >= 50 ? 'bg-amber-500' :
+                    'bg-rose-500'
                   }`}
                   style={{ width: `${metric.score}%` }}
                 />
               </div>
 
-              <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1 text-xs">
-                <div className="text-slate-300 font-medium leading-snug">
-                  <strong className="text-purple-300">Observation:</strong> {metric.insight}
+              <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800/80 text-xs text-slate-300 space-y-1">
+                <div className="font-medium text-slate-200 flex items-center gap-1">
+                  <Sparkles className="w-3 h-3 text-purple-400" /> Insight:
                 </div>
-                <div className="text-slate-400 text-[11px] pt-1 border-t border-slate-900">
-                  <strong className="text-sky-300">Recommendation:</strong> {metric.recommendation}
-                </div>
+                <p className="text-slate-400 leading-relaxed">{metric.insight}</p>
               </div>
 
+              <div className="text-xs text-slate-300 flex items-start gap-1.5 pt-1">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                <span className="text-slate-300"><strong className="text-white">Recommendation:</strong> {metric.recommendation}</span>
+              </div>
             </div>
           ))}
         </div>

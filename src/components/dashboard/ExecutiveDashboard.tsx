@@ -1,9 +1,17 @@
 import React, { useMemo, useState } from 'react';
 import { MSMEProfile } from '../../types';
+import { Organization } from '../../types/business';
+import { useSubscription } from '../../hooks/useSubscription';
+import { hasFeature } from '../../config/plans';
 import { BusinessAnalysis } from '../../types/business';
 import { AIInsightBadge } from '../common/AIInsightBadge';
+import { useLanguage } from '../../i18n/LanguageContext';
 import { 
-  HeartPulse, 
+  HeartPulse,
+  FlaskConical,
+  Bot,
+  Lock,
+  ArrowRight, 
   Award, 
   TrendingUp, 
   Coins, 
@@ -29,6 +37,7 @@ import {
 interface ExecutiveDashboardProps {
   profile: MSMEProfile;
   analysis?: BusinessAnalysis;
+  organization?: Organization | null;
   onNavigate: (tab: any) => void;
   onOpenPassport: () => void;
 }
@@ -36,32 +45,30 @@ interface ExecutiveDashboardProps {
 export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
   profile,
   analysis,
+  organization,
   onNavigate,
   onOpenPassport
 }) => {
+  const { t, language } = useLanguage();
+  const { subscription } = useSubscription({ organization });
+  const isPro = hasFeature(subscription, 'advancedDecisionLab');
+
   const [chartView, setChartView] = useState<'area' | 'bar'>('area');
   const [timeframe, setTimeframe] = useState<'12m' | '6m'>('12m');
 
-  // Generate dynamic 12-month chart data derived from actual monthly financials
+  // Generate 6-12 month forward projection derived deterministically from actual operational cash flow
   const fullChartData = useMemo(() => {
-    const revL = analysis ? analysis.financials.monthlyRevenue / 100000 : 48.5;
-    const expL = analysis ? analysis.financials.totalMonthlyExpenses / 100000 : 38.5;
-    const profitL = analysis ? analysis.financials.monthlyNetCashFlow / 100000 : 10.0;
+    if (!analysis || !analysis.cashFlow?.dataPoints?.length) {
+      return [];
+    }
 
-    const monthNames = [
-      'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
-      'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'
-    ];
-
-    return monthNames.map((month, idx) => {
-      // Apply subtle realistic seasonality factor (-4% to +6%)
-      const factor = 1 + ((idx - 5) * 0.012);
-      const revenue = parseFloat((revL * factor).toFixed(1));
-      const expense = parseFloat((expL * (1 + ((idx - 5) * 0.008))).toFixed(1));
-      const profit = parseFloat((revenue - expense).toFixed(1));
+    return analysis.cashFlow.dataPoints.map((dp) => {
+      const revenue = parseFloat(((dp.predictedInflow ?? dp.actualInflow ?? 0) / 100000).toFixed(1));
+      const expense = parseFloat(((dp.predictedOutflow ?? dp.actualOutflow ?? 0) / 100000).toFixed(1));
+      const profit = parseFloat(((dp.predictedNetCash ?? dp.netCash ?? 0) / 100000).toFixed(1));
 
       return {
-        month,
+        month: dp.period,
         revenue,
         expense,
         profit,
@@ -78,9 +85,9 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
   const runwayMonths = analysis ? (analysis.financials.runwayMonths ?? 0) : profile.runwayMonths;
   const loanEligibility = analysis ? analysis.funding.eligibilityTier : profile.loanEligibility;
 
-  const grossMargin = analysis?.financials.grossMarginPercent ?? 34.2;
-  const netMargin = analysis?.financials.netMarginPercent ?? 9.4;
-  const opMargin = analysis?.financials.operatingMarginPercent ?? 16.8;
+  const grossMargin = analysis?.financials.grossMarginPercent ?? null;
+  const netMargin = analysis?.financials.netMarginPercent ?? null;
+  const opMargin = analysis?.financials.operatingMarginPercent ?? null;
 
   const topRisks = analysis?.growth.keyRisks ?? [];
   const topRecs = analysis?.growth.recommendations ?? [];
@@ -93,15 +100,18 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
-              Active Business Portfolio
+              {t('executive.activePortfolio', 'Active Business Portfolio')}
             </span>
-            <span className="text-xs text-slate-400">UDYAM: {profile.udyamNumber || 'UDYAM-REGISTERED'}</span>
+            <span className="text-xs text-slate-400">
+              UDYAM: {profile.udyamNumber || 'UDYAM-REGISTERED'}
+            </span>
           </div>
           <h1 className="text-2xl font-black text-white">
             {analysis?.organizationName || profile.name}
           </h1>
           <p className="text-xs text-slate-300">
-            {analysis?.businessType || profile.sector} • {analysis?.location || profile.location} • Turnover: <strong className="text-purple-300">{profile.turnover}</strong>
+            {analysis?.businessType || profile.sector} • {analysis?.location || profile.location} • {language === 'ta' ? 'விற்றுமுதல்: ' : 'Turnover: '}
+            <strong className="text-purple-300">{profile.turnover}</strong>
           </p>
         </div>
 
@@ -111,7 +121,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
             className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-slate-700 transition-all"
           >
             <Zap className="w-3.5 h-3.5 text-purple-400" />
-            Simulate Decision
+            {t('executive.simulateDecision', 'Simulate Decision')}
           </button>
 
           <button
@@ -119,7 +129,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
             className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-lg shadow-purple-600/30 transition-all"
           >
             <FileText className="w-3.5 h-3.5" />
-            Download Passport
+            {t('executive.downloadPassport', 'Download Passport')}
           </button>
         </div>
       </div>
@@ -133,7 +143,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
           className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-purple-500/50 transition-all cursor-pointer group shadow-lg"
         >
           <div className="flex items-center justify-between text-xs text-slate-400">
-            <span className="font-semibold">Business Health</span>
+            <span className="font-semibold">{t('executive.kpiHealth', 'Business Health')}</span>
             <HeartPulse className="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
@@ -142,9 +152,11 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
             <span className="text-emerald-400 font-semibold flex items-center">
-              <ArrowUpRight className="w-3 h-3 mr-0.5" /> {analysis?.health.rating || 'Optimal'}
+              <ArrowUpRight className="w-3 h-3 mr-0.5" /> {analysis?.health.rating || t('common.optimal', 'Optimal')}
             </span>
-            <span className="text-slate-400">{healthScore >= 75 ? 'Tier-A Prime' : 'Monitored'}</span>
+            <span className="text-slate-400">
+              {healthScore >= 75 ? t('executive.tierAPrime', 'Tier-A Prime') : t('executive.monitored', 'Monitored')}
+            </span>
           </div>
         </div>
 
@@ -155,7 +167,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
         >
           <div className="flex items-center justify-between text-xs text-purple-300">
             <span className="font-bold flex items-center gap-1">
-              <Sparkles className="w-3 h-3" /> Funding Score
+              <Sparkles className="w-3 h-3" /> {t('executive.kpiFunding', 'Funding Score')}
             </span>
             <Award className="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform" />
           </div>
@@ -164,7 +176,9 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
             <span className="text-xs text-slate-400">/100</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
-            <span className="text-purple-300 font-semibold">{loanEligibility}</span>
+            <span className="text-purple-300 font-semibold">
+              {loanEligibility}
+            </span>
             <span className="text-slate-400">{creditLimit}</span>
           </div>
         </div>
@@ -175,16 +189,18 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
           className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/50 transition-all cursor-pointer group shadow-lg"
         >
           <div className="flex items-center justify-between text-xs text-slate-400">
-            <span className="font-semibold">Operating Margin</span>
+            <span className="font-semibold">{t('executive.kpiMargin', 'Operating Margin')}</span>
             <TrendingUp className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl font-black text-emerald-400">{opMargin}%</span>
+            <span className="text-2xl font-black text-emerald-400">{opMargin !== null ? `${opMargin}%` : '—'}</span>
             <span className="text-xs text-slate-400">EBITDA</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
-            <span className="text-slate-300 font-medium">Gross: {grossMargin}%</span>
-            <span className="text-emerald-400">{opMargin >= 12 ? 'Healthy' : 'Needs Focus'}</span>
+            <span className="text-slate-300 font-medium">Gross: {grossMargin !== null ? `${grossMargin}%` : '—'}</span>
+            <span className="text-emerald-400 font-medium">
+              {opMargin !== null ? (opMargin >= 12 ? t('common.healthy', 'Healthy') : t('common.needsAttention', 'Needs Focus')) : '—'}
+            </span>
           </div>
         </div>
 
@@ -194,19 +210,19 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
           className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/50 transition-all cursor-pointer group shadow-lg"
         >
           <div className="flex items-center justify-between text-xs text-slate-400">
-            <span className="font-semibold">Cash Runway</span>
+            <span className="font-semibold">{t('executive.kpiRunway', 'Cash Runway')}</span>
             <Coins className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
             <span className="text-2xl font-black text-white">{runwayMonths}</span>
-            <span className="text-xs text-slate-400">Months</span>
+            <span className="text-xs text-slate-400">{t('common.months', 'Months')}</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
             <span className="text-slate-300 font-medium">
               Net: ₹{analysis ? (analysis.financials.monthlyNetCashFlow / 100000).toFixed(1) : '10.0'}L/mo
             </span>
             <span className={runwayMonths >= 3 ? 'text-emerald-400 font-semibold' : 'text-amber-400 font-semibold'}>
-              {runwayMonths >= 3 ? 'Stable' : 'Vulnerable'}
+              {runwayMonths >= 3 ? t('common.optimal', 'Stable') : t('common.critical', 'Vulnerable')}
             </span>
           </div>
         </div>
@@ -217,18 +233,87 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
           className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 transition-all cursor-pointer group shadow-lg"
         >
           <div className="flex items-center justify-between text-xs text-slate-400">
-            <span className="font-semibold">Loan Eligibility</span>
+            <span className="font-semibold">{t('executive.kpiEligibility', 'Loan Eligibility')}</span>
             <Landmark className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
             <span className="text-2xl font-black text-emerald-400">{loanEligibility}</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
-            <span className="text-slate-300">CGTMSE Coverage</span>
-            <span className="text-purple-300 font-semibold">Bank Ready</span>
+            <span className="text-slate-300">{t('executive.cgtmseCoverage', 'CGTMSE Coverage')}</span>
+            <span className="text-purple-300 font-semibold">{t('executive.bankReady', 'Bank Ready')}</span>
           </div>
         </div>
 
+      </div>
+
+
+      {/* Flagship Decision Intelligence Showcase */}
+      <div className="rounded-2xl border p-5 transition-all shadow-xl ${
+        isPro 
+          ? 'bg-gradient-to-r from-purple-950/40 via-slate-900 to-indigo-950/40 border-purple-500/30' 
+          : 'bg-slate-900/90 border-slate-800'
+      }">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-purple-600/20 text-purple-300 border border-purple-500/30">
+                <Sparkles className="w-4 h-4 text-purple-400" />
+              </span>
+              <span className="text-xs font-bold uppercase tracking-wider text-purple-300">
+                {isPro 
+                  ? (language === 'ta' ? 'மேம்பட்ட வணிக முடிவு நுண்ணறிவு (செயலில் உள்ளது)' : 'Professional Decision Intelligence Active')
+                  : (language === 'ta' ? 'மேம்பட்ட வணிக முடிவு நுண்ணறிவு' : 'Professional Decision Intelligence')}
+              </span>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-purple-500 text-white shadow-sm">
+                PRO
+              </span>
+            </div>
+            <h2 className="text-base sm:text-lg font-bold text-white">
+              {language === 'ta' 
+                ? 'பணத்தை செலவழிக்கும் முன் வணிக முடிவுகளை உருவகப்படுத்துங்கள்'
+                : 'Simulate business decisions & stress-test impact before spending money'}
+            </h2>
+            <p className="text-xs text-slate-400 max-w-2xl">
+              {language === 'ta'
+                ? 'விலை உயர்வு, புதிய பணியாளர் சேர்த்தல், வங்கி கடன் மற்றும் செலவு குறைப்பு போன்ற முடிவுகளின் லாப மற்றும் பணப்புழக்க தாக்கத்தை நிகழ்நேரத்தில் கணிக்கவும்.'
+                : 'Model price changes, new hires, term loans, and cost cuts with deterministic financial math and grounded AI diagnostic advisory.'}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+            {isPro ? (
+              <>
+                <button
+                  onClick={() => onNavigate('decision-lab')}
+                  className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs transition-all shadow-md shadow-purple-600/30"
+                >
+                  <FlaskConical className="w-4 h-4 text-purple-200" />
+                  <span>{language === 'ta' ? 'முடிவு ஆய்வகம் திறக்க' : 'Open Decision Lab'}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => onNavigate('ai-advisor')}
+                  className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-purple-200 font-semibold text-xs border border-purple-500/30 transition-all"
+                >
+                  <Bot className="w-4 h-4 text-purple-400" />
+                  <span>{language === 'ta' ? 'AI வணிக ஆலோசகர்' : 'AI Business Advisor'}</span>
+                </button>
+              </>
+            ) : (
+              <div className="flex items-center gap-3 w-full md:w-auto">
+                <button
+                  onClick={() => onNavigate('billing')}
+                  className="w-full md:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs shadow-lg shadow-purple-600/30 transition-all"
+                >
+                  <Lock className="w-3.5 h-3.5 text-purple-200" />
+                  <span>{language === 'ta' ? 'புரோவுக்கு மேம்படுத்து (₹2 மட்டும்)' : 'Unlock with Professional (₹2 Test Mode)'}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Main Graph & AI Copilot Split */}
@@ -240,10 +325,21 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-800">
             <div>
               <h3 className="text-base font-bold text-white flex items-center gap-2">
-                Revenue, Expense & Cash Generation
-                <span className="text-xs font-normal text-slate-400">(in ₹ Lakhs)</span>
+                {t('executive.revenueExpenseTitle', 'Revenue, Expense & Cash Generation')}
+                <span className="text-xs font-normal text-slate-400">
+                  {t('executive.inLakhs', '(in ₹ Lakhs)')}
+                </span>
               </h3>
-              <p className="text-xs text-slate-400">Based on active operational financial data and recurring expense structures</p>
+              <p className="text-xs text-slate-400">
+                {language === 'ta' 
+                  ? 'செயலில் உள்ள வணிகத் தரவு மற்றும் மாதாந்திர செலவுகளின் அடிப்படையில்'
+                  : 'Based on active operational financial data and recurring expense structures'}
+              </p>
+              <div className="pt-1">
+                <span className="text-[10px] font-semibold text-purple-300 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20">
+                  Projected: Forecast based on current operational assumptions
+                </span>
+              </div>
             </div>
 
             <div className="flex items-center gap-2 text-xs">
@@ -254,7 +350,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
                     chartView === 'area' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  Trend Area
+                  {t('executive.trendArea', 'Trend Area')}
                 </button>
                 <button
                   onClick={() => setChartView('bar')}
@@ -262,7 +358,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
                     chartView === 'bar' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  Monthly Bars
+                  {t('executive.monthlyBars', 'Monthly Bars')}
                 </button>
               </div>
 
@@ -273,7 +369,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
                     timeframe === '12m' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  12M
+                  {t('executive.timeframe12M', '12M')}
                 </button>
                 <button
                   onClick={() => setTimeframe('6m')}
@@ -281,7 +377,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
                     timeframe === '6m' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  6M
+                  {t('executive.timeframe6M', '6M')}
                 </button>
               </div>
             </div>
@@ -310,13 +406,18 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
                   <XAxis dataKey="month" stroke="#64748B" fontSize={11} tickLine={false} />
                   <YAxis stroke="#64748B" fontSize={11} tickLine={false} />
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#0F172A', borderColor: '#334155', borderRadius: '8px', fontSize: '12px' }}
+                    contentStyle={{ 
+                      backgroundColor: '#0F172A', 
+                      borderColor: '#334155', 
+                      borderRadius: '8px', 
+                      fontSize: '12px'
+                    }}
                     itemStyle={{ color: '#F8FAFC' }}
                   />
                   <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-                  <Area type="monotone" dataKey="revenue" name="Revenue (₹L)" stroke="#8B5CF6" strokeWidth={2.5} fillOpacity={1} fill="url(#revGrad)" />
-                  <Area type="monotone" dataKey="expense" name="Cost (₹L)" stroke="#38BDF8" strokeWidth={2} fillOpacity={1} fill="url(#expGrad)" />
-                  <Area type="monotone" dataKey="cashFlow" name="Net Cash (₹L)" stroke="#10B981" strokeWidth={2} fillOpacity={1} fill="url(#cashGrad)" />
+                  <Area type="monotone" dataKey="revenue" name={t('executive.revenue', 'Revenue (₹L)')} stroke="#8B5CF6" strokeWidth={2.5} fillOpacity={1} fill="url(#revGrad)" />
+                  <Area type="monotone" dataKey="expense" name={t('executive.cost', 'Cost (₹L)')} stroke="#38BDF8" strokeWidth={2} fillOpacity={1} fill="url(#expGrad)" />
+                  <Area type="monotone" dataKey="cashFlow" name={t('executive.netCash', 'Net Cash (₹L)')} stroke="#10B981" strokeWidth={2} fillOpacity={1} fill="url(#cashGrad)" />
                 </AreaChart>
               ) : (
                 <BarChart data={chartData} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
@@ -324,13 +425,18 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
                   <XAxis dataKey="month" stroke="#64748B" fontSize={11} tickLine={false} />
                   <YAxis stroke="#64748B" fontSize={11} tickLine={false} />
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#0F172A', borderColor: '#334155', borderRadius: '8px', fontSize: '12px' }}
+                    contentStyle={{ 
+                      backgroundColor: '#0F172A', 
+                      borderColor: '#334155', 
+                      borderRadius: '8px', 
+                      fontSize: '12px'
+                    }}
                     itemStyle={{ color: '#F8FAFC' }}
                   />
                   <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-                  <Bar dataKey="revenue" name="Revenue (₹L)" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="expense" name="Cost (₹L)" fill="#38BDF8" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="profit" name="Net Profit (₹L)" fill="#10B981" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="revenue" name={t('executive.revenue', 'Revenue (₹L)')} fill="#8B5CF6" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="expense" name={t('executive.cost', 'Cost (₹L)')} fill="#38BDF8" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="profit" name={t('executive.netProfit', 'Net Profit (₹L)')} fill="#10B981" radius={[4, 4, 0, 0]} />
                 </BarChart>
               )}
             </ResponsiveContainer>
@@ -339,15 +445,15 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
           <div className="pt-2 flex flex-wrap items-center justify-between text-xs text-slate-400 border-t border-slate-800">
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-purple-400"></span>
-              Gross Margin: <strong className="text-white">{grossMargin}%</strong>
+              {t('executive.grossMarginLabel', 'Gross Margin')}: <strong className="text-white">{grossMargin}%</strong>
             </span>
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-              Operating Margin: <strong className="text-white">{opMargin}%</strong>
+              {t('executive.operatingMarginLabel', 'Operating Margin')}: <strong className="text-white">{opMargin}%</strong>
             </span>
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-sky-400"></span>
-              Net Profit Margin: <strong className="text-white">{netMargin}%</strong>
+              {t('executive.netMarginLabel', 'Net Profit Margin')}: <strong className="text-white">{netMargin}%</strong>
             </span>
           </div>
 
@@ -359,18 +465,18 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
           <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4 shadow-xl">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-purple-400" /> AI Executive Brief
+                <Sparkles className="w-4 h-4 text-purple-400" /> {t('executive.aiBriefTitle', 'AI Executive Brief')}
               </h3>
               <span className="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                Live Analysis
+                {t('executive.liveAnalysis', 'Live Analysis')}
               </span>
             </div>
 
             {topRecs.length > 0 && (
               <AIInsightBadge 
                 type="recommendation" 
-                title="Strategic Recommendation"
-                actionText="View Playbook"
+                title={t('executive.strategicRec', 'Strategic Recommendation')}
+                actionText={language === 'ta' ? 'திட்டத்தைக் காண்க' : 'View Playbook'}
                 onAction={() => onNavigate('growth-intelligence')}
               >
                 {`"${topRecs[0]}"`}
@@ -380,8 +486,8 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
             {topRisks.length > 0 && (
               <AIInsightBadge 
                 type="warning" 
-                title="Business Risk Observation"
-                actionText="Inspect Cash Forecast"
+                title={t('executive.businessRisk', 'Business Risk Observation')}
+                actionText={language === 'ta' ? 'முன்கணிப்பை ஆராய்க' : 'Inspect Cash Forecast'}
                 onAction={() => onNavigate('cash-flow')}
               >
                 {`"${topRisks[0]}"`}
@@ -390,38 +496,40 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
 
             <AIInsightBadge 
               type="positive" 
-              title="Borrowing Capacity"
-              actionText="View Bank Matches"
+              title={t('executive.borrowingCap', 'Borrowing Capacity')}
+              actionText={language === 'ta' ? 'வங்கி பொருத்தங்கள்' : 'View Bank Matches'}
               onAction={() => onNavigate('funding-readiness')}
             >
-              {`"Based on current turnover and DSCR of ${analysis?.financials.dscr ?? 'clean leverage'}, estimated credit capacity stands at ${creditLimit}."`}
+              {language === 'ta'
+                ? `தற்போதைய விற்றுமுதல் மற்றும் DSCR அடிப்படையில் உங்கள் கடன் தகுதி ${creditLimit} ஆகக் கணக்கிடப்பட்டுள்ளது.`
+                : `"Based on current turnover and DSCR of ${analysis?.financials.dscr ?? 'clean leverage'}, estimated credit capacity stands at ${creditLimit}."`}
             </AIInsightBadge>
           </div>
 
           {/* Business Diagnostics Summary */}
           <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
             <div className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
-              Financial Diagnostics Breakdown
+              {t('executive.diagnosticsTitle', 'Financial Diagnostics Breakdown')}
             </div>
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between">
-                <span className="text-slate-400">Monthly Revenue</span>
-                <span className="text-white font-semibold">₹{analysis ? (analysis.financials.monthlyRevenue / 100000).toFixed(2) : '48.5'}L</span>
+                <span className="text-slate-400">{t('executive.monthlyRevLabel', 'Monthly Revenue')}</span>
+                <span className="text-white font-semibold">{analysis ? `₹${(analysis.financials.monthlyRevenue / 100000).toFixed(2)}L` : '—'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Total Monthly Cost</span>
-                <span className="text-slate-300 font-semibold">₹{analysis ? (analysis.financials.totalMonthlyExpenses / 100000).toFixed(2) : '38.5'}L</span>
+                <span className="text-slate-400">{t('executive.monthlyCostLabel', 'Total Monthly Cost')}</span>
+                <span className="text-slate-300 font-semibold">{analysis ? `₹${(analysis.financials.totalMonthlyExpenses / 100000).toFixed(2)}L` : '—'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Working Capital</span>
+                <span className="text-slate-400">{t('executive.workingCapLabel', 'Working Capital')}</span>
                 <span className={analysis && analysis.financials.workingCapital >= 0 ? 'text-emerald-400 font-semibold' : 'text-rose-400 font-semibold'}>
-                  ₹{analysis ? (analysis.financials.workingCapital / 100000).toFixed(2) : '34.0'}L
+                  {analysis ? `₹${(analysis.financials.workingCapital / 100000).toFixed(2)}L` : '—'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">DSCR Coverage</span>
+                <span className="text-slate-400">{t('executive.dscrCoverageLabel', 'DSCR Coverage')}</span>
                 <span className="text-purple-300 font-semibold">
-                  {analysis?.financials.dscr ? `${analysis.financials.dscr}x` : 'Debt-Free'}
+                  {analysis?.financials.dscr ? `${analysis.financials.dscr}x` : t('executive.debtFree', 'Debt-Free')}
                 </span>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Check } from 'lucide-react';
 import { cn } from '../../lib/cn';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface YesNoToggleProps {
   value: boolean | null;
@@ -9,12 +10,16 @@ interface YesNoToggleProps {
 }
 
 export const YesNoToggle: React.FC<YesNoToggleProps> = ({ value, onChange, error }) => {
+  const { t } = useLanguage();
+
   return (
     <div className="space-y-1.5">
       <div className="inline-flex p-1 bg-slate-950 border border-slate-800 rounded-xl">
         {(['Yes', 'No'] as const).map((label) => {
           const boolValue = label === 'Yes';
           const isActive = value === boolValue;
+          const translatedLabel = label === 'Yes' ? t('common.yes', 'Yes') : t('common.no', 'No');
+
           return (
             <button
               key={label}
@@ -22,10 +27,12 @@ export const YesNoToggle: React.FC<YesNoToggleProps> = ({ value, onChange, error
               onClick={() => onChange(boolValue)}
               className={cn(
                 'px-5 py-2 rounded-lg text-xs font-bold transition-all',
-                isActive ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30' : 'text-slate-400 hover:text-white'
+                isActive 
+                  ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30' 
+                  : 'text-slate-400 hover:text-white'
               )}
             >
-              {label}
+              {translatedLabel}
             </button>
           );
         })}

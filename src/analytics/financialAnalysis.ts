@@ -21,6 +21,11 @@ import {
   CashFlowForecastResult,
   ComplianceSummary,
   FundingReadinessResult,
+  FundingDimension,
+  FundingActionItem,
+  ChecklistItem,
+  DebtCapacityAssessment,
+  FundingStrategyResult,
   GrowthObservations,
   HealthScoreResult,
   NormalizedFinancials,
@@ -295,10 +300,13 @@ export function evaluateFundingReadiness(
   org: Organization,
   norm: NormalizedFinancials,
   fin: CalculatedFinancials,
-  healthScore: number,
+  _overallHealthScore: number,
 ): FundingReadinessResult {
   const compliance = org.complianceProfile || ({} as any);
-  const vintage = Math.max(0, new Date().getFullYear() - (safeNumber(org.businessProfile?.yearEstablished) || new Date().getFullYear()));
+  const establishedYear = safeNumber(org.businessProfile?.yearEstablished);
+  const currentYear = new Date().getFullYear();
+  const hasVintage = establishedYear > 1900 && establishedYear <= currentYear;
+  const vintage = hasVintage ? Math.max(0, currentYear - establishedYear) : 0;
 
   // 1. Compliance score (25 max)
   let compScore = 0;
@@ -354,6 +362,347 @@ export function evaluateFundingReadiness(
     estimatedCreditLimitValue >= 10000000
       ? `₹${(estimatedCreditLimitValue / 10000000).toFixed(2)} Cr`
       : `₹${(estimatedCreditLimitValue / 100000).toFixed(2)} Lakhs`;
+
+  // 5 Transparent Dimensions for Explainability
+  const dimensions: FundingDimension[] = [
+    {
+      key: 'compliance',
+      factor: 'Statutory & Tax Compliance',
+      rawScore: compScore,
+      weight: 25,
+      percentage: Math.round((compScore / 25) * 100),
+      contribution: compScore >= 20 ? 'positive' : 'negative',
+      status: compScore >= 20 ? 'Strong' : compScore >= 15 ? 'Satisfactory' : compScore >= 10 ? 'Needs Attention' : 'Critical',
+      explanation: `GST: ${compliance.gstRegistered ? 'Active (+10)' : 'Missing (+0)'}, ITR: ${compliance.itrAvailable ? 'Verified (+10)' : 'Missing (+0)'}, Current Bank Account: ${compliance.hasBusinessBankAccount ? 'Active (+5)' : 'Missing (+0)'}.`,
+      metricsSummary: `${compScore}/25 pts — ${compliance.gstRegistered ? 'GST Registered' : 'Unregistered'}, ${compliance.itrAvailable ? 'ITR Available' : 'No ITR'}`,
+    },
+    {
+      key: 'stability',
+      factor: 'Financial Stability & Cash Flow',
+      rawScore: finScore,
+      weight: 25,
+      percentage: Math.round((finScore / 25) * 100),
+      contribution: finScore >= 18 ? 'positive' : 'negative',
+      status: finScore >= 18 ? 'Strong' : finScore >= 14 ? 'Satisfactory' : finScore >= 8 ? 'Needs Attention' : 'Critical',
+      explanation: `Operating Margin: ${fin.operatingMarginPercent !== null ? `${fin.operatingMarginPercent}% (${fin.operatingMarginPercent >= 12 ? '+10' : fin.operatingMarginPercent > 0 ? '+6' : '+0'})` : 'None (+0)'}, Monthly Cash Generation: ${fin.monthlyNetCashFlow > 0 ? 'Positive (+8)' : 'Deficit (+0)'}, Debt Coverage: ${!norm.hasLoans ? 'Debt-Free (+7)' : (fin.dscr && fin.dscr >= 1.5 ? `DSCR ${fin.dscr}x (+7)` : fin.dscr && fin.dscr >= 1.2 ? `DSCR ${fin.dscr}x (+4)` : 'Low DSCR (+0)')}.`,
+      metricsSummary: `${finScore}/25 pts — Margin: ${fin.operatingMarginPercent ?? 0}%, Net Flow: ₹${(fin.monthlyNetCashFlow / 1000).toFixed(0)}k/mo`,
+    },
+    {
+      key: 'vintage',
+      factor: 'Business Vintage & Operating Scale',
+      rawScore: trackScore,
+      weight: 20,
+      percentage: Math.round((trackScore / 20) * 100),
+      contribution: trackScore >= 15 ? 'positive' : 'negative',
+      status: trackScore >= 15 ? 'Strong' : trackScore >= 11 ? 'Satisfactory' : 'Needs Attention',
+      explanation: `Operational Age: ${hasVintage ? `${vintage} year(s) (${vintage >= 5 ? '+15' : vintage >= 3 ? '+12' : vintage >= 1 ? '+8' : '+4'})` : 'Not provided (+4)'}, Declared Annual Turnover: ₹${(fin.annualRevenue / 100000).toFixed(1)}L (${fin.annualRevenue >= 5000000 ? '+5' : fin.annualRevenue >= 2500000 ? '+3' : '+0'}).`,
+      metricsSummary: `${trackScore}/20 pts — ${hasVintage ? `${vintage} Years Vintage` : 'Vintage Not Provided'}, Turnover: ₹${(fin.annualRevenue / 100000).toFixed(1)}L`,
+    },
+    {
+      key: 'liquidity',
+      factor: 'Liquidity Buffer & Working Capital',
+      rawScore: bufferScore,
+      weight: 15,
+      percentage: Math.round((bufferScore / 15) * 100),
+      contribution: bufferScore >= 12 ? 'positive' : 'negative',
+      status: bufferScore >= 12 ? 'Strong' : bufferScore >= 8 ? 'Satisfactory' : 'Critical',
+      explanation: `Cash Runway: ${fin.runwayMonths !== null ? `${fin.runwayMonths} month(s) (${fin.runwayMonths >= 4 ? '+8' : fin.runwayMonths >= 2 ? '+5' : '+0'})` : 'No cash (+0)'}, Working Capital: ${fin.workingCapital > 0 ? `Positive ₹${(fin.workingCapital / 100000).toFixed(1)}L (+7)` : `Deficit ₹${(fin.workingCapital / 100000).toFixed(1)}L (+0)`}.`,
+      metricsSummary: `${bufferScore}/15 pts — Runway: ${fin.runwayMonths ?? 0} Mo, Net WC: ₹${(fin.workingCapital / 100000).toFixed(1)}L`,
+    },
+    {
+      key: 'debt',
+      factor: 'Debt Capacity & Serviceability',
+      rawScore: capacityScore,
+      weight: 15,
+      percentage: Math.round((capacityScore / 15) * 100),
+      contribution: norm.hasLoans ? ((fin.dscr ?? 0) >= 1.3 && (fin.debtToAnnualRevenue ?? 0) <= 0.5 ? 'positive' : 'negative') : 'positive',
+      status: capacityScore >= 12 ? 'Strong' : capacityScore >= 8 ? 'Satisfactory' : 'Needs Attention',
+      explanation: norm.hasLoans
+        ? `Debt of ₹${(norm.outstandingLoanAmount / 100000).toFixed(1)}L against turnover (${(fin.debtToAnnualRevenue ?? 0) > 0.6 ? 'High leverage: +4' : (fin.debtToAnnualRevenue ?? 0) > 0.4 ? 'Moderate leverage: +8' : 'Low leverage: +12'}), Monthly EMI: ₹${(norm.monthlyEMI / 1000).toFixed(0)}k/mo.`
+        : 'Zero active debt commitments. 100% debt capacity headroom available (+15).',
+      metricsSummary: `${capacityScore}/15 pts — ${norm.hasLoans ? `Debt: ₹${(norm.outstandingLoanAmount / 100000).toFixed(1)}L, DSCR: ${fin.dscr ? `${fin.dscr}x` : 'N/A'}` : 'Debt-Free'}`,
+    },
+  ];
+
+  // Up to 5 Data-Driven Strengths
+  const candidateStrengths: string[] = [];
+  if (fin.operatingMarginPercent !== null && fin.operatingMarginPercent >= 15) {
+    candidateStrengths.push(`Strong operating profitability with ${fin.operatingMarginPercent}% EBITDA margin.`);
+  }
+  if (fin.monthlyNetCashFlow > 0) {
+    candidateStrengths.push(`Positive monthly net cash generation of ₹${(fin.monthlyNetCashFlow / 1000).toFixed(0)}k/mo supports debt repayment.`);
+  }
+  if (!norm.hasLoans) {
+    candidateStrengths.push('Debt-free balance sheet provides unencumbered borrowing headroom with zero monthly EMI drag.');
+  } else if (fin.dscr && fin.dscr >= 1.5) {
+    candidateStrengths.push(`Comfortable Debt Service Coverage Ratio (DSCR) of ${fin.dscr}x exceeds standard lender benchmark (1.30x).`);
+  }
+  if (compliance.gstRegistered && compliance.itrAvailable && compliance.hasBusinessBankAccount) {
+    candidateStrengths.push('Complete statutory tax compliance across GST, ITR, and dedicated business current account.');
+  }
+  if ((fin.runwayMonths ?? 0) >= 3) {
+    candidateStrengths.push(`Healthy liquidity buffer of ${fin.runwayMonths} months provides operational safety margin.`);
+  }
+  if (vintage >= 3) {
+    candidateStrengths.push(`Established operational track record of ${vintage} years qualifies for prime PSU bank schemes.`);
+  }
+  if (fin.workingCapital > 0) {
+    candidateStrengths.push(`Positive working capital balance of ₹${(fin.workingCapital / 100000).toFixed(1)}L demonstrates balance sheet stability.`);
+  }
+  const strengths = candidateStrengths.slice(0, 5);
+
+  // Up to 5 Data-Driven Gaps
+  const candidateGaps: string[] = [];
+  if (norm.hasLoans && (fin.dscr ?? 0) < 1.3) {
+    candidateGaps.push(`Constrained debt coverage: DSCR of ${fin.dscr ?? 'N/A'}x falls below the 1.30x institutional benchmark.`);
+  }
+  if (norm.hasLoans && (fin.emiBurdenRatio ?? 0) > 20) {
+    candidateGaps.push(`Elevated debt servicing: Monthly EMI absorbs ${Math.round(fin.emiBurdenRatio ?? 0)}% of monthly turnover.`);
+  }
+  if ((fin.runwayMonths ?? 0) < 2.5) {
+    candidateGaps.push(`Short liquidity buffer: Cash reserves support only ${fin.runwayMonths ?? 'less than 1'} month(s) of operations.`);
+  }
+  if (norm.accountsReceivable > fin.monthlyRevenue * 0.9 && norm.accountsReceivable > 0) {
+    candidateGaps.push(`High receivables lockup: ₹${(norm.accountsReceivable / 100000).toFixed(1)}L tied up in customer credit.`);
+  }
+  if (!compliance.gstRegistered) {
+    candidateGaps.push('GST registration is not recorded, restricting access to formal institutional lending and CGTMSE schemes.');
+  }
+  if (!compliance.itrAvailable) {
+    candidateGaps.push('Income Tax Returns (ITR) are not available, which lenders require for formal underwriting.');
+  }
+  if (fin.monthlyNetCashFlow <= 0) {
+    candidateGaps.push('Negative monthly cash flow (cash burn) requires operational stabilization prior to new borrowing.');
+  }
+  if (fin.operatingMarginPercent !== null && fin.operatingMarginPercent < 10) {
+    candidateGaps.push(`Low EBITDA margin (${fin.operatingMarginPercent}%) leaves minimal operating cushion for loan interest.`);
+  }
+  const gaps = candidateGaps.slice(0, 5);
+
+  // Structured Action Plan
+  const actionPlan: FundingActionItem[] = [];
+  if (norm.hasLoans && (fin.dscr ?? 0) < 1.3) {
+    actionPlan.push({
+      issue: `Constrained Debt Coverage (DSCR: ${fin.dscr ?? 'N/A'}x)`,
+      whyItMatters: 'Lenders require minimum 1.30x DSCR to ensure regular principal and interest servicing without default risk.',
+      action: 'Improve operating margins through pricing reviews, or restructure facilities from 36 to 60 months to lower monthly EMI.',
+      impact: 'Restores DSCR above 1.35x benchmark',
+      priority: 'HIGH',
+    });
+  }
+  if (norm.accountsReceivable > fin.monthlyRevenue * 0.9 && norm.accountsReceivable > 0) {
+    actionPlan.push({
+      issue: `Customer Receivables Overhang (₹${(norm.accountsReceivable / 100000).toFixed(1)}L)`,
+      whyItMatters: 'Delayed customer collections create working capital pressure and inflate debt requirements.',
+      action: 'Prioritize collections on 60+ day aging invoices or register on RBI-approved TReDS portals for 48-hour invoice discounting.',
+      impact: `Unlocks up to ₹${((norm.accountsReceivable * 0.8) / 100000).toFixed(1)}L in cash`,
+      priority: 'HIGH',
+    });
+  }
+  if ((fin.runwayMonths ?? 0) < 2.5) {
+    actionPlan.push({
+      issue: `Constrained Liquidity Runway (${fin.runwayMonths ?? 0} Mo)`,
+      whyItMatters: 'Banks consider thin cash balances a significant vulnerability during revenue fluctuations.',
+      action: 'Postpone discretionary CAPEX and retain operating surplus until reaching a 90-day cash operating reserve.',
+      impact: 'Boosts liquidity pillar by up to 10 points',
+      priority: 'HIGH',
+    });
+  }
+  if (!compliance.gstRegistered || !compliance.itrAvailable) {
+    actionPlan.push({
+      issue: 'Statutory Tax Filing Incompleteness',
+      whyItMatters: 'PSU banks and CGTMSE guarantee schemes mandate minimum 2 years of formal GSTR-3B and ITR records.',
+      action: 'Register for GST and ensure past two financial years of audited ITR returns are readily accessible in digital format.',
+      impact: 'Unlocks subsidized MSME lending schemes',
+      priority: 'HIGH',
+    });
+  }
+  if (fin.monthlyNetCashFlow <= 0) {
+    actionPlan.push({
+      issue: 'Negative Monthly Cash Flow',
+      whyItMatters: 'Taking new loans while operating at a monthly cash deficit accelerates insolvency risk.',
+      action: 'Re-align direct material costs and monthly OPEX with current sales run rate before seeking debt expansion.',
+      impact: 'Restores positive monthly cash flow',
+      priority: 'MEDIUM',
+    });
+  }
+  if (actionPlan.length === 0) {
+    actionPlan.push({
+      issue: 'Profile Maintenance & Readiness',
+      whyItMatters: 'Strong profile enables negotiation of preferential interest spreads with PSU and private lenders.',
+      action: 'Compile last 6 months current bank statements and GSTR-3B returns to prepare formal application dossiers.',
+      impact: 'Fast-tracks sanction timeline by 2–3 weeks',
+      priority: 'LOW',
+    });
+  }
+
+  // 9-Point Funding Preparation Checklist
+  const preparationChecklist: ChecklistItem[] = [
+    {
+      id: 'reg_details',
+      category: 'Identity',
+      title: 'Business Registration & Structure',
+      status: org.businessProfile?.businessName && org.businessProfile?.businessType ? 'provided' : 'incomplete',
+      details: org.businessProfile?.businessType ? `${org.businessProfile.businessType} structure recorded` : 'Structure details missing',
+    },
+    {
+      id: 'gst_info',
+      category: 'Taxation',
+      title: 'GST Registration (GSTR-1 & 3B)',
+      status: compliance.gstRegistered ? 'provided' : 'not_provided',
+      details: compliance.gstRegistered ? 'GST registration indicated as active' : 'GST registration not recorded',
+    },
+    {
+      id: 'itr_info',
+      category: 'Taxation',
+      title: 'Income Tax Returns (ITR / Audits)',
+      status: compliance.itrAvailable ? 'provided' : 'not_provided',
+      details: compliance.itrAvailable ? 'Formal ITR availability indicated' : 'ITR filings not recorded',
+    },
+    {
+      id: 'bank_account',
+      category: 'Banking',
+      title: 'Business Current Bank Account',
+      status: compliance.hasBusinessBankAccount ? 'provided' : 'not_provided',
+      details: compliance.hasBusinessBankAccount ? 'Dedicated current business bank account confirmed' : 'Business current account not recorded',
+    },
+    {
+      id: 'fin_statements',
+      category: 'Financials',
+      title: 'Operating Financial Records',
+      status: fin.monthlyRevenue > 0 && fin.totalMonthlyExpenses > 0 ? 'provided' : 'incomplete',
+      details: fin.monthlyRevenue > 0 ? `Monthly Revenue: ₹${(fin.monthlyRevenue / 100000).toFixed(1)}L, OPEX: ₹${(fin.totalMonthlyExpenses / 100000).toFixed(1)}L` : 'Financial numbers not provided',
+    },
+    {
+      id: 'loan_records',
+      category: 'Leverage',
+      title: 'Existing Loan & EMI Schedule',
+      status: norm.hasLoans ? (norm.outstandingLoanAmount > 0 && norm.monthlyEMI > 0 ? 'provided' : 'incomplete') : 'provided',
+      details: norm.hasLoans ? `Outstanding: ₹${(norm.outstandingLoanAmount / 100000).toFixed(1)}L, EMI: ₹${(norm.monthlyEMI / 1000).toFixed(0)}k/mo` : 'Business recorded as debt-free',
+    },
+    {
+      id: 'wc_records',
+      category: 'Working Capital',
+      title: 'Receivables & Payables Ledger',
+      status: norm.accountsReceivable > 0 || norm.accountsPayable > 0 ? 'provided' : 'incomplete',
+      details: norm.accountsReceivable > 0 ? `AR: ₹${(norm.accountsReceivable / 100000).toFixed(1)}L, AP: ₹${(norm.accountsPayable / 100000).toFixed(1)}L` : 'Working capital ledger details not provided',
+    },
+    {
+      id: 'vintage_record',
+      category: 'Track Record',
+      title: 'Business Vintage Documentation',
+      status: hasVintage ? 'provided' : 'not_provided',
+      details: hasVintage ? `Established in ${establishedYear} (${vintage} years track record)` : 'Year of establishment not provided',
+    },
+    {
+      id: 'compliance_dossier',
+      category: 'Compliance',
+      title: 'Statutory Compliance Documentation',
+      status: compliance.gstRegistered && compliance.itrAvailable && compliance.hasBusinessBankAccount ? 'provided' : 'incomplete',
+      details: compliance.gstRegistered && compliance.itrAvailable ? 'Statutory documents declared complete' : 'Statutory documents incomplete',
+    },
+  ];
+
+  // Debt Capacity Assessment
+  let debtStatus: DebtCapacityAssessment['status'] = 'Healthy';
+  let debtAssessmentNote = '';
+  if (!norm.hasLoans) {
+    debtStatus = 'Healthy';
+    debtAssessmentNote = `Business operates debt-free with zero EMI drag. Unencumbered cash generation supports indicative borrowing headroom up to ${formattedLimit} without existing debt overhang.`;
+  } else if ((fin.dscr ?? 0) >= 1.4 && (fin.emiBurdenRatio ?? 0) <= 20) {
+    debtStatus = 'Healthy';
+    debtAssessmentNote = `Current DSCR of ${fin.dscr}x and EMI burden of ${Math.round(fin.emiBurdenRatio ?? 0)}% represent a comfortable debt capacity for facility renewal or modest term debt expansion.`;
+  } else if ((fin.dscr ?? 0) >= 1.15) {
+    debtStatus = 'Moderate';
+    debtAssessmentNote = `Moderate debt capacity: DSCR of ${fin.dscr ?? 'N/A'}x indicates debt service is viable but leaves limited operating cushion. Facility restructuring is recommended before additional borrowing.`;
+  } else {
+    debtStatus = 'Needs Attention';
+    debtAssessmentNote = `Elevated debt servicing strain: Current EMI commitments absorb ${Math.round(fin.emiBurdenRatio ?? 0)}% of revenue. Focus on cash flow stabilization before seeking new loan facilities.`;
+  }
+
+  const debtAssessment: DebtCapacityAssessment = {
+    currentEmi: norm.monthlyEMI,
+    annualDebtService: norm.monthlyEMI * 12,
+    dscr: fin.dscr,
+    debtToRevenue: fin.debtToAnnualRevenue,
+    emiBurdenPercent: fin.emiBurdenRatio !== null ? Math.round(fin.emiBurdenRatio) : null,
+    status: debtStatus,
+    assessmentNote: debtAssessmentNote,
+  };
+
+  // Funding Strategy (Professional)
+  let strategyRec: FundingStrategyResult['recommendation'] = 'Consider improving profile first';
+  let strategyTiming: FundingStrategyResult['timing'] = 'Improve First';
+  let strategyRationale = '';
+  let keyPrereq = '';
+
+  if (overallScore >= 70 && (fin.dscr === null || fin.dscr >= 1.35) && fin.monthlyNetCashFlow > 0 && compliance.gstRegistered) {
+    strategyRec = 'Potentially suitable for further preparation';
+    strategyTiming = 'Ready to Prepare';
+    strategyRationale = 'Your financial stability, positive operating cash flow, and debt coverage indicate that your profile is well-positioned to assemble formal bank application dossiers.';
+    keyPrereq = 'Prepare last 6 months business current account statements and audited P&L for sanction submission.';
+  } else if (overallScore >= 45 && fin.monthlyNetCashFlow > 0) {
+    strategyRec = 'Consider improving profile first';
+    strategyTiming = 'Improve First';
+    strategyRationale = 'Your business demonstrates core operating viability, but key gaps (such as DSCR headroom, compliance records, or liquidity buffer) should be strengthened to secure favorable terms.';
+    keyPrereq = 'Execute the top recommendation in your Funding Action Plan before filing applications.';
+  } else {
+    strategyRec = 'Funding profile currently needs attention';
+    strategyTiming = 'Needs Attention';
+    strategyRationale = 'Current operating cash flow constraints or high leverage represent elevated borrowing risk. Focus on operational turnaround and cash collection before taking on new debt.';
+    keyPrereq = 'Restore positive monthly operating net cash flow and resolve statutory compliance gaps.';
+  }
+
+  const fundingStrategy: FundingStrategyResult = {
+    recommendation: strategyRec,
+    timing: strategyTiming,
+    rationale: strategyRationale,
+    keyPrerequisite: keyPrereq,
+  };
+
+  // Indicative Product Matches (Illustrative)
+  const bankMatches: BankProductMatch[] = [
+    {
+      bank: 'State Bank of India (SBI)',
+      product: 'SME Gold & CGTMSE Scheme (Illustrative)',
+      maxLoan: formattedLimit,
+      rate: overallScore >= 75 ? '8.65% p.a. (Illustrative rate)' : '9.25% p.a. (Illustrative rate)',
+      match: `${Math.min(98, Math.max(65, overallScore + 5))}% Fit`,
+      fastTrack: compliance.gstRegistered && compliance.itrAvailable,
+      reason: compliance.gstRegistered
+        ? 'GST registered with active business vintage qualifies for subsidized CGTMSE credit.'
+        : 'Requires formal GST registration for fast-track sanction.',
+    },
+    {
+      bank: 'SIDBI',
+      product: 'Direct Make-in-India Assistance (Illustrative)',
+      maxLoan: `₹${(Math.max(2500000, estimatedCreditLimitValue * 1.5) / 100000).toFixed(0)} Lakhs`,
+      rate: '8.25% p.a. (Illustrative rate)',
+      match: `${Math.min(95, Math.max(60, overallScore))}% Fit`,
+      fastTrack: vintage >= 3 && fin.monthlyNetCashFlow > 0,
+      reason: vintage >= 3
+        ? 'Business vintage >= 3 years meets SIDBI direct lending criteria.'
+        : 'SIDBI prefers businesses with 3+ years of audited operational track record.',
+    },
+    {
+      bank: 'HDFC Bank',
+      product: 'SmartUp Working Capital OD (Illustrative)',
+      maxLoan: formattedLimit,
+      rate: overallScore >= 75 ? '9.10% p.a. (Illustrative rate)' : '9.80% p.a. (Illustrative rate)',
+      match: `${Math.min(94, Math.max(62, overallScore - 2))}% Fit`,
+      fastTrack: compliance.hasBusinessBankAccount,
+      reason: `Structured overdraft linked to monthly business banking turnover of ₹${(fin.monthlyRevenue / 100000).toFixed(1)}L.`,
+    },
+    {
+      bank: 'ICICI Bank',
+      product: 'InstaBIZ Working Capital Line (Illustrative)',
+      maxLoan: `₹${(Math.min(5000000, estimatedCreditLimitValue) / 100000).toFixed(0)} Lakhs`,
+      rate: '9.45% p.a. (Illustrative rate)',
+      match: `${Math.min(92, Math.max(60, overallScore - 4))}% Fit`,
+      fastTrack: compliance.gstRegistered,
+      reason: 'Indicative digital working capital line subject to formal GSTR-3B assessment.',
+    },
+  ];
 
   // Funding Pillars (0-100 breakdown)
   const pillars: FundingPillar[] = [
@@ -416,72 +765,8 @@ export function evaluateFundingReadiness(
     },
   ];
 
-  // Bank Match products tailored to MSME metrics
-  const bankMatches: BankProductMatch[] = [
-    {
-      bank: 'State Bank of India (SBI)',
-      product: 'SME Gold & CGTMSE Scheme',
-      maxLoan: formattedLimit,
-      rate: overallScore >= 75 ? '8.65% p.a.' : '9.25% p.a.',
-      match: `${Math.min(98, Math.max(65, overallScore + 5))}% Fit`,
-      fastTrack: compliance.gstRegistered && compliance.itrAvailable,
-      reason: compliance.gstRegistered
-        ? 'GST registered with strong business vintage qualifies for subsidized CGTMSE credit.'
-        : 'Requires GST registration for fast-track sanction.',
-    },
-    {
-      bank: 'SIDBI',
-      product: 'Direct Make-in-India Assistance',
-      maxLoan: `₹${(Math.max(2500000, estimatedCreditLimitValue * 1.5) / 100000).toFixed(0)} Lakhs`,
-      rate: '8.25% p.a.',
-      match: `${Math.min(95, Math.max(60, overallScore))}% Fit`,
-      fastTrack: vintage >= 3 && fin.monthlyNetCashFlow > 0,
-      reason: vintage >= 3
-        ? 'Business vintage >= 3 years meets SIDBI direct lending criteria.'
-        : 'SIDBI prefers businesses with 3+ years of audited operational track record.',
-    },
-    {
-      bank: 'HDFC Bank',
-      product: 'SmartUp Working Capital OD',
-      maxLoan: formattedLimit,
-      rate: overallScore >= 75 ? '9.10% p.a.' : '9.80% p.a.',
-      match: `${Math.min(94, Math.max(62, overallScore - 2))}% Fit`,
-      fastTrack: compliance.hasBusinessBankAccount,
-      reason: 'Structured overdraft linked to monthly business banking turnover.',
-    },
-    {
-      bank: 'ICICI Bank',
-      product: 'InstaBIZ Collateral-Free Line',
-      maxLoan: `₹${(Math.min(5000000, estimatedCreditLimitValue) / 100000).toFixed(0)} Lakhs`,
-      rate: '9.45% p.a.',
-      match: `${Math.min(92, Math.max(60, overallScore - 4))}% Fit`,
-      fastTrack: compliance.gstRegistered,
-      reason: 'Pre-approved digital working capital line evaluated via GSTR-3B filings.',
-    },
-  ];
-
-  const strengths: string[] = [];
-  const gaps: string[] = [];
-  const actionItems: string[] = [];
-
-  if (compliance.gstRegistered) strengths.push('GST Registered business entity.');
-  else gaps.push('Not GST registered — blocks access to formal institutional MSME credit.');
-
-  if (compliance.itrAvailable) strengths.push('Formal Income Tax Returns available for credit underwriting.');
-  else gaps.push('ITR filings not uploaded or available.');
-
-  if (fin.monthlyNetCashFlow > 0) strengths.push(`Positive monthly net cash flow (₹${(fin.monthlyNetCashFlow / 1000).toFixed(0)}k/mo).`);
-  else gaps.push('Negative net cash flow indicates operational cash burn.');
-
-  if (!norm.hasLoans || (fin.dscr && fin.dscr >= 1.5)) strengths.push('Comfortable debt serviceability capacity.');
-  else gaps.push('High debt-service commitments constrain additional borrowing capacity.');
-
-  if (gaps.length === 0) {
-    actionItems.push('Prepare last 6 months bank statements and audited P&L for sanction submission.');
-    actionItems.push('Apply for collateral-free CGTMSE schemes with partner PSU banks.');
-  } else {
-    actionItems.push('Resolve identified compliance and cash flow gaps to raise credit score.');
-  }
+  // Action items backwards compatibility
+  const actionItems: string[] = actionPlan.map(a => a.action);
 
   return {
     overallScore,
@@ -493,6 +778,11 @@ export function evaluateFundingReadiness(
     strengths,
     gaps,
     actionItems,
+    dimensions,
+    actionPlan,
+    preparationChecklist,
+    debtAssessment,
+    fundingStrategy,
   };
 }
 
@@ -705,3 +995,11 @@ export function analyzeOrganization(org: Organization): BusinessAnalysis {
     generatedAt: new Date().toISOString(),
   };
 }
+
+/**
+ * Convenience alias for analyzeOrganization
+ */
+export function analyzeBusiness(org: Organization, _profile?: any): BusinessAnalysis {
+  return analyzeOrganization(org);
+}
+

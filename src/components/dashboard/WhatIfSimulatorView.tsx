@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { MSMEProfile } from '../../types';
 import { BusinessAnalysis } from '../../types/business';
-import { AIInsightBadge } from '../common/AIInsightBadge';
-import { ScoreGauge } from '../common/ScoreGauge';
+import { useLanguage } from '../../i18n/LanguageContext';
 import { 
   SlidersHorizontal, 
   Sparkles, 
@@ -10,8 +9,6 @@ import {
   TrendingDown, 
   Users, 
   RotateCcw, 
-  ShieldAlert, 
-  ArrowRight, 
   Zap, 
   CheckCircle2,
   Coins
@@ -36,15 +33,17 @@ interface WhatIfSimulatorViewProps {
 export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
   profile,
   analysis,
-  onNavigate
 }) => {
-  // Baseline Monthly metrics in ₹ Lakhs (derived from actual business data)
-  const baseRevenue = analysis ? analysis.financials.monthlyRevenue / 100000 : 48.5;
-  const baseCOGS = analysis ? analysis.financials.monthlyMaterialCost / 100000 : 24.2;
-  const baseStaffCost = analysis ? analysis.financials.monthlySalaryCost / 100000 : 6.8;
-  const baseOPEX = analysis ? analysis.financials.monthlyOperatingExpenses / 100000 : 7.5;
-  const baseEMI = analysis ? analysis.financials.monthlyEmi / 100000 : 1.8;
-  const baseCash = analysis ? analysis.financials.currentCashBalance / 100000 : 52.0;
+  const { t, language } = useLanguage();
+
+  // Baseline Monthly metrics in ₹ Lakhs (derived strictly from organization financial data)
+  const hasValidData = Boolean(analysis && analysis.financials && analysis.financials.monthlyRevenue > 0);
+  const baseRevenue = hasValidData ? analysis!.financials.monthlyRevenue / 100000 : 0;
+  const baseCOGS = hasValidData ? analysis!.financials.monthlyMaterialCost / 100000 : 0;
+  const baseStaffCost = hasValidData ? analysis!.financials.monthlySalaryCost / 100000 : 0;
+  const baseOPEX = hasValidData ? analysis!.financials.monthlyOperatingExpenses / 100000 : 0;
+  const baseEMI = hasValidData ? analysis!.financials.monthlyEmi / 100000 : 0;
+  const baseCash = hasValidData ? analysis!.financials.currentCashBalance / 100000 : 0;
   const baseProfit = baseRevenue - (baseCOGS + baseStaffCost + baseOPEX + baseEMI);
 
   // Simulator Sliders State
@@ -52,7 +51,6 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
   const [hiringCount, setHiringCount] = useState<number>(1); // +1 staff
   const [materialCostChange, setMaterialCostChange] = useState<number>(0); // 0%
   const [marketingBoost, setMarketingBoost] = useState<number>(10); // +10% spend
-  const [paymentTermsDays, setPaymentTermsDays] = useState<number>(45); // Days
   const [additionalLoanLakhs, setAdditionalLoanLakhs] = useState<number>(0); // ₹ Lakhs
 
   // Simulated Calculations
@@ -69,8 +67,7 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
   const simProfit = simRevenue - simTotalCost;
   
   const profitDelta = simProfit - baseProfit;
-  const revenueDelta = simRevenue - baseRevenue;
-  
+
   // Simulated Cash Runway
   const simCashBalance = baseCash + additionalLoanLakhs;
   const simRunway = simProfit < 0 
@@ -87,26 +84,23 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
 
   const scoreShift = Math.round(
     (profitDelta > 0 ? Math.min(profitDelta * 1.5, 10) : Math.max(profitDelta * 2.5, -18)) +
-    (paymentTermsDays < 50 ? 3 : -3) +
     (additionalLoanLakhs > 25 ? -4 : 0)
   );
 
   const simulatedHealthScore = Math.min(Math.max(healthBase + scoreShift, 30), 99);
-  const simulatedFundingScore = Math.min(Math.max(fundingBase + Math.round(scoreShift * 0.8), 35), 98);
 
   const resetDefaults = () => {
     setPriceChange(0);
     setHiringCount(0);
     setMaterialCostChange(0);
     setMarketingBoost(0);
-    setPaymentTermsDays(45);
     setAdditionalLoanLakhs(0);
   };
 
   const comparisonData = [
-    { metric: 'Revenue (₹L)', Baseline: parseFloat(baseRevenue.toFixed(1)), Simulated: parseFloat(simRevenue.toFixed(1)) },
-    { metric: 'Total Outflows (₹L)', Baseline: parseFloat((baseCOGS + baseStaffCost + baseOPEX + baseEMI).toFixed(1)), Simulated: parseFloat(simTotalCost.toFixed(1)) },
-    { metric: 'Net Profit (₹L)', Baseline: parseFloat(baseProfit.toFixed(1)), Simulated: parseFloat(simProfit.toFixed(1)) }
+    { metric: t('whatIf.revenueMetric', 'Revenue (₹L)'), Baseline: parseFloat(baseRevenue.toFixed(1)), Simulated: parseFloat(simRevenue.toFixed(1)) },
+    { metric: t('whatIf.outflowMetric', 'Total Outflows (₹L)'), Baseline: parseFloat((baseCOGS + baseStaffCost + baseOPEX + baseEMI).toFixed(1)), Simulated: parseFloat(simTotalCost.toFixed(1)) },
+    { metric: t('whatIf.profitMetric', 'Net Profit (₹L)'), Baseline: parseFloat(baseProfit.toFixed(1)), Simulated: parseFloat(simProfit.toFixed(1)) }
   ];
 
   return (
@@ -117,13 +111,15 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-purple-300">
             <SlidersHorizontal className="w-4 h-4 text-purple-400" />
-            <span>INTERACTIVE SCENARIO MODELING</span>
+            <span>{t('whatIf.bannerTag', 'INTERACTIVE SCENARIO MODELING')}</span>
           </div>
           <h2 className="text-2xl font-black text-white mt-1">
-            What-If Business & Capital Simulator
+            {t('whatIf.title', 'What-If Business & Capital Simulator')}
           </h2>
           <p className="text-xs text-slate-400 mt-0.5">
-            Test business decisions in real-time. Modeled dynamically on <strong>{analysis?.organizationName || profile.name}</strong>'s actual baseline numbers.
+            {language === 'ta' 
+              ? 'வணிக முடிவுகளை நிகழ்நேரத்தில் உருவகப்படுத்துங்கள். உங்கள் உண்மையான அடிப்படை எண்களின் அடிப்படையில் கட்டமைக்கப்பட்டது.'
+              : `Test business decisions in real-time. Modeled dynamically on ${analysis?.organizationName || profile.name}'s actual baseline numbers.`}
           </p>
         </div>
 
@@ -132,28 +128,36 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-slate-700 transition-all"
         >
           <RotateCcw className="w-3.5 h-3.5" />
-          Reset Baseline
+          {t('whatIf.resetBaseline', 'Reset Baseline')}
         </button>
       </div>
 
       {/* Main Simulator Grid */}
+      <div className="p-3 px-4 rounded-xl bg-purple-950/20 border border-purple-500/20 text-xs text-purple-200">
+        <span className="font-bold text-purple-400 uppercase tracking-wider text-[10px] bg-purple-500/20 px-2 py-0.5 rounded border border-purple-500/30 mr-2">Simulation Notice</span>
+        <span>Scenario Simulation Disclaimer: Projections are mathematical sensitivity models based on user-adjusted parameters and your organization's actual financial baseline. They do not constitute guaranteed financial outcomes.</span>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Left 5 Cols: Sliders Control Station */}
         <div className="lg:col-span-5 p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-5 shadow-xl">
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-              <Zap className="w-4 h-4 text-purple-400" /> Decision Variables
+              <Zap className="w-4 h-4 text-purple-400" /> 
+              {t('whatIf.decisionVars', 'Decision Variables')}
             </h3>
             <span className="text-[10px] text-purple-300 font-semibold bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/30">
-              Live Baseline
+              {t('whatIf.liveBaseline', 'Live Baseline')}
             </span>
           </div>
 
           {/* Slider 1: Product Pricing Change */}
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">Product / Service Pricing:</span>
+              <span className="text-slate-300 font-medium">
+                {t('whatIf.pricing', 'Product / Service Pricing')}:
+              </span>
               <strong className={priceChange >= 0 ? 'text-emerald-400' : 'text-rose-400'}>
                 {priceChange > 0 ? `+${priceChange}%` : `${priceChange}%`}
               </strong>
@@ -168,9 +172,9 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
               className="w-full accent-purple-500 bg-slate-800 h-1.5 rounded-lg cursor-pointer"
             />
             <div className="flex justify-between text-[10px] text-slate-500">
-              <span>-20% (Discount)</span>
-              <span>Baseline: 0%</span>
-              <span>+30% (Premium)</span>
+              <span>-20% ({language === 'ta' ? 'தள்ளுபடி' : 'Discount'})</span>
+              <span>0%</span>
+              <span>+30% ({language === 'ta' ? 'உயர்வு' : 'Premium'})</span>
             </div>
           </div>
 
@@ -178,10 +182,11 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
               <span className="text-slate-300 font-medium flex items-center gap-1">
-                <Users className="w-3.5 h-3.5 text-sky-400" /> New Employees:
+                <Users className="w-3.5 h-3.5 text-sky-400" /> 
+                {t('whatIf.employees', 'New Employees')}:
               </span>
               <strong className="text-white">
-                {hiringCount > 0 ? `+${hiringCount} staff` : hiringCount === 0 ? '0 (No change)' : `${hiringCount} staff`}
+                {hiringCount > 0 ? `+${hiringCount}` : hiringCount === 0 ? '0' : `${hiringCount}`}
               </strong>
             </div>
             <input 
@@ -194,16 +199,18 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
               className="w-full accent-sky-500 bg-slate-800 h-1.5 rounded-lg cursor-pointer"
             />
             <div className="flex justify-between text-[10px] text-slate-500">
-              <span>-3 (Downsize)</span>
+              <span>-3</span>
               <span>0</span>
-              <span>+10 staff</span>
+              <span>+10</span>
             </div>
           </div>
 
           {/* Slider 3: Raw Material Inflation */}
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">Material / Direct Cost Shift:</span>
+              <span className="text-slate-300 font-medium">
+                {t('whatIf.materialCost', 'Material / Direct Cost Shift')}:
+              </span>
               <strong className={materialCostChange <= 0 ? 'text-emerald-400' : 'text-rose-400'}>
                 {materialCostChange > 0 ? `+${materialCostChange}%` : `${materialCostChange}%`}
               </strong>
@@ -218,16 +225,18 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
               className="w-full accent-rose-500 bg-slate-800 h-1.5 rounded-lg cursor-pointer"
             />
             <div className="flex justify-between text-[10px] text-slate-500">
-              <span>-15% (Procurement Savings)</span>
+              <span>-15%</span>
               <span>0%</span>
-              <span>+25% (Cost Shock)</span>
+              <span>+25%</span>
             </div>
           </div>
 
           {/* Slider 4: Marketing Budget Boost */}
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">Marketing & Sales Spend:</span>
+              <span className="text-slate-300 font-medium">
+                {t('whatIf.marketing', 'Marketing & Sales Spend')}:
+              </span>
               <strong className="text-purple-300">+{marketingBoost}%</strong>
             </div>
             <input 
@@ -240,9 +249,9 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
               className="w-full accent-indigo-500 bg-slate-800 h-1.5 rounded-lg cursor-pointer"
             />
             <div className="flex justify-between text-[10px] text-slate-500">
-              <span>0% (Current)</span>
+              <span>0%</span>
               <span>+25%</span>
-              <span>+50% (Aggressive)</span>
+              <span>+50%</span>
             </div>
           </div>
 
@@ -250,10 +259,11 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
               <span className="text-slate-300 font-medium flex items-center gap-1">
-                <Coins className="w-3.5 h-3.5 text-amber-400" /> New Working Capital Loan:
+                <Coins className="w-3.5 h-3.5 text-amber-400" /> 
+                {t('whatIf.newLoan', 'New Working Capital Loan')}:
               </span>
               <strong className="text-amber-300">
-                {additionalLoanLakhs > 0 ? `₹${additionalLoanLakhs} Lakhs` : '₹0 (None)'}
+                {additionalLoanLakhs > 0 ? `₹${additionalLoanLakhs} ${t('common.lakhs', 'Lakhs')}` : '₹0'}
               </strong>
             </div>
             <input 
@@ -267,8 +277,8 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
             />
             <div className="flex justify-between text-[10px] text-slate-500">
               <span>₹0</span>
-              <span>₹25 Lakhs</span>
-              <span>₹50 Lakhs</span>
+              <span>₹25 L</span>
+              <span>₹50 L</span>
             </div>
           </div>
 
@@ -281,7 +291,9 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             
             <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 shadow-lg space-y-1">
-              <div className="text-[10px] text-slate-400 uppercase font-bold">Simulated Net Profit</div>
+              <div className="text-[10px] text-slate-400 uppercase font-bold">
+                {t('whatIf.simProfit', 'Simulated Net Profit')}
+              </div>
               <div className="text-2xl font-black text-white">₹{simProfit.toFixed(1)} L</div>
               <div className="flex items-center text-xs">
                 {profitDelta >= 0 ? (
@@ -297,7 +309,9 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
             </div>
 
             <div className="p-4 rounded-xl bg-slate-900/80 border border-purple-500/40 shadow-lg space-y-1 bg-gradient-to-b from-purple-950/20 to-slate-900">
-              <div className="text-[10px] text-purple-300 uppercase font-bold">Simulated Health Score</div>
+              <div className="text-[10px] text-purple-300 uppercase font-bold">
+                {t('whatIf.simHealth', 'Simulated Health Score')}
+              </div>
               <div className="text-2xl font-black text-purple-300">{simulatedHealthScore}<span className="text-xs text-slate-400">/100</span></div>
               <div className="text-xs font-semibold text-slate-300">
                 Shift: {scoreShift >= 0 ? `+${scoreShift}` : scoreShift} pts
@@ -305,10 +319,12 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
             </div>
 
             <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 shadow-lg space-y-1">
-              <div className="text-[10px] text-slate-400 uppercase font-bold">Simulated Runway</div>
+              <div className="text-[10px] text-slate-400 uppercase font-bold">
+                {t('whatIf.simRunway', 'Simulated Runway')}
+              </div>
               <div className="text-2xl font-black text-sky-400">{simRunway} Mo</div>
               <div className="text-xs text-slate-400">
-                DSCR: <strong className="text-white">{simDscr ? `${simDscr}x` : 'Debt-Free'}</strong>
+                DSCR: <strong className="text-white">{simDscr ? `${simDscr}x` : t('executive.debtFree', 'Debt-Free')}</strong>
               </div>
             </div>
 
@@ -317,7 +333,8 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           {/* Side-by-Side Comparison Chart */}
           <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3 shadow-xl">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-purple-400" /> Baseline vs Simulated Projection (in ₹ Lakhs)
+              <Sparkles className="w-4 h-4 text-purple-400" /> 
+              {t('whatIf.chartTitle', 'Baseline vs Simulated Projection (in ₹ Lakhs)')}
             </h4>
             <div className="h-60 w-full pt-2">
               <ResponsiveContainer width="100%" height="100%">
@@ -326,7 +343,12 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
                   <XAxis dataKey="metric" stroke="#64748B" fontSize={11} tickLine={false} />
                   <YAxis stroke="#64748B" fontSize={11} tickLine={false} />
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#0F172A', borderColor: '#334155', borderRadius: '8px', fontSize: '12px' }}
+                    contentStyle={{ 
+                      backgroundColor: '#0F172A', 
+                      borderColor: '#334155', 
+                      borderRadius: '8px', 
+                      fontSize: '12px'
+                    }}
                     itemStyle={{ color: '#F8FAFC' }}
                   />
                   <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
@@ -340,12 +362,17 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           {/* AI Simulation Commentary Banner */}
           <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 text-xs space-y-2">
             <div className="font-bold text-white flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Simulator Diagnostic Summary
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 
+              {t('whatIf.diagnosticSummary', 'Simulator Diagnostic Summary')}
             </div>
             <p className="text-slate-300 leading-relaxed">
               {profitDelta >= 0 
-                ? `This scenario expands monthly net profit by ₹${profitDelta.toFixed(1)} Lakhs (+${((profitDelta / Math.max(1, baseProfit)) * 100).toFixed(0)}%), boosting your financial health score to ${simulatedHealthScore}/100 and improving your borrowing headroom.`
-                : `Caution: This combination creates a monthly profit contraction of ₹${Math.abs(profitDelta).toFixed(1)} Lakhs. Your cash runway shifts to ${simRunway} months.`}
+                ? (language === 'ta'
+                    ? `இந்த சூழ்நிலை மாதாந்திர நிகர லாபத்தை ₹${profitDelta.toFixed(1)} இலட்சம் அதிகரிக்கிறது. உங்கள் நிதி ஆரோக்கிய மதிப்பெண் ${simulatedHealthScore}/100 ஆக உயர்ந்து கடன் தகுதியை மேம்படுத்துகிறது.`
+                    : `This scenario expands monthly net profit by ₹${profitDelta.toFixed(1)} Lakhs (+${((profitDelta / Math.max(1, baseProfit)) * 100).toFixed(0)}%), boosting your financial health score to ${simulatedHealthScore}/100 and improving your borrowing headroom.`)
+                : (language === 'ta'
+                    ? `எச்சரிக்கை: இந்த முடிவு மாதாந்திர லாபத்தில் ₹${Math.abs(profitDelta).toFixed(1)} இலட்சம் குறைவை ஏற்படுத்துகிறது. பணப்புழக்க இருப்பு ${simRunway} மாதங்களாக மாறும்.`
+                    : `Caution: This combination creates a monthly profit contraction of ₹${Math.abs(profitDelta).toFixed(1)} Lakhs. Your cash runway shifts to ${simRunway} months.`)}
             </p>
           </div>
 

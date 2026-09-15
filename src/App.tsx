@@ -6,12 +6,12 @@ import {
 } from './types';
 import { Organization, OnboardingRecord } from './types/business';
 import { analyzeOrganization } from './analytics/financialAnalysis';
-import { DEMO_ORGANIZATIONS, getDemoOrganization } from './analytics/demoOrganizations';
+import { DEMO_ORGANIZATIONS } from './analytics/demoOrganizations';
 import {
-  loadOrganizationRecords,
-  loadSelectedOrganizationId,
-  saveSelectedOrganizationId,
-  updateOrganizationRecord
+  loadOrganizationsByOwnerId,
+  loadSelectedUserOrgId,
+  saveSelectedUserOrgId,
+  updateOrganizationRecord,
 } from './services/organizationService';
 import { formatINR } from './lib/currency';
 
@@ -21,6 +21,12 @@ import { Footer } from './components/layout/Footer';
 import { LandingPage } from './components/landing/LandingPage';
 import { CreditPassportModal } from './components/common/CreditPassportModal';
 import { OnboardingWizard } from './components/onboarding/OnboardingWizard';
+import { LoginPage } from './components/auth/LoginPage';
+import { RegisterPage } from './components/auth/RegisterPage';
+import { AdminDashboard } from './components/admin/AdminDashboard';
+import { useAuth } from './contexts/AuthContext';
+import { useLanguage } from './i18n/LanguageContext';
+import { Sparkles, AlertTriangle } from 'lucide-react';
 
 // Dashboard Views
 import { ExecutiveDashboard } from './components/dashboard/ExecutiveDashboard';
@@ -29,66 +35,151 @@ import { CashFlowForecastView } from './components/dashboard/CashFlowForecastVie
 import { FundingReadinessView } from './components/dashboard/FundingReadinessView';
 import { MSMECreditPassportView } from './components/dashboard/MSMECreditPassportView';
 import { WhatIfSimulatorView } from './components/dashboard/WhatIfSimulatorView';
+import { DecisionLabView } from './components/dashboard/DecisionLabView';
+import { AIBusinessAdvisorView } from './components/dashboard/AIBusinessAdvisorView';
 import { GrowthIntelligenceView } from './components/dashboard/GrowthIntelligenceView';
 import { AIAssistantView } from './components/dashboard/AIAssistantView';
 import { ReportsView } from './components/dashboard/ReportsView';
 import { SettingsView } from './components/dashboard/SettingsView';
+import { SubscriptionPage } from './components/subscription/SubscriptionPage';
+import { isSubscriptionActive, hasFeature, canAccessPlatform } from './config/plans';
 
 export const App: React.FC = () => {
+  const { language, setLanguage, t } = useLanguage();
+  const { user, loading: authLoading, logout, isAdmin } = useAuth();
+
+  const [authView, setAuthView] = useState<'none' | 'login' | 'register'>('none');
+  const [adminWorkspacePreview, setAdminWorkspacePreview] = useState<boolean>(false);
   const [isAppMode, setIsAppMode] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
-  const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>('en');
   const [isPassportModalOpen, setIsPassportModalOpen] = useState<boolean>(false);
   const [showOnboarding, setShowOnboarding] = useState<boolean>(false);
 
-  const [records, setRecords] = useState<OnboardingRecord[]>([]);
-  const [selectedOrgId, setSelectedOrgId] = useState<string>(DEMO_ORGANIZATIONS[0].id);
+  // Authenticated MSME organizations state (supports multiple startups per account)
+  const [userOrgs, setUserOrgs] = useState<Organization[]>([]);
+  const [activeUserOrgId, setActiveUserOrgId] = useState<string | null>(null);
+  const [orgLoading, setOrgLoading] = useState<boolean>(false);
   const [dataError, setDataError] = useState<string | null>(null);
 
-  // Load organizations and active selection from Firestore on initial mount
-  useEffect(() => {
-    const initOrganizations = async () => {
-      try {
-        setDataError(null);
-        const loadedRecords = await loadOrganizationRecords();
-        setRecords(loadedRecords);
+  // Demo fallback state (only for unauthenticated demo preview)
+  const [selectedDemoOrgId, setSelectedDemoOrgId] = useState<string>(DEMO_ORGANIZATIONS[0].id);
 
-        const savedId = await loadSelectedOrganizationId();
-        if (savedId) {
-          setSelectedOrgId(savedId);
-          setIsAppMode(true);
-        } else if (loadedRecords.length > 0) {
-          setSelectedOrgId(loadedRecords[0].organization.id);
-          setIsAppMode(true);
-        } else {
-          setSelectedOrgId(DEMO_ORGANIZATIONS[0].id);
+  // Fetch all organizations owned by the authenticated user
+  useEffect(() => {
+    let cancelled = false;
+
+    if (!user) {
+      setUserOrgs([]);
+      setActiveUserOrgId(null);
+      return;
+    }
+
+    const fetchUserOrganizations = async () => {
+      setOrgLoading(true);
+      setDataError(null);
+      try {
+        const records = await loadOrganizationsByOwnerId(user.uid);
+        if (!cancelled) {
+          if (records.length > 0) {
+            const orgs = records.map((r) => r.organization);
+            setUserOrgs(orgs);
+            
+            // Restore previously selected startup or default to first
+            const savedId = loadSelectedUserOrgId(user.uid);
+            const matched = orgs.find((o) => o.id === savedId);
+            const chosenId = matched ? matched.id : orgs[0].id;
+            setActiveUserOrgId(chosenId);
+
+            setIsAppMode(true);
+            setShowOnboarding(false);
+          } else {
+            // New user without any organization yet -> prompt onboarding for MSMEs only
+            setUserOrgs([]);
+            setActiveUserOrgId(null);
+            if (!isAdmin) {
+              setShowOnboarding(true);
+            }
+          }
         }
-      } catch (error) {
-        setDataError(error instanceof Error ? error.message : 'Unable to connect to business records.');
+      } catch (error: any) {
+        if (!cancelled) {
+          setDataError(error instanceof Error ? error.message : 'Unable to connect to your business records.');
+        }
+      } finally {
+        if (!cancelled) {
+          setOrgLoading(false);
+        }
       }
     };
 
-    initOrganizations();
-  }, []);
+    void fetchUserOrganizations();
 
-  // Combined list of user-created Firestore organizations + default demo MSMEs
-  const allOrganizations: Organization[] = useMemo(() => {
-    const userOrgs = records.map((r) => r.organization);
-    // Keep user organizations first, followed by demo profiles
-    const demoRemainder = DEMO_ORGANIZATIONS.filter(
-      (demo) => !userOrgs.some((u) => u.id === demo.id)
-    );
-    return [...userOrgs, ...demoRemainder];
-  }, [records]);
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.uid, isAdmin]);
 
-  // The active selected organization
+  // The active organization:
+  // For authenticated MSMEs: strictly the user's active startup among userOrgs
+  // For unauthenticated demo preview: selected demo organization
   const activeOrg: Organization = useMemo(() => {
-    const found = allOrganizations.find((org) => org.id === selectedOrgId);
-    return found || records[0]?.organization || DEMO_ORGANIZATIONS[0];
-  }, [allOrganizations, selectedOrgId, records]);
+    if (user) {
+      if (userOrgs.length > 0) {
+        const found = userOrgs.find((o) => o.id === activeUserOrgId);
+        if (found) return found;
+        return userOrgs[0];
+      }
+      // If user is logged in but has no org yet, return dummy placeholder while wizard loads
+      return {
+        id: `pending-${user.uid}`,
+        name: user.displayName || 'My MSME',
+        ownerId: user.uid,
+        ownerEmail: user.email || '',
+        businessProfile: {
+          businessName: user.displayName || 'My MSME',
+          businessType: 'Sole Proprietorship',
+          industry: 'General',
+          location: 'India',
+          yearEstablished: 2024,
+          numberOfEmployees: 5,
+          annualTurnover: 0,
+        },
+        financialProfile: {
+          monthlyRevenue: 0,
+          monthlyOperatingExpenses: 0,
+          monthlyMaterialCost: 0,
+          monthlySalaryCost: 0,
+          currentCashBalance: 0,
+          accountsReceivable: 0,
+          accountsPayable: 0,
+          inventoryValue: 0,
+        },
+        debtProfile: {
+          hasLoans: false,
+          loanDetails: null,
+          gstRegistered: false,
+          itrAvailable: false,
+          hasBusinessBankAccount: false,
+        },
+        complianceProfile: {
+          gstRegistered: false,
+          itrAvailable: false,
+          hasBusinessBankAccount: false,
+        },
+        goals: {
+          goals: ['Improve Cash Flow'],
+          biggestChallenge: 'Cash Flow',
+        },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+    }
 
-  // SINGLE CENTRAL ANALYSIS ENGINE EXECUTION:
-  // All dashboard features consume this single calculated analysis object
+    const demo = DEMO_ORGANIZATIONS.find((d) => d.id === selectedDemoOrgId);
+    return demo || DEMO_ORGANIZATIONS[0];
+  }, [user, userOrgs, activeUserOrgId, selectedDemoOrgId]);
+
+  // SINGLE CENTRAL ANALYSIS ENGINE EXECUTION
   const analysis = useMemo(() => {
     return analyzeOrganization(activeOrg);
   }, [activeOrg]);
@@ -126,9 +217,50 @@ export const App: React.FC = () => {
     };
   }, [activeOrg, analysis]);
 
-  // Synthesize MSMEProfiles list for dropdown switcher in Header
+  // Profiles list passed to Header:
+  // For authenticated MSMEs: strictly ALL organizations owned by this user
+  // For unauthenticated demo preview: all demo profiles
   const allProfiles: MSMEProfile[] = useMemo(() => {
-    return allOrganizations.map((org) => {
+    if (user) {
+      if (userOrgs.length === 0) {
+        return [currentProfile];
+      }
+      return userOrgs.map((org) => {
+        const orgAnalysis = org.id === activeOrg.id ? analysis : analyzeOrganization(org);
+        const turnoverNum = typeof org.businessProfile.annualTurnover === 'number'
+          ? org.businessProfile.annualTurnover
+          : orgAnalysis.financials.annualRevenue;
+
+        return {
+          id: org.id,
+          name: org.businessProfile.businessName || org.name,
+          industry: org.businessProfile.industry || 'Enterprise',
+          sector: org.businessProfile.businessType || 'MSME',
+          udyamNumber: 'UDYAM-REGISTERED',
+          gstin: org.complianceProfile.gstRegistered ? '27AABCS1429B1ZX' : 'NOT-REGISTERED',
+          incorporationYear: typeof org.businessProfile.yearEstablished === 'number' 
+            ? org.businessProfile.yearEstablished 
+            : 2020,
+          location: org.businessProfile.location || 'India',
+          employees: typeof org.businessProfile.numberOfEmployees === 'number' 
+            ? org.businessProfile.numberOfEmployees 
+            : 10,
+          turnover: formatINR(turnoverNum),
+          creditScore: Math.round(550 + (orgAnalysis.health.overallScore * 2.5)),
+          healthScore: orgAnalysis.health.overallScore,
+          fundingReadinessScore: orgAnalysis.funding.overallScore,
+          revenueGrowth: orgAnalysis.financials.operatingMarginPercent ? Math.min(25, Math.max(5, orgAnalysis.financials.operatingMarginPercent)) : 12.4,
+          cashFlowStability: Math.min(99, Math.max(60, orgAnalysis.health.overallScore + 5)),
+          loanEligibility: orgAnalysis.funding.eligibilityTier === 'High' ? 'High' : orgAnalysis.funding.eligibilityTier === 'Medium' ? 'Medium' : 'Low',
+          estimatedCreditLimit: orgAnalysis.funding.estimatedCreditLimit,
+          dscrRatio: orgAnalysis.financials.dscr ?? 2.0,
+          runwayMonths: orgAnalysis.financials.runwayMonths ?? 6,
+        };
+      });
+    }
+
+    // Unauthenticated visitors preview demo profiles
+    return DEMO_ORGANIZATIONS.map((org) => {
       const orgAnalysis = analyzeOrganization(org);
       const turnoverNum = typeof org.businessProfile.annualTurnover === 'number'
         ? org.businessProfile.annualTurnover
@@ -160,32 +292,39 @@ export const App: React.FC = () => {
         runwayMonths: orgAnalysis.financials.runwayMonths ?? 6,
       };
     });
-  }, [allOrganizations]);
+  }, [user, userOrgs, activeOrg.id, currentProfile, analysis]);
 
   // Handle switching active organization
   const handleSelectProfile = (profile: MSMEProfile) => {
-    setSelectedOrgId(profile.id);
-    void saveSelectedOrganizationId(profile.id);
-    setIsAppMode(true);
-    setActiveTab('dashboard');
+    if (user) {
+      setActiveUserOrgId(profile.id);
+      saveSelectedUserOrgId(user.uid, profile.id);
+      setIsAppMode(true);
+      setActiveTab('dashboard');
+    } else {
+      setSelectedDemoOrgId(profile.id);
+      setIsAppMode(true);
+      setActiveTab('dashboard');
+    }
   };
 
   // Handle updates from Settings
   const handleUpdateOrganization = async (updatedOrg: Organization) => {
     try {
+      if (user) {
+        updatedOrg.ownerId = user.uid;
+        updatedOrg.ownerEmail = user.email || undefined;
+      }
       await updateOrganizationRecord(updatedOrg);
-      setRecords((prev) =>
-        prev.map((r) =>
-          r.organization.id === updatedOrg.id ? { ...r, organization: updatedOrg } : r
-        )
-      );
+      if (user) {
+        setUserOrgs((prev) => prev.map((o) => (o.id === updatedOrg.id ? updatedOrg : o)));
+      }
     } catch (error) {
       setDataError(error instanceof Error ? error.message : 'Unable to save changes to Firestore.');
     }
   };
 
   const handleUpdateProfileLegacy = (updated: Partial<MSMEProfile>) => {
-    // Legacy support for simple profile field edits
     if (activeOrg) {
       const modified: Organization = {
         ...activeOrg,
@@ -202,14 +341,59 @@ export const App: React.FC = () => {
     }
   };
 
-  // Render the active dashboard module with real calculated analysis
+  // Handle user logout
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setUserOrgs([]);
+      setActiveUserOrgId(null);
+      setAdminWorkspacePreview(false);
+      setShowOnboarding(false);
+      setIsAppMode(false);
+      setAuthView('login');
+      setActiveTab('dashboard');
+    } catch (err: any) {
+      setDataError(err.message || 'Logout failed.');
+    }
+  };
+
+  // Render the active dashboard module
   const renderActiveDashboardView = () => {
+    // STRICT ACCESS GUARD:
+    // If authenticated MSME does not have an active verified subscription,
+    // block all dashboard views and redirect immediately to the subscription/payment completion view.
+    if (user && !isAdmin && !canAccessPlatform(user, activeOrg?.subscription, isAdmin) && activeTab !== 'billing' && activeTab !== 'subscription') {
+      return (
+        <SubscriptionPage
+          organization={activeOrg}
+          uid={user?.uid}
+          userEmail={user?.email}
+          userName={user?.displayName}
+          onSubscriptionUpdated={(newSub) => {
+            if (activeOrg) {
+              const updatedOrg: Organization = {
+                ...activeOrg,
+                subscription: newSub,
+                accessStatus: 'active',
+                updatedAt: new Date().toISOString(),
+              };
+              setUserOrgs((prev) =>
+                prev.map((o) => (o.id === updatedOrg.id ? updatedOrg : o))
+              );
+            }
+          }}
+          onContinueToDashboard={() => setActiveTab('dashboard')}
+        />
+      );
+    }
+
     switch (activeTab) {
       case 'dashboard':
         return (
           <ExecutiveDashboard
             profile={currentProfile}
             analysis={analysis}
+            organization={activeOrg}
             onNavigate={(tab) => setActiveTab(tab)}
             onOpenPassport={() => setIsPassportModalOpen(true)}
           />
@@ -238,6 +422,7 @@ export const App: React.FC = () => {
           <FundingReadinessView
             profile={currentProfile}
             analysis={analysis}
+            organization={activeOrg}
             onOpenPassport={() => setIsPassportModalOpen(true)}
             onNavigate={(tab) => setActiveTab(tab)}
           />
@@ -248,7 +433,29 @@ export const App: React.FC = () => {
           <MSMECreditPassportView
             profile={currentProfile}
             analysis={analysis}
+            organization={activeOrg}
             onOpenModal={() => setIsPassportModalOpen(true)}
+            onNavigate={(tab) => setActiveTab(tab)}
+          />
+        );
+
+      case 'decision-lab':
+        return (
+          <DecisionLabView
+            profile={currentProfile}
+            analysis={analysis}
+            organization={activeOrg}
+            onNavigate={(tab) => setActiveTab(tab)}
+          />
+        );
+
+      case 'ai-advisor':
+        return (
+          <AIBusinessAdvisorView
+            profile={currentProfile}
+            analysis={analysis}
+            organization={activeOrg}
+            onNavigate={(tab) => setActiveTab(tab)}
           />
         );
 
@@ -275,8 +482,8 @@ export const App: React.FC = () => {
           <AIAssistantView
             profile={currentProfile}
             analysis={analysis}
-            currentLanguage={currentLanguage}
-            onSelectLanguage={setCurrentLanguage}
+            currentLanguage={language}
+            onSelectLanguage={(lang) => setLanguage(lang as 'en' | 'ta')}
             onNavigate={(tab) => setActiveTab(tab)}
           />
         );
@@ -286,6 +493,8 @@ export const App: React.FC = () => {
           <ReportsView
             profile={currentProfile}
             analysis={analysis}
+            organization={activeOrg}
+            onNavigate={(tab) => setActiveTab(tab)}
             onOpenPassport={() => setIsPassportModalOpen(true)}
           />
         );
@@ -301,7 +510,56 @@ export const App: React.FC = () => {
           />
         );
 
+      case 'billing':
+      case 'subscription':
+        return (
+          <SubscriptionPage
+            organization={activeOrg}
+            uid={user?.uid}
+            userEmail={user?.email}
+            userName={user?.displayName}
+            onSubscriptionUpdated={(newSub) => {
+              if (activeOrg) {
+                const updatedOrg: Organization = {
+                  ...activeOrg,
+                  subscription: newSub,
+                  updatedAt: new Date().toISOString(),
+                };
+                setUserOrgs((prev) =>
+                  prev.map((o) => (o.id === updatedOrg.id ? updatedOrg : o))
+                );
+              }
+            }}
+            onContinueToDashboard={() => setActiveTab('dashboard')}
+          />
+        );
+
       default:
+        // If MSME user has expired or no active subscription, gate dashboard views and prompt subscription
+        if (user && !isAdmin && !isSubscriptionActive(activeOrg?.subscription)) {
+          return (
+            <SubscriptionPage
+              organization={activeOrg}
+              uid={user?.uid}
+              userEmail={user?.email}
+              userName={user?.displayName}
+              onSubscriptionUpdated={(newSub) => {
+                if (activeOrg) {
+                  const updatedOrg: Organization = {
+                    ...activeOrg,
+                    subscription: newSub,
+                    updatedAt: new Date().toISOString(),
+                  };
+                  setUserOrgs((prev) =>
+                    prev.map((o) => (o.id === updatedOrg.id ? updatedOrg : o))
+                  );
+                }
+              }}
+              onContinueToDashboard={() => setActiveTab('dashboard')}
+            />
+          );
+        }
+
         return (
           <ExecutiveDashboard
             profile={currentProfile}
@@ -313,22 +571,100 @@ export const App: React.FC = () => {
     }
   };
 
+  // Full-screen session loading indicator
+  if (authLoading || (user && !isAdmin && orgLoading && userOrgs.length === 0 && !showOnboarding)) {
+    return (
+      <div className="min-h-screen bg-[#0F172A] flex flex-col items-center justify-center text-slate-100 p-4">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-sky-400 flex items-center justify-center text-white shadow-2xl shadow-purple-600/40 animate-pulse mb-4">
+          <Sparkles className="w-7 h-7" />
+        </div>
+        <div className="text-base font-bold text-white tracking-tight">
+          BizPilot <span className="text-purple-400">AI</span>
+        </div>
+        <p className="text-xs text-slate-400 mt-1">
+          {language === 'ta' ? 'அமர்வை ஏற்றுகிறது...' : 'Loading workspace...'}
+        </p>
+      </div>
+    );
+  }
+
+  // Explicit Login View
+  if (!user && authView === 'login') {
+    return (
+      <LoginPage
+        onSuccess={() => {
+          setAuthView('none');
+        }}
+        onSwitchToRegister={() => setAuthView('register')}
+        onGoHome={() => {
+          setAuthView('none');
+          setIsAppMode(false);
+        }}
+      />
+    );
+  }
+
+  // Explicit Registration View
+  if (authView === 'register') {
+    return (
+      <RegisterPage
+        onSuccess={(registeredOrg) => {
+          setAuthView('none');
+          if (registeredOrg) {
+            setUserOrgs([registeredOrg]);
+            setActiveUserOrgId(registeredOrg.id);
+            setIsAppMode(true);
+            setActiveTab('dashboard');
+            setShowOnboarding(false);
+          } else if (!isAdmin) {
+            setIsAppMode(true);
+            setActiveTab('dashboard');
+          }
+        }}
+        onSwitchToLogin={() => setAuthView('login')}
+        onGoHome={() => {
+          setAuthView('none');
+          setIsAppMode(false);
+        }}
+      />
+    );
+  }
+
   // Onboarding screen overlay
   if (showOnboarding) {
     return (
       <OnboardingWizard
-        onExit={() => setShowOnboarding(false)}
+        onExit={() => {
+          setShowOnboarding(false);
+          if (!user) setIsAppMode(false);
+        }}
         onGoToDashboard={async () => {
-          const loaded = await loadOrganizationRecords();
-          setRecords(loaded);
-          if (loaded.length > 0) {
-            setSelectedOrgId(loaded[0].organization.id);
-            void saveSelectedOrganizationId(loaded[0].organization.id);
+          if (user) {
+            const records = await loadOrganizationsByOwnerId(user.uid);
+            if (records.length > 0) {
+              const orgs = records.map((r) => r.organization);
+              setUserOrgs(orgs);
+              const newOrgId = records[0].organization.id;
+              setActiveUserOrgId(newOrgId);
+              saveSelectedUserOrgId(user.uid, newOrgId);
+            }
           }
           setShowOnboarding(false);
           setIsAppMode(true);
           setActiveTab('dashboard');
           window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+      />
+    );
+  }
+
+  // Role-based routing: Admin User Dashboard vs MSME User Dashboard
+  if (user && isAdmin && !adminWorkspacePreview) {
+    return (
+      <AdminDashboard
+        onSwitchToUserWorkspace={() => {
+          setAdminWorkspacePreview(true);
+          setIsAppMode(true);
         }}
       />
     );
@@ -342,12 +678,22 @@ export const App: React.FC = () => {
         currentProfile={currentProfile}
         profiles={allProfiles}
         onSelectProfile={handleSelectProfile}
-        currentLanguage={currentLanguage}
-        onSelectLanguage={setCurrentLanguage}
+        currentLanguage={language}
+        onSelectLanguage={(lang) => setLanguage(lang as 'en' | 'ta')}
         isAppMode={isAppMode}
-        onToggleAppMode={setIsAppMode}
+        onToggleAppMode={(appMode) => {
+          setIsAppMode(appMode);
+        }}
         onOpenCreditPassport={() => setIsPassportModalOpen(true)}
         onStartOnboarding={() => setShowOnboarding(true)}
+        isAuthenticated={!!user}
+        userEmail={user?.email}
+        userName={user?.displayName}
+        onLogout={handleLogout}
+        onOpenLogin={() => setAuthView('login')}
+        onOpenRegister={() => setAuthView('register')}
+        isAdmin={isAdmin}
+        onOpenAdminPortal={() => setAdminWorkspacePreview(false)}
       />
 
       {dataError && (
@@ -356,16 +702,40 @@ export const App: React.FC = () => {
         </div>
       )}
 
+      {/* Account status alert banner for suspended MSME accounts */}
+      {user && !isAdmin && activeOrg?.subscription?.status === 'suspended' && (
+        <div className="border-b border-rose-500/30 bg-rose-950/60 px-4 py-2.5 text-center text-xs text-rose-200 flex items-center justify-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
+          <span>{t('settings.accountSuspendedBanner', 'Your account is currently suspended. Please contact admin@bizpilot.in to restore access.')}</span>
+        </div>
+      )}
+
+      {/* Account status alert banner for expired MSME subscriptions */}
+      {user && !isAdmin && activeOrg?.subscription?.status === 'expired' && (
+        <div className="border-b border-amber-500/30 bg-amber-950/60 px-4 py-2.5 text-center text-xs text-amber-200 flex items-center justify-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+          <span>{t('settings.subscriptionExpiredBanner', 'Your subscription plan has expired. Please contact administration to renew.')}</span>
+        </div>
+      )}
+
       {/* Main Content */}
       {!isAppMode ? (
         <main className="flex-1">
           <LandingPage
             onLaunchDemo={() => {
-              setIsAppMode(true);
+              if (user && userOrgs.length > 0) {
+                setIsAppMode(true);
+              } else if (user && userOrgs.length === 0) {
+                setShowOnboarding(true);
+              } else {
+                // Launch unauthenticated demo mode
+                setIsAppMode(true);
+              }
               setActiveTab('dashboard');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             onOpenCreditPassport={() => setIsPassportModalOpen(true)}
+            onStartTrial={() => setAuthView('register')}
           />
         </main>
       ) : (
@@ -397,6 +767,11 @@ export const App: React.FC = () => {
         onClose={() => setIsPassportModalOpen(false)}
         profile={currentProfile}
         analysis={analysis}
+        organization={activeOrg}
+        onNavigate={(tab) => {
+          setIsPassportModalOpen(false);
+          setActiveTab(tab);
+        }}
       />
     </div>
   );

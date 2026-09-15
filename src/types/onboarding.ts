@@ -96,6 +96,8 @@ export interface GoalsProfile {
 export interface Organization {
   id: string;
   name: string;
+  ownerId?: string;
+  ownerEmail?: string;
   businessProfile: BusinessProfile;
   financialProfile: FinancialProfile;
   debtProfile: DebtProfile;
@@ -105,12 +107,23 @@ export interface Organization {
     hasBusinessBankAccount: boolean;
   };
   goals: GoalsProfile;
+  subscription?: {
+    plan: 'starter_free' | 'pro_growth' | 'business_leader';
+    status: 'active' | 'trial' | 'expired' | 'suspended';
+    startDate: string;
+    expiryDate: string;
+    billingCycle: 'monthly' | 'yearly';
+    notes?: string;
+  };
+  accountStatus?: 'active' | 'suspended';
   createdAt: string;
   updatedAt: string;
 }
 
 /** The full record persisted once onboarding is completed. */
 export interface OnboardingRecord {
+  ownerId?: string;
+  ownerEmail?: string;
   user: OnboardingUser;
   organization: Organization;
 }

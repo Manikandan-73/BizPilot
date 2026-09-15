@@ -4,11 +4,18 @@ import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 
+import { LanguageProvider } from './i18n/LanguageContext';
+import { AuthProvider } from './contexts/AuthContext';
+
 import('./App')
   .then(({ default: App }) => {
     root.render(
       <React.StrictMode>
-        <App />
+        <LanguageProvider>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </LanguageProvider>
       </React.StrictMode>,
     );
   })

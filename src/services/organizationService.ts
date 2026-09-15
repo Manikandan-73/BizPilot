@@ -2,10 +2,11 @@
  * Organization Persistence & Selection Service (Firebase Firestore)
  *
  * Handles:
- * - Multi-business persistence under `organizations/{id}`
+ * - Multi-business persistence under `organizations/{id}` with strict `ownerId`
+ * - Loading organizations by authenticated Firebase `ownerId`
  * - Document retrieval, updates, and listings
  * - Active business selection persistence (localStorage + Firestore `appSettings/preferences`)
- * - Onboarding draft saving and retrieval
+ * - User-scoped onboarding draft saving and retrieval
  */
 
 import {
@@ -14,8 +15,11 @@ import {
   doc,
   getDoc,
   getDocs,
+  limit,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { OnboardingRecord, Organization } from '../types/business';
@@ -27,7 +31,10 @@ function getOrganizationCollection() {
   return collection(db, 'organizations');
 }
 
-function getDraftDocument() {
+function getDraftDocument(userId?: string) {
+  if (userId) {
+    return doc(db, 'onboardingDrafts', userId);
+  }
   return doc(db, 'appSettings', 'onboardingDraft');
 }
 
@@ -37,22 +44,35 @@ function getPreferencesDocument() {
 
 /**
  * Save a newly onboarded organization to Firestore.
- * Does NOT overwrite other businesses. Creates a unique document under `organizations/{id}`.
+ * Ensures ownerId is indexed at both root document and organization object.
  */
 export async function saveOrganizationRecord(record: OnboardingRecord): Promise<OnboardingRecord> {
   const now = new Date().toISOString();
+  const ownerId = record.organization.ownerId || record.ownerId || record.user.id;
+  const ownerEmail = record.organization.ownerEmail || record.ownerEmail || record.user.email;
+
   const organization: Organization = {
     ...record.organization,
+    ownerId,
+    ownerEmail,
     createdAt: record.organization.createdAt || now,
     updatedAt: now,
   };
 
   const savedRecord: OnboardingRecord = {
+    ownerId,
+    ownerEmail,
     user: record.user,
     organization,
   };
 
-  await setDoc(doc(getOrganizationCollection(), organization.id), savedRecord);
+  // Storing ownerId at root level is required for Firestore Security Rules
+  await setDoc(doc(getOrganizationCollection(), organization.id), {
+    ...savedRecord,
+    ownerId,
+    ownerEmail,
+  });
+
   await saveSelectedOrganizationId(organization.id);
   return savedRecord;
 }
@@ -68,7 +88,104 @@ export async function updateOrganizationRecord(organization: Organization): Prom
 
   await updateDoc(doc(getOrganizationCollection(), organization.id), {
     organization: updatedOrganization,
+    updatedAt: updatedOrganization.updatedAt,
+    ...(updatedOrganization.ownerId ? { ownerId: updatedOrganization.ownerId } : {}),
+    ...(updatedOrganization.ownerEmail ? { ownerEmail: updatedOrganization.ownerEmail } : {}),
   });
+}
+
+/**
+/**
+ * Load ALL organizations owned by a specific Firebase UID.
+ * Supports users with multiple registered MSME businesses.
+ */
+export async function loadOrganizationsByOwnerId(ownerId: string): Promise<OnboardingRecord[]> {
+  if (!ownerId) return [];
+
+  const recordsMap = new Map<string, OnboardingRecord>();
+
+  try {
+    // 1. Query by root ownerId
+    const qRoot = query(getOrganizationCollection(), where('ownerId', '==', ownerId));
+    const snapshotRoot = await getDocs(qRoot);
+    snapshotRoot.forEach((docSnap) => {
+      const data = docSnap.data() as any;
+      if (data?.organization) {
+        recordsMap.set(docSnap.id, {
+          ...data,
+          organization: {
+            ...data.organization,
+            id: docSnap.id,
+            ownerId: data.ownerId || data.organization.ownerId || ownerId,
+          },
+        } as OnboardingRecord);
+      } else if (data?.businessProfile) {
+        recordsMap.set(docSnap.id, {
+          ownerId,
+          ownerEmail: data.ownerEmail,
+          user: { id: ownerId, name: data.businessProfile?.businessName || 'MSME Owner', email: data.ownerEmail || '' },
+          organization: {
+            id: docSnap.id,
+            ownerId,
+            ...data,
+          },
+        });
+      }
+    });
+
+    // 2. Query by nested organization.ownerId (for backwards compatibility)
+    const qNested = query(getOrganizationCollection(), where('organization.ownerId', '==', ownerId));
+    const snapshotNested = await getDocs(qNested);
+    snapshotNested.forEach((docSnap) => {
+      if (!recordsMap.has(docSnap.id)) {
+        const data = docSnap.data() as any;
+        if (data?.organization) {
+          recordsMap.set(docSnap.id, {
+            ...data,
+            organization: {
+              ...data.organization,
+              id: docSnap.id,
+              ownerId: data.ownerId || data.organization.ownerId || ownerId,
+            },
+          } as OnboardingRecord);
+        }
+      }
+    });
+  } catch (error) {
+    console.warn('Error loading organizations by ownerId:', error);
+  }
+
+  const list = Array.from(recordsMap.values());
+  return list.sort((a, b) => {
+    const dateA = a.organization.updatedAt || a.organization.createdAt || '';
+    const dateB = b.organization.updatedAt || b.organization.createdAt || '';
+    return dateB.localeCompare(dateA);
+  });
+}
+
+/**
+ * Load organization owned by a specific Firebase UID (defaults to most recently updated).
+ * Strict MSME single-tenant loader.
+ */
+export async function loadOrganizationByOwnerId(ownerId: string): Promise<OnboardingRecord | null> {
+  const all = await loadOrganizationsByOwnerId(ownerId);
+  return all[0] ?? null;
+}
+
+export function saveSelectedUserOrgId(userId: string, orgId: string): void {
+  try {
+    localStorage.setItem(`bizpilot_active_org_${userId}`, orgId);
+  } catch {
+    // Ignore storage issues
+  }
+}
+
+export function loadSelectedUserOrgId(userId: string): string | null {
+  try {
+    return localStorage.getItem(`bizpilot_active_org_${userId}`);
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -136,7 +253,7 @@ export async function saveSelectedOrganizationId(organizationId: string): Promis
     try {
       window.localStorage.setItem(LOCAL_STORAGE_SELECTED_ORG_KEY, organizationId);
     } catch {
-      // Ignore localStorage errors (e.g. private browsing quota)
+      // Ignore localStorage errors
     }
   }
 
@@ -171,23 +288,51 @@ export async function loadSelectedOrganizationId(): Promise<string | null> {
 }
 
 /**
- * Save in-progress onboarding draft.
+ * Save in-progress onboarding draft, scoped per user if userId is provided.
  */
-export async function saveOnboardingDraft(draft: OnboardingDraft): Promise<void> {
-  await setDoc(getDraftDocument(), { ...draft, updatedAt: new Date().toISOString() });
+export async function saveOnboardingDraft(draft: OnboardingDraft, userId?: string): Promise<void> {
+  if (typeof window !== 'undefined' && window.localStorage && userId) {
+    try {
+      window.localStorage.setItem(`bizpilot_draft_${userId}`, JSON.stringify(draft));
+    } catch {}
+  }
+  try {
+    await setDoc(getDraftDocument(userId), { ...draft, updatedAt: new Date().toISOString() });
+  } catch (err) {
+    console.warn('Could not sync draft to Firestore:', err);
+  }
 }
 
 /**
- * Load in-progress onboarding draft.
+ * Load in-progress onboarding draft, scoped per user if userId is provided.
  */
-export async function loadOnboardingDraft(): Promise<OnboardingDraft | null> {
-  const snapshot = await getDoc(getDraftDocument());
-  return snapshot.exists() ? (snapshot.data() as OnboardingDraft) : null;
+export async function loadOnboardingDraft(userId?: string): Promise<OnboardingDraft | null> {
+  if (typeof window !== 'undefined' && window.localStorage && userId) {
+    try {
+      const cached = window.localStorage.getItem(`bizpilot_draft_${userId}`);
+      if (cached) return JSON.parse(cached);
+    } catch {}
+  }
+  try {
+    const snapshot = await getDoc(getDraftDocument(userId));
+    return snapshot.exists() ? (snapshot.data() as OnboardingDraft) : null;
+  } catch {
+    return null;
+  }
 }
 
 /**
  * Clear onboarding draft upon successful completion.
  */
-export async function clearOnboardingDraft(): Promise<void> {
-  await deleteDoc(getDraftDocument());
+export async function clearOnboardingDraft(userId?: string): Promise<void> {
+  if (typeof window !== 'undefined' && window.localStorage && userId) {
+    try {
+      window.localStorage.removeItem(`bizpilot_draft_${userId}`);
+    } catch {}
+  }
+  try {
+    await deleteDoc(getDraftDocument(userId));
+  } catch (err) {
+    console.warn('Could not delete draft from Firestore:', err);
+  }
 }

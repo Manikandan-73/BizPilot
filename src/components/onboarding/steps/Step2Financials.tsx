@@ -2,6 +2,7 @@ import React from 'react';
 import { Wallet } from 'lucide-react';
 import { FinancialProfile } from '../../../types/onboarding';
 import { FormField, fieldInputClasses } from '../FormField';
+import { useLanguage } from '../../../i18n/LanguageContext';
 
 interface Step2FinancialsProps {
   data: FinancialProfile;
@@ -11,44 +12,48 @@ interface Step2FinancialsProps {
 
 interface FieldConfig {
   key: keyof FinancialProfile;
-  label: string;
+  i18nKey: string;
+  defaultLabel: string;
   helperText: string;
   placeholder: string;
 }
 
 const FIELDS: FieldConfig[] = [
-  { key: 'monthlyRevenue', label: 'Monthly Revenue', helperText: 'Average sales income per month', placeholder: 'e.g. 400000' },
-  { key: 'monthlyOperatingExpenses', label: 'Monthly Operating Expenses', helperText: 'Rent, utilities, admin & overheads', placeholder: 'e.g. 120000' },
-  { key: 'monthlyMaterialCost', label: 'Monthly Material / Production Cost', helperText: 'Raw materials & direct production cost', placeholder: 'e.g. 180000' },
-  { key: 'monthlySalaryCost', label: 'Monthly Salary Cost', helperText: 'Total payroll including owner drawings', placeholder: 'e.g. 90000' },
-  { key: 'currentCashBalance', label: 'Current Cash Balance', helperText: 'Cash + bank balance available today', placeholder: 'e.g. 350000' },
-  { key: 'accountsReceivable', label: 'Accounts Receivable', helperText: 'Money owed to you by customers', placeholder: 'e.g. 220000' },
-  { key: 'accountsPayable', label: 'Accounts Payable', helperText: 'Money you owe to suppliers/vendors', placeholder: 'e.g. 140000' },
-  { key: 'inventoryValue', label: 'Inventory Value', helperText: 'Current stock value at cost price', placeholder: 'e.g. 260000' },
+  { key: 'monthlyRevenue', i18nKey: 'onboarding.monthlyRevenue', defaultLabel: 'Monthly Revenue', helperText: 'Average sales income per month', placeholder: 'e.g. 400000' },
+  { key: 'monthlyOperatingExpenses', i18nKey: 'onboarding.monthlyOpex', defaultLabel: 'Monthly Operating Expenses', helperText: 'Rent, utilities, admin & overheads', placeholder: 'e.g. 120000' },
+  { key: 'monthlyMaterialCost', i18nKey: 'onboarding.monthlyMaterial', defaultLabel: 'Monthly Material / Production Cost', helperText: 'Raw materials & direct production cost', placeholder: 'e.g. 180000' },
+  { key: 'monthlySalaryCost', i18nKey: 'onboarding.monthlySalary', defaultLabel: 'Monthly Salary Cost', helperText: 'Total payroll including owner drawings', placeholder: 'e.g. 90000' },
+  { key: 'currentCashBalance', i18nKey: 'onboarding.cashBalance', defaultLabel: 'Current Cash Balance', helperText: 'Cash + bank balance available today', placeholder: 'e.g. 350000' },
+  { key: 'accountsReceivable', i18nKey: 'onboarding.accountsReceivable', defaultLabel: 'Accounts Receivable', helperText: 'Money owed to you by customers', placeholder: 'e.g. 220000' },
+  { key: 'accountsPayable', i18nKey: 'onboarding.accountsPayable', defaultLabel: 'Accounts Payable', helperText: 'Money you owe to suppliers/vendors', placeholder: 'e.g. 140000' },
+  { key: 'inventoryValue', i18nKey: 'onboarding.inventoryValue', defaultLabel: 'Inventory Value', helperText: 'Current stock value at cost price', placeholder: 'e.g. 260000' },
 ];
 
 export const Step2Financials: React.FC<Step2FinancialsProps> = ({ data, errors, onChange }) => {
+  const { t } = useLanguage();
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-purple-300">
         <Wallet className="w-4 h-4" />
-        <h2 className="text-sm font-bold uppercase tracking-wider">Financial Snapshot</h2>
+        <h2 className="text-sm font-bold uppercase tracking-wider">{t('onboarding.step2', 'Financial Snapshot')}</h2>
       </div>
-      <p className="text-xs text-slate-500 -mt-3">
-        This is only used to build your baseline profile — we won't calculate any scores yet.
+
+      <p className="text-xs text-slate-400 -mt-3">
+        {t('onboarding.step2Subtitle', 'This is only used to build your baseline profile — we won\'t calculate any scores yet.')}
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {FIELDS.map((field) => (
           <FormField
             key={field.key}
-            label={field.label}
+            label={t(field.i18nKey, field.defaultLabel)}
             required
             error={errors[field.key]}
             helperText={field.helperText}
           >
             <div className="relative">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm">₹</span>
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">₹</span>
               <input
                 type="number"
                 value={data[field.key]}

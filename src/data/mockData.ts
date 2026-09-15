@@ -1,3 +1,16 @@
+/**
+ * =========================================================================
+ * BIZPILOT AI — LEGACY / LOCAL DEVELOPMENT MOCK DATA
+ * =========================================================================
+ * NOTICE:
+ * This file is retained strictly for local unit tests and developer fixtures.
+ * In production, all MSME metrics, cash flows, and diagnostic outputs are
+ * strictly derived from live tenant organization data via the central
+ * financial analysis engine (`src/analytics/financialAnalysis.ts`).
+ * DO NOT use these static records as production fallbacks.
+ * =========================================================================
+ */
+
 import { 
   MSMEProfile, 
   FinancialHealthMetric, 

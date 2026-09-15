@@ -2,15 +2,14 @@ import React from 'react';
 import { MSMEProfile } from '../../types';
 import { BusinessAnalysis } from '../../types/business';
 import { ScoreGauge } from '../common/ScoreGauge';
+import { useLanguage } from '../../i18n/LanguageContext';
 import { 
   HeartPulse, 
   ShieldCheck, 
   Sparkles, 
-  Scale, 
   Layers, 
   CheckCircle2, 
-  ArrowRight,
-  AlertTriangle
+  ArrowRight
 } from 'lucide-react';
 
 interface FinancialHealthViewProps {
@@ -24,13 +23,15 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
   analysis,
   onNavigate
 }) => {
+  const { t, language } = useLanguage();
+
   const healthScore = analysis ? analysis.health.overallScore : profile.healthScore;
   const rating = analysis ? analysis.health.rating : 'Optimal';
   const summary = analysis ? analysis.health.summary : 'Holistic financial diagnostic evaluated from your active operational and financial data.';
   const metrics = analysis ? analysis.health.metrics : [];
   const runwayMonths = analysis?.financials.runwayMonths ?? profile.runwayMonths;
   const dscr = analysis?.financials.dscr;
-  const opMargin = analysis?.financials.operatingMarginPercent ?? 16.8;
+  const opMargin = analysis?.financials.operatingMarginPercent ?? null;
   const isTaxCompliant = analysis ? analysis.compliance.isFullyCompliant : true;
 
   const underwritingGrade =
@@ -44,23 +45,24 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-purple-300">
             <HeartPulse className="w-4 h-4 text-purple-400" />
-            <span>EXPLAINABLE FINANCIAL DIAGNOSTICS</span>
+            <span>{t('health.bannerTag', 'EXPLAINABLE FINANCIAL DIAGNOSTICS')}</span>
           </div>
           <h2 className="text-2xl font-black text-white mt-1">
-            Financial Health Score & Diagnostics
+            {t('health.title', 'Financial Health Score & Diagnostics')}
           </h2>
           <p className="text-xs text-slate-400 mt-0.5">
-            Holistic underwriting assessment synthesized from active revenue, cost structures, working capital, and loan telemetry.
+            {t('health.subtitle', 'Holistic underwriting assessment synthesized from active revenue, cost structures, working capital, and loan telemetry.')}
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className={`text-xs font-medium px-3 py-1 rounded-lg flex items-center gap-1 border ${
+          <span className={`text-xs font-semibold px-3 py-1 rounded-lg flex items-center gap-1 border ${
             isTaxCompliant 
               ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' 
               : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
           }`}>
-            <ShieldCheck className="w-3.5 h-3.5" /> {isTaxCompliant ? 'Fully Compliant' : 'Compliance Pending'}
+            <ShieldCheck className="w-3.5 h-3.5" /> 
+            {isTaxCompliant ? t('health.fullyCompliant', 'Fully Compliant') : t('health.compliancePending', 'Compliance Pending')}
           </span>
         </div>
       </div>
@@ -70,12 +72,12 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
         
         {/* Left 4 cols: Large Circular Gauge */}
         <div className="lg:col-span-4 p-6 rounded-2xl bg-slate-900/80 border border-purple-500/30 flex flex-col items-center justify-center text-center space-y-4 shadow-xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-4 opacity-10">
+          <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
             <HeartPulse className="w-32 h-32 text-purple-400" />
           </div>
 
           <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-            Overall Health Gauge
+            {t('health.overallGauge', 'Overall Health Gauge')}
           </span>
 
           <div className="py-2">
@@ -83,7 +85,7 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
               score={healthScore} 
               size={200} 
               strokeWidth={14} 
-              label="Business Health" 
+              label={language === 'ta' ? 'வணிக ஆரோக்கியம்' : 'Business Health'} 
               sublabel={underwritingGrade} 
               colorScheme="purple"
             />
@@ -91,16 +93,16 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
 
           <div className="w-full pt-3 border-t border-slate-800 text-xs space-y-2">
             <div className="flex justify-between text-slate-300">
-              <span className="text-slate-400">Underwriting Grade</span>
+              <span className="text-slate-400">{t('health.underwritingGrade', 'Underwriting Grade')}</span>
               <span className="font-bold text-purple-300">{underwritingGrade}</span>
             </div>
             <div className="flex justify-between text-slate-300">
-              <span className="text-slate-400">Health Status</span>
+              <span className="text-slate-400">{t('health.healthStatus', 'Health Status')}</span>
               <span className="font-bold text-emerald-400">{rating}</span>
             </div>
             <div className="flex justify-between text-slate-300">
-              <span className="text-slate-400">Audited Cash Runway</span>
-              <span className="font-bold text-white">{runwayMonths} Months</span>
+              <span className="text-slate-400">{t('health.auditedRunway', 'Audited Cash Runway')}</span>
+              <span className="font-bold text-white">{runwayMonths} {t('common.months', 'Months')}</span>
             </div>
           </div>
         </div>
@@ -110,9 +112,12 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-purple-400" /> Explainable Diagnostic Summary
+                <Sparkles className="w-4 h-4 text-purple-400" /> 
+                {t('health.diagnosticSummary', 'Explainable Diagnostic Summary')}
               </span>
-              <span className="text-[10px] text-slate-400">Active Business Data</span>
+              <span className="text-[10px] text-slate-400">
+                {t('health.activeData', 'Active Business Data')}
+              </span>
             </div>
 
             {/* Central Explainable Callout */}
@@ -129,35 +134,37 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
             {/* Quick 4 Sub-Pillar Status Pills */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
               <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
-                <div className="text-[10px] text-slate-400">Operating Margin</div>
-                <div className="text-lg font-black text-purple-400">{opMargin}%</div>
-                <div className="text-[10px] text-emerald-400 font-semibold">{opMargin >= 12 ? 'Healthy EBITDA' : 'Margin Pressure'}</div>
+                <div className="text-[10px] text-slate-400">{t('health.opProfitability', 'Operating Margin')}</div>
+                <div className="text-lg font-black text-purple-400">{opMargin !== null ? `${opMargin}%` : '—'}</div>
+                <div className="text-[10px] text-emerald-400 font-semibold">{opMargin !== null ? (opMargin >= 12 ? 'Healthy EBITDA' : 'Margin Pressure') : 'Not available'}</div>
               </div>
               <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
-                <div className="text-[10px] text-slate-400">Cash Runway</div>
+                <div className="text-[10px] text-slate-400">{t('health.liquidityRunway', 'Cash Runway')}</div>
                 <div className="text-lg font-black text-sky-400">{runwayMonths} Mo</div>
                 <div className="text-[10px] text-emerald-400 font-semibold">{runwayMonths >= 3 ? 'Safe Buffer' : 'Tight Buffer'}</div>
               </div>
               <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
-                <div className="text-[10px] text-slate-400">Debt DSCR</div>
+                <div className="text-[10px] text-slate-400">{t('health.debtDscr', 'Debt DSCR')}</div>
                 <div className="text-lg font-black text-emerald-400">{dscr ? `${dscr}x` : 'N/A'}</div>
                 <div className="text-[10px] text-slate-300 font-semibold">{dscr ? (dscr >= 1.3 ? 'Bankable' : 'Strained') : 'Debt-Free'}</div>
               </div>
               <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
-                <div className="text-[10px] text-slate-400">Current Ratio</div>
-                <div className="text-lg font-black text-amber-400">{analysis?.financials.currentRatio ? `${analysis.financials.currentRatio}x` : '1.8x'}</div>
+                <div className="text-[10px] text-slate-400">{t('health.wcHealth', 'Working Capital')}</div>
+                <div className="text-lg font-black text-amber-400">{analysis?.financials.currentRatio ? `${analysis.financials.currentRatio}x` : '—'}</div>
                 <div className="text-[10px] text-amber-300 font-semibold">{analysis?.financials.workingCapital && analysis.financials.workingCapital > 0 ? 'Positive Working Capital' : 'Working Capital Deficit'}</div>
               </div>
             </div>
           </div>
 
           <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
-            <span className="text-slate-400">Diagnostic calculated from active financial inputs</span>
+            <span className="text-slate-400">
+              {language === 'ta' ? 'செயலில் உள்ள நிதித் தகவல்களிலிருந்து கணக்கிடப்பட்டது' : 'Diagnostic calculated from active financial inputs'}
+            </span>
             <button
               onClick={() => onNavigate('what-if-simulator')}
               className="text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1"
             >
-              Simulate Margin Improvement
+              {t('health.simulateImprovement', 'Simulate Margin Improvement')}
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -169,7 +176,7 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
       <div className="space-y-4">
         <h3 className="text-base font-bold text-white flex items-center gap-2">
           <Layers className="w-4 h-4 text-purple-400" />
-          In-Depth Financial Health Dimensions
+          {t('health.dimensionsTitle', 'In-Depth Financial Health Dimensions')}
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -181,7 +188,9 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="text-sm font-bold text-white">{metric.category}</h4>
-                  <div className="text-[10px] text-slate-400">Diagnostic Weight: {metric.weight}%</div>
+                  <div className="text-[10px] text-slate-400">
+                    {t('health.weight', 'Diagnostic Weight')}: {metric.weight}%
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
@@ -211,14 +220,17 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
 
               <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800/80 text-xs text-slate-300 space-y-1">
                 <div className="font-medium text-slate-200 flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-purple-400" /> Insight:
+                  <Sparkles className="w-3 h-3 text-purple-400" /> 
+                  {t('health.insight', 'Insight')}:
                 </div>
                 <p className="text-slate-400 leading-relaxed">{metric.insight}</p>
               </div>
 
               <div className="text-xs text-slate-300 flex items-start gap-1.5 pt-1">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                <span className="text-slate-300"><strong className="text-white">Recommendation:</strong> {metric.recommendation}</span>
+                <span>
+                  <strong className="text-white">{t('health.recommendation', 'Recommendation')}:</strong> {metric.recommendation}
+                </span>
               </div>
             </div>
           ))}

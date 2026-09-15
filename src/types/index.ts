@@ -7,10 +7,14 @@ export type NavigationTab =
   | 'funding-readiness'
   | 'credit-passport'
   | 'what-if-simulator'
+  | 'decision-lab'
   | 'growth-intelligence'
   | 'ai-assistant'
+  | 'ai-advisor'
   | 'reports'
-  | 'settings';
+  | 'settings'
+  | 'billing'
+  | 'subscription';
 
 export type LanguageCode = 'en' | 'hi' | 'ta' | 'te' | 'mr';
 

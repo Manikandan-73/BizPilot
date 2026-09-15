@@ -3,6 +3,7 @@ import { ShieldCheck } from 'lucide-react';
 import { DebtProfile, LoanDetails } from '../../../types/onboarding';
 import { FormField, fieldInputClasses } from '../FormField';
 import { YesNoToggle } from '../ChoiceControls';
+import { useLanguage } from '../../../i18n/LanguageContext';
 
 type DebtErrors = Partial<Record<keyof DebtProfile, string>> & {
   loanDetails?: Partial<Record<keyof LoanDetails, string>>;
@@ -28,26 +29,29 @@ export const Step3DebtCompliance: React.FC<Step3DebtComplianceProps> = ({
   onChange,
   onLoanDetailChange,
 }) => {
+  const { t } = useLanguage();
   const loan = data.loanDetails ?? EMPTY_LOAN;
 
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-purple-300">
         <ShieldCheck className="w-4 h-4" />
-        <h2 className="text-sm font-bold uppercase tracking-wider">Debt & Compliance</h2>
+        <h2 className="text-sm font-bold uppercase tracking-wider">{t('onboarding.step3', 'Debt & Compliance')}</h2>
       </div>
 
-      <FormField label="Does your business currently have any loans?" required error={errors.hasLoans}>
+      <FormField label={t('onboarding.hasLoans', 'Does your business currently have any loans?')} required error={errors.hasLoans}>
         <YesNoToggle value={data.hasLoans} onChange={(v) => onChange('hasLoans', v)} />
       </FormField>
 
       {data.hasLoans === true && (
         <div className="p-4 sm:p-5 rounded-xl bg-slate-950/60 border border-purple-500/20 space-y-4">
-          <p className="text-[11px] font-semibold text-purple-300 uppercase tracking-wider">Existing Loan Details</p>
+          <p className="text-[11px] font-semibold text-purple-300 uppercase tracking-wider">
+            {t('onboarding.existingLoanDetails', 'Existing Loan Details')}
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <FormField label="Outstanding Loan Amount" required error={errors.loanDetails?.outstandingLoanAmount}>
+            <FormField label={t('onboarding.outstandingLoan', 'Outstanding Loan Amount')} required error={errors.loanDetails?.outstandingLoanAmount}>
               <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm">₹</span>
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">₹</span>
                 <input
                   type="number"
                   value={loan.outstandingLoanAmount}
@@ -59,9 +63,9 @@ export const Step3DebtCompliance: React.FC<Step3DebtComplianceProps> = ({
               </div>
             </FormField>
 
-            <FormField label="Monthly EMI" required error={errors.loanDetails?.monthlyEMI}>
+            <FormField label={t('onboarding.monthlyEMI', 'Monthly EMI')} required error={errors.loanDetails?.monthlyEMI}>
               <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm">₹</span>
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">₹</span>
                 <input
                   type="number"
                   value={loan.monthlyEMI}
@@ -73,7 +77,7 @@ export const Step3DebtCompliance: React.FC<Step3DebtComplianceProps> = ({
               </div>
             </FormField>
 
-            <FormField label="Interest Rate" required error={errors.loanDetails?.interestRate} helperText="Annual rate, in %">
+            <FormField label={t('onboarding.interestRate', 'Interest Rate')} required error={errors.loanDetails?.interestRate} helperText="Annual rate, in %">
               <div className="relative">
                 <input
                   type="number"
@@ -84,11 +88,11 @@ export const Step3DebtCompliance: React.FC<Step3DebtComplianceProps> = ({
                   step={0.1}
                   className={fieldInputClasses(!!errors.loanDetails?.interestRate) + ' pr-8'}
                 />
-                <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm">%</span>
+                <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">%</span>
               </div>
             </FormField>
 
-            <FormField label="Remaining Tenure (months)" required error={errors.loanDetails?.remainingTenureMonths}>
+            <FormField label={t('onboarding.tenureMonths', 'Remaining Tenure (months)')} required error={errors.loanDetails?.remainingTenureMonths}>
               <input
                 type="number"
                 value={loan.remainingTenureMonths}
@@ -103,15 +107,15 @@ export const Step3DebtCompliance: React.FC<Step3DebtComplianceProps> = ({
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-2">
-        <FormField label="GST Registered?" required error={errors.gstRegistered}>
+        <FormField label={t('onboarding.gstRegistered', 'GST Registered Entity?')} required error={errors.gstRegistered}>
           <YesNoToggle value={data.gstRegistered} onChange={(v) => onChange('gstRegistered', v)} />
         </FormField>
 
-        <FormField label="ITR Available?" required error={errors.itrAvailable}>
+        <FormField label={t('onboarding.itrAvailable', 'Audited / Filed ITR Available?')} required error={errors.itrAvailable}>
           <YesNoToggle value={data.itrAvailable} onChange={(v) => onChange('itrAvailable', v)} />
         </FormField>
 
-        <FormField label="Business Bank Account?" required error={errors.hasBusinessBankAccount}>
+        <FormField label={t('onboarding.bankAccount', 'Active Business Current Account?')} required error={errors.hasBusinessBankAccount}>
           <YesNoToggle value={data.hasBusinessBankAccount} onChange={(v) => onChange('hasBusinessBankAccount', v)} />
         </FormField>
       </div>

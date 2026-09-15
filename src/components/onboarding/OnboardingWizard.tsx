@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft, ArrowRight, Sparkles, X, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Sparkles, X, CheckCircle2, Languages } from 'lucide-react';
+import { useLanguage } from '../../i18n/LanguageContext';
+import { useAuth } from '../../contexts/AuthContext';
 import {
   BusinessChallenge,
   BusinessGoal,
@@ -93,6 +95,8 @@ function validateStep4(data: GoalsProfile): StepErrors {
 }
 
 export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashboard, onExit }) => {
+  const { t } = useLanguage();
+  const { user } = useAuth();
   const [draft, setDraft] = useState<OnboardingDraft>(createEmptyDraft());
   const [errors, setErrors] = useState<StepErrors>({});
   const [isHydrated, setIsHydrated] = useState(false);
@@ -102,7 +106,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
   // Resume any in-progress draft on mount so a refresh doesn't lose answers.
   useEffect(() => {
     let cancelled = false;
-    loadOnboardingDraft()
+    loadOnboardingDraft(user?.uid)
       .then((saved) => {
         if (!cancelled && saved) setDraft(saved);
       })
@@ -119,17 +123,17 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [user?.uid]);
 
   // Autosave the draft as the user progresses.
   useEffect(() => {
     if (!isHydrated) return;
-    saveOnboardingDraft(draft).catch((error) => {
+    saveOnboardingDraft(draft, user?.uid).catch((error) => {
       setErrors({
         submit: error instanceof Error ? error.message : 'Unable to save your onboarding draft.',
       });
     });
-  }, [draft, isHydrated]);
+  }, [draft, isHydrated, user?.uid]);
 
   const updateBusiness = <K extends keyof BusinessProfile>(field: K, value: BusinessProfile[K]) => {
     setDraft((prev) => ({ ...prev, businessProfile: { ...prev.businessProfile, [field]: value } }));
@@ -207,10 +211,17 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
 
     // Final step — build and persist the completed organization.
     setIsSubmitting(true);
-    const now = new Date().toISOString();
+    const nowDate = new Date();
+    const now = nowDate.toISOString();
+    const expiryDate = new Date(nowDate.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
+    const ownerId = user?.uid || `user-${Date.now()}`;
+    const ownerEmail = user?.email || '';
+
     const organization: Organization = {
       id: `org-${Date.now()}`,
       name: draft.businessProfile.businessName,
+      ownerId,
+      ownerEmail,
       businessProfile: draft.businessProfile,
       financialProfile: draft.financialProfile,
       debtProfile: draft.debtProfile,
@@ -220,18 +231,33 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
         hasBusinessBankAccount: !!draft.debtProfile.hasBusinessBankAccount,
       },
       goals: draft.goals,
+      subscription: {
+        plan: 'pro_growth',
+        status: 'trial',
+        startDate: now,
+        expiryDate,
+        billingCycle: 'monthly',
+        notes: 'Complimentary 30-day onboarding trial',
+      },
+      accountStatus: 'active',
       createdAt: now,
       updatedAt: now,
     };
 
     const record: OnboardingRecord = {
-      user: { id: '', name: draft.businessProfile.businessName || 'Business Owner', email: '' },
+      ownerId,
+      ownerEmail,
+      user: {
+        id: ownerId,
+        name: user?.displayName || draft.businessProfile.businessName || 'Business Owner',
+        email: ownerEmail,
+      },
       organization,
     };
 
     try {
       await saveOrganizationRecord(record);
-      await clearOnboardingDraft();
+      await clearOnboardingDraft(user?.uid);
       setCompletedOrganization(organization);
     } catch (error) {
       setErrors({
@@ -286,7 +312,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
           className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent hover:border-slate-800 transition-all disabled:opacity-0 disabled:pointer-events-none"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          Back
+          {t('common.back', 'Back')}
         </button>
 
         <button
@@ -297,11 +323,11 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
           {draft.currentStep === 4 ? (
             <>
               <CheckCircle2 className="w-4 h-4" />
-              {isSubmitting ? 'Saving...' : 'Complete Business Setup'}
+              {isSubmitting ? t('common.saving', 'Saving...') : t('common.complete', 'Complete Business Setup')}
             </>
           ) : (
             <>
-              Continue
+              {t('common.continue', 'Continue')}
               <ArrowRight className="w-3.5 h-3.5" />
             </>
           )}
@@ -316,6 +342,8 @@ const OnboardingShell: React.FC<{ children: React.ReactNode; onExit: () => void;
   onExit,
   showExit,
 }) => {
+  const { language, setLanguage, t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-[#0F172A] text-slate-100 flex flex-col">
       <div className="max-w-3xl mx-auto w-full px-4 sm:px-6 py-8 flex-1 flex flex-col">
@@ -328,15 +356,28 @@ const OnboardingShell: React.FC<{ children: React.ReactNode; onExit: () => void;
               BizPilot <span className="text-purple-400 font-black">AI</span>
             </div>
           </div>
-          {showExit && (
+
+          <div className="flex items-center gap-2">
+            {/* Quick Language Switcher */}
             <button
-              onClick={onExit}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-900 transition-all"
+              onClick={() => setLanguage(language === 'en' ? 'ta' : 'en')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 hover:border-purple-400 transition-all shadow-sm"
+              title={t('header.changeLanguage', 'Change Language')}
             >
-              <X className="w-3.5 h-3.5" />
-              Save &amp; Exit
+              <Languages className="w-3.5 h-3.5 text-purple-400" />
+              <span>{language === 'en' ? 'தமிழ்' : 'English'}</span>
             </button>
-          )}
+
+            {showExit && (
+              <button
+                onClick={onExit}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white bg-slate-800/80 border border-slate-700 hover:bg-slate-800 transition-all"
+              >
+                <X className="w-3.5 h-3.5" />
+                {t('onboarding.exitToMain', 'Save & Exit')}
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="glass-panel rounded-2xl p-6 sm:p-8">

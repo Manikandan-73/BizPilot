@@ -10,12 +10,16 @@ import { FinalCTA } from './FinalCTA';
 interface LandingPageProps {
   onLaunchDemo: () => void;
   onOpenCreditPassport: () => void;
+  onStartTrial?: () => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({
   onLaunchDemo,
-  onOpenCreditPassport
+  onOpenCreditPassport,
+  onStartTrial,
 }) => {
+  const handleStart = onStartTrial || onLaunchDemo;
+
   return (
     <div className="flex flex-col min-h-screen bg-[#0F172A]">
       <HeroSection 
@@ -25,11 +29,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       <ProblemSection />
       <SolutionNetwork />
       <ImpactSection />
-      <PricingSection onSelectPlan={onLaunchDemo} />
+      <PricingSection onSelectPlan={handleStart} />
       <TechStackSection />
       <FinalCTA 
-        onStartTrial={onLaunchDemo} 
-        onRequestDemo={onLaunchDemo} 
+        onStartTrial={handleStart} 
+        onRequestDemo={handleStart} 
       />
     </div>
   );

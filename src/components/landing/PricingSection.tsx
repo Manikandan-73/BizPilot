@@ -1,11 +1,14 @@
 import React from 'react';
-import { Check, Sparkles, Zap, Building2, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Check, Zap, ArrowRight } from 'lucide-react';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface PricingSectionProps {
   onSelectPlan: () => void;
 }
 
 export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPlan }) => {
+  const { t } = useLanguage();
+
   const plans = [
     {
       name: 'Starter Free',
@@ -35,7 +38,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPlan }) 
         'Detailed Funding Readiness 5-Pillar Breakdown',
         'Downloadable MSME Credit Passport (PDF)',
         'Interactive What-If Business Decision Simulator',
-        'Multilingual AI Assistant (5 Languages)',
+        'Multilingual AI Assistant',
         'WhatsApp Alert Summaries'
       ],
       cta: 'Start 14-Day Free Trial',
@@ -80,19 +83,19 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPlan }) 
   ];
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-24 relative bg-[#0F172A] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-950/40 border border-purple-500/30 text-purple-300 text-xs font-semibold uppercase tracking-wider">
-            <Zap className="w-3.5 h-3.5" /> Transparent & Accessible Pricing
+            <Zap className="w-3.5 h-3.5" /> Transparent &amp; Accessible Pricing
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
-            Flexible Plans for Every MSME Stage
+            {t('landing.pricingTitle', 'Flexible Plans for Every MSME Stage')}
           </h2>
           <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-            Tailored for Indian Micro, Small, and Medium Enterprises, Startups, and Manufacturers. No hidden fees. Cancel anytime.
+            {t('landing.pricingSubtitle', 'Tailored for Indian Micro, Small, and Medium Enterprises, Startups, and Manufacturers. No hidden fees. Cancel anytime.')}
           </p>
         </div>
 
@@ -103,12 +106,12 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPlan }) 
               key={idx}
               className={`rounded-2xl p-6 flex flex-col justify-between transition-all relative ${
                 p.highlighted
-                  ? 'bg-gradient-to-b from-purple-950/80 via-slate-900 to-slate-900 border-2 border-purple-500 shadow-2xl shadow-purple-900/40 scale-105 z-10'
+                  ? 'bg-gradient-to-b from-purple-950/80 via-slate-900 to-slate-900 border-2 border-purple-500 shadow-2xl scale-105 z-10'
                   : 'bg-slate-900/80 border border-slate-800 hover:border-slate-700'
               }`}
             >
               {p.highlighted && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-500 to-sky-400 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-md">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-sky-500 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-md">
                   {p.badge}
                 </div>
               )}

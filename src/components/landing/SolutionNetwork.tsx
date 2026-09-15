@@ -7,12 +7,13 @@ import {
   Boxes, 
   Compass, 
   Lightbulb,
-  CheckCircle,
-  Zap,
+  Zap, 
   ArrowRight
 } from 'lucide-react';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export const SolutionNetwork: React.FC = () => {
+  const { t } = useLanguage();
   const [activeNode, setActiveNode] = useState<number>(0);
 
   const nodes = [
@@ -67,16 +68,13 @@ export const SolutionNetwork: React.FC = () => {
       icon: Lightbulb,
       color: 'from-cyan-400 to-indigo-500',
       badgeColor: 'border-cyan-500/40 text-cyan-300 bg-cyan-950/30',
-      desc: 'Conversational explainable guidance in 5 Indian languages for non-finance founders and entrepreneurs.',
-      metric: 'Multilingual AI'
+      desc: 'Conversational explainable guidance in Indian languages for MSME business leaders and entrepreneurs.',
+      metric: 'Multilingual'
     }
   ];
 
   return (
-    <section className="py-24 relative overflow-hidden">
-      {/* Subtle background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-purple-600/10 blur-[150px] pointer-events-none rounded-full" />
-
+    <section className="py-20 relative bg-[#0F172A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
@@ -85,10 +83,10 @@ export const SolutionNetwork: React.FC = () => {
             <Sparkles className="w-3.5 h-3.5" /> Autonomous MSME Financial Engine
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
-            Meet <span className="text-gradient-purple">BizPilot AI</span>
+            {t('landing.solutionTitle', 'The BizPilot Financial Network')}
           </h2>
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            One central intelligent engine connected to every critical dimension of your business operations and capital strategy.
+            {t('landing.solutionSubtitle', 'A synchronized platform connecting transaction data to institutional underwriting protocols.')}
           </p>
         </div>
 

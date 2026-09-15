@@ -104,21 +104,79 @@ export interface GoalsProfile {
   biggestChallenge: BusinessChallenge | null;
 }
 
+export type UserRole = 'admin' | 'msme';
+
+export type SubscriptionPlan = 
+  | 'starter' 
+  | 'professional' 
+  | 'starter_free' 
+  | 'pro_growth' 
+  | 'business_leader';
+
+export type SubscriptionStatus = 
+  | 'active' 
+  | 'trial' 
+  | 'expired' 
+  | 'suspended' 
+  | 'pending' 
+  | 'cancelled';
+
+export interface SubscriptionDetails {
+  plan: SubscriptionPlan;
+  status: SubscriptionStatus;
+  startDate: string;
+  expiryDate: string;
+  billingCycle?: 'monthly' | 'yearly';
+  amount?: number;
+  currency?: 'INR';
+  paymentId?: string | null;
+  orderId?: string | null;
+  lastPaymentAt?: string | null;
+  notes?: string;
+  updatedBy?: string;
+  updatedAt?: string;
+  reason?: string;
+}
+
+export interface PaymentRecord {
+  id: string;
+  paymentId: string;
+  orderId: string;
+  uid: string;
+  organizationId: string;
+  plan: SubscriptionPlan;
+  amount: number;
+  currency: 'INR';
+  status: 'captured' | 'failed' | 'pending';
+  createdAt: string;
+  verifiedAt: string;
+  provider: 'razorpay';
+  userEmail?: string;
+}
+
 /** The primary Organization document stored in Firestore collection `organizations` */
 export interface Organization {
   id: string;
   name: string;
+  ownerId?: string;
+  ownerEmail?: string;
   businessProfile: BusinessProfile;
   financialProfile: FinancialProfile;
   debtProfile: DebtProfile;
   complianceProfile: ComplianceProfile;
   goals: GoalsProfile;
+  subscription?: SubscriptionDetails;
+  accountStatus?: 'active' | 'suspended';
+  accessStatus?: 'active' | 'pending_payment' | 'expired' | 'suspended';
+  registrationStatus?: 'pending_payment' | 'completed';
   createdAt: string;
   updatedAt: string;
 }
 
 /** Persisted organization record with author metadata */
 export interface OnboardingRecord {
+  ownerId?: string;
+  ownerEmail?: string;
   user: OnboardingUser;
   organization: Organization;
 }
@@ -202,6 +260,51 @@ export interface HealthScoreResult {
   metrics: FinancialHealthMetric[];
 }
 
+export interface FundingDimension {
+  key: 'compliance' | 'stability' | 'vintage' | 'liquidity' | 'debt';
+  factor: string;
+  rawScore: number;
+  weight: number; // max points (25, 25, 20, 15, 15)
+  percentage: number; // 0–100
+  contribution: 'positive' | 'negative';
+  status: 'Strong' | 'Satisfactory' | 'Needs Attention' | 'Critical';
+  explanation: string;
+  metricsSummary: string;
+}
+
+export interface FundingActionItem {
+  issue: string;
+  whyItMatters: string;
+  action: string;
+  impact: string;
+  priority: 'HIGH' | 'MEDIUM' | 'LOW';
+}
+
+export interface ChecklistItem {
+  id: string;
+  category: string;
+  title: string;
+  status: 'provided' | 'incomplete' | 'not_provided';
+  details: string;
+}
+
+export interface DebtCapacityAssessment {
+  currentEmi: number;
+  annualDebtService: number;
+  dscr: number | null;
+  debtToRevenue: number | null;
+  emiBurdenPercent: number | null;
+  status: 'Healthy' | 'Moderate' | 'Needs Attention';
+  assessmentNote: string;
+}
+
+export interface FundingStrategyResult {
+  recommendation: 'Potentially suitable for further preparation' | 'Consider improving profile first' | 'Funding profile currently needs attention';
+  timing: 'Ready to Prepare' | 'Improve First' | 'Needs Attention';
+  rationale: string;
+  keyPrerequisite: string;
+}
+
 export interface FundingReadinessResult {
   overallScore: number; // 0–100
   eligibilityTier: 'High' | 'Medium' | 'Low' | 'Not Eligible';
@@ -212,6 +315,11 @@ export interface FundingReadinessResult {
   strengths: string[];
   gaps: string[];
   actionItems: string[];
+  dimensions: FundingDimension[];
+  actionPlan: FundingActionItem[];
+  preparationChecklist: ChecklistItem[];
+  debtAssessment: DebtCapacityAssessment;
+  fundingStrategy: FundingStrategyResult;
 }
 
 export interface CashFlowForecastResult {

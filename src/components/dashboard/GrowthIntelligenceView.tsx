@@ -311,21 +311,21 @@ export const GrowthIntelligenceView: React.FC<GrowthIntelligenceViewProps> = ({
     <div className="space-y-8 pb-16 font-sans">
       
       {/* Header Banner */}
-      <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-slate-900 via-purple-950/40 to-slate-900 border border-purple-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+      <div className="p-6 sm:p-8 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold text-purple-300">
-            <Compass className="w-4 h-4 text-purple-400" />
+          <div className="flex items-center gap-2 text-xs font-bold text-[#A78BFA]">
+            <Compass className="w-4 h-4 text-[#8B5CF6]" />
             <span>{isPro ? 'STRATEGIC DECISION INTELLIGENCE' : 'TACTICAL GROWTH PLAYBOOKS'}</span>
             {isPro && (
-              <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40">
+              <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-[#8B5CF6]/15 text-[#A78BFA] border border-[#8B5CF6]/30">
                 PRO ACTIVE
               </span>
             )}
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white mt-1.5 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-[#F8FAFC] mt-1.5 tracking-tight">
             {isPro ? 'Advanced Growth Intelligence' : 'Growth Playbooks & Optimization'}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+          <p className="text-xs sm:text-sm text-[#A7B0C0] mt-1 max-w-2xl">
             {isPro
               ? 'Ranked 5-pillar strategic roadmap and 30-day operational action plan derived from your verified metrics.'
               : 'Actionable institutional operational strategies to unlock working capital and optimize profitability.'}
@@ -336,7 +336,7 @@ export const GrowthIntelligenceView: React.FC<GrowthIntelligenceViewProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={() => onNavigate('decision-lab')}
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white transition-all shadow-md flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl text-xs font-bold bg-[#8B5CF6] hover:bg-[#7C3AED] text-white transition-all shadow-md shadow-[#8B5CF6]/20 flex items-center gap-1.5"
             >
               <span>Simulate in Lab</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -347,21 +347,21 @@ export const GrowthIntelligenceView: React.FC<GrowthIntelligenceViewProps> = ({
 
       {/* STARTER UPGRADE NOTICE IF NOT PRO */}
       {!isPro && (
-        <div className="p-5 rounded-2xl bg-gradient-to-r from-purple-950/40 via-slate-900 to-slate-900 border border-purple-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg">
+        <div className="p-5 rounded-2xl bg-[#161C27] border border-[#8B5CF6]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg shadow-black/20">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-purple-600/20 text-purple-400 border border-purple-500/30 shrink-0">
+            <div className="p-2.5 rounded-xl bg-[#8B5CF6]/15 text-[#A78BFA] border border-[#8B5CF6]/30 shrink-0">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <div className="text-xs font-bold text-white">Unlock Advanced Growth Intelligence &amp; 30-Day Action Plan</div>
-              <p className="text-[11px] text-slate-400 mt-0.5">
+              <div className="text-xs font-bold text-[#F8FAFC]">Unlock Advanced Growth Intelligence &amp; 30-Day Action Plan</div>
+              <p className="text-[11px] text-[#A7B0C0] mt-0.5">
                 Professional plan provides ranked recommendations across 5 financial pillars and a personalized week-by-week execution plan.
               </p>
             </div>
           </div>
           <button
             onClick={() => onNavigate('billing')}
-            className="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white transition-all shadow-md shrink-0 flex items-center gap-1.5"
+            className="px-4 py-2 rounded-xl text-xs font-bold bg-[#8B5CF6] hover:bg-[#7C3AED] text-white transition-all shadow-md shadow-[#8B5CF6]/20 shrink-0 flex items-center gap-1.5"
           >
             <span>Upgrade to Professional</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -373,31 +373,31 @@ export const GrowthIntelligenceView: React.FC<GrowthIntelligenceViewProps> = ({
       {isPro && advancedRecommendations.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
-              <Target className="w-4 h-4 text-purple-400" />
+            <h2 className="text-base font-bold text-[#F8FAFC] tracking-tight flex items-center gap-2">
+              <Target className="w-4 h-4 text-[#8B5CF6]" />
               <span>Prioritized Strategic Recommendations (Top 5 Ranked)</span>
             </h2>
-            <span className="text-xs text-slate-400">Ranked by Financial Impact</span>
+            <span className="text-xs text-[#707A8C]">Ranked by Financial Impact</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {advancedRecommendations.map((rec) => (
               <div
                 key={rec.id}
-                className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between space-y-4 shadow-lg"
+                className="p-5 rounded-2xl bg-[#121722] border border-[#222936] hover:border-[#303848] transition-all flex flex-col justify-between space-y-4 shadow-lg shadow-black/20"
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300 bg-purple-950/60 px-2 py-0.5 rounded-md border border-purple-500/30">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#A78BFA] bg-[#8B5CF6]/15 px-2 py-0.5 rounded-md border border-[#8B5CF6]/30">
                       {rec.pillar}
                     </span>
                     <span
                       className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase ${
                         rec.priority === 'HIGH'
-                          ? 'bg-rose-950/60 text-rose-300 border border-rose-500/40'
+                          ? 'bg-rose-950/40 text-rose-300 border border-rose-800/60'
                           : rec.priority === 'MEDIUM'
-                          ? 'bg-amber-950/60 text-amber-300 border border-amber-500/40'
-                          : 'bg-slate-800 text-slate-300'
+                          ? 'bg-amber-950/40 text-amber-300 border border-amber-800/60'
+                          : 'bg-[#161C27] text-[#A7B0C0] border border-[#222936]'
                       }`}
                     >
                       {rec.priority} PRIORITY
@@ -405,14 +405,14 @@ export const GrowthIntelligenceView: React.FC<GrowthIntelligenceViewProps> = ({
                   </div>
 
                   <div>
-                    <h3 className="text-xs font-bold text-slate-100 leading-snug">{rec.observation}</h3>
-                    <p className="text-[11px] text-slate-400 mt-1.5 leading-relaxed">{rec.whyItMatters}</p>
+                    <h3 className="text-xs font-bold text-[#F8FAFC] leading-snug">{rec.observation}</h3>
+                    <p className="text-[11px] text-[#A7B0C0] mt-1.5 leading-relaxed">{rec.whyItMatters}</p>
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-800 space-y-2">
-                  <div className="text-[11px] text-slate-200">
-                    <span className="text-[10px] font-bold text-purple-400 uppercase block">Action:</span>
+                <div className="pt-3 border-t border-[#222936] space-y-2">
+                  <div className="text-[11px] text-[#A7B0C0]">
+                    <span className="text-[10px] font-bold text-[#A78BFA] uppercase block">Action:</span>
                     {rec.suggestedAction}
                   </div>
                   <div className="flex items-center justify-between text-[11px] pt-1 font-semibold text-emerald-400">
@@ -428,28 +428,28 @@ export const GrowthIntelligenceView: React.FC<GrowthIntelligenceViewProps> = ({
 
       {/* PROFESSIONAL ONLY: 30-DAY ACTION PLAN */}
       {isPro && (
-        <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-xl shadow-xl space-y-5">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 space-y-5">
+          <div className="flex items-center justify-between pb-3 border-b border-[#222936]">
             <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-purple-400" />
-              <h2 className="text-sm font-bold text-white uppercase tracking-wider">
+              <Calendar className="w-4 h-4 text-[#8B5CF6]" />
+              <h2 className="text-sm font-bold text-[#F8FAFC] uppercase tracking-wider">
                 Conditional 30-Day Execution Action Plan
               </h2>
             </div>
-            <span className="text-[11px] text-slate-400">Tailored to your current runway &amp; margin profile</span>
+            <span className="text-[11px] text-[#707A8C]">Tailored to your current runway &amp; margin profile</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {actionPlan.map((step) => (
-              <div key={step.week} className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 space-y-2">
+              <div key={step.week} className="p-4 rounded-xl bg-[#0F1219] border border-[#222936] space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-black text-purple-400 uppercase">{step.week}</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold">
+                  <span className="text-xs font-black text-[#A78BFA] uppercase">{step.week}</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#161C27] border border-[#303848] text-[#A7B0C0] font-semibold">
                     {step.focus}
                   </span>
                 </div>
-                <h4 className="text-xs font-bold text-white">{step.title}</h4>
-                <p className="text-[11px] text-slate-400 leading-relaxed">{step.description}</p>
+                <h4 className="text-xs font-bold text-[#F8FAFC]">{step.title}</h4>
+                <p className="text-[11px] text-[#A7B0C0] leading-relaxed">{step.description}</p>
               </div>
             ))}
           </div>
@@ -459,7 +459,7 @@ export const GrowthIntelligenceView: React.FC<GrowthIntelligenceViewProps> = ({
       {/* CORE / BASIC PLAYBOOKS (Available to All) */}
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <h2 className="text-base font-bold text-white tracking-tight">
+          <h2 className="text-base font-bold text-[#F8FAFC] tracking-tight">
             {isPro ? 'Operational Execution Playbooks' : 'Available Growth Playbooks'}
           </h2>
 
@@ -471,8 +471,8 @@ export const GrowthIntelligenceView: React.FC<GrowthIntelligenceViewProps> = ({
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-3 py-1 rounded-xl text-xs font-medium transition-all shrink-0 ${
                   selectedCategory === cat
-                    ? 'bg-purple-600 text-white shadow-md'
-                    : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                    ? 'bg-[#8B5CF6] text-white shadow-sm'
+                    : 'bg-[#0F1219] text-[#A7B0C0] hover:text-[#F8FAFC] border border-[#222936] hover:border-[#303848]'
                 }`}
               >
                 {cat}
@@ -488,15 +488,15 @@ export const GrowthIntelligenceView: React.FC<GrowthIntelligenceViewProps> = ({
             return (
               <div
                 key={p.id}
-                className={`p-6 rounded-2xl border transition-all flex flex-col justify-between space-y-5 ${
+                className={`p-6 rounded-2xl border transition-all flex flex-col justify-between space-y-5 shadow-lg shadow-black/20 ${
                   isDone
-                    ? 'bg-slate-950/80 border-emerald-500/40 shadow-emerald-950/30'
-                    : 'bg-slate-900 border-slate-800 hover:border-slate-700'
+                    ? 'bg-emerald-950/20 border-emerald-800/50'
+                    : 'bg-[#121722] border-[#222936] hover:border-[#303848]'
                 }`}
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-800 px-2 py-0.5 rounded-md">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#707A8C] bg-[#0F1219] border border-[#222936] px-2 py-0.5 rounded-md">
                       {p.category}
                     </span>
                     <span className="text-xs font-bold text-emerald-400 font-mono">
@@ -505,19 +505,19 @@ export const GrowthIntelligenceView: React.FC<GrowthIntelligenceViewProps> = ({
                   </div>
 
                   <div>
-                    <h3 className="text-base font-bold text-white">{p.title}</h3>
-                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">{p.description}</p>
+                    <h3 className="text-base font-bold text-[#F8FAFC]">{p.title}</h3>
+                    <p className="text-xs text-[#A7B0C0] mt-1 leading-relaxed">{p.description}</p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800 text-xs space-y-1">
-                    <span className="text-[10px] font-bold text-purple-400 uppercase block">AI Analysis Rationale:</span>
-                    <p className="text-[11px] text-slate-300 leading-relaxed">{p.aiRationale}</p>
+                  <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936] text-xs space-y-1">
+                    <span className="text-[10px] font-bold text-[#A78BFA] uppercase block">AI Analysis Rationale:</span>
+                    <p className="text-[11px] text-[#A7B0C0] leading-relaxed">{p.aiRationale}</p>
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-400 flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 text-slate-500" />
+                <div className="pt-3 border-t border-[#222936] flex items-center justify-between">
+                  <span className="text-[11px] text-[#707A8C] flex items-center gap-1">
+                    <Clock className="w-3.5 h-3.5 text-[#707A8C]" />
                     {p.implementationTime}
                   </span>
 
@@ -525,8 +525,8 @@ export const GrowthIntelligenceView: React.FC<GrowthIntelligenceViewProps> = ({
                     onClick={() => handleExecute(p.id)}
                     className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
                       isDone
-                        ? 'bg-emerald-600/20 text-emerald-300 border border-emerald-500/40'
-                        : 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 hover:border-purple-500/40 shadow-sm'
+                        ? 'bg-emerald-950/50 text-emerald-300 border border-emerald-800/60'
+                        : 'bg-[#161C27] hover:bg-[#1E2536] text-[#F8FAFC] border border-[#303848] shadow-sm'
                     }`}
                   >
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />

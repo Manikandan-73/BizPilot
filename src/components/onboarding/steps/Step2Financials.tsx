@@ -34,12 +34,12 @@ export const Step2Financials: React.FC<Step2FinancialsProps> = ({ data, errors, 
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 text-purple-300">
+      <div className="flex items-center gap-2 text-violet-400">
         <Wallet className="w-4 h-4" />
         <h2 className="text-sm font-bold uppercase tracking-wider">{t('onboarding.step2', 'Financial Snapshot')}</h2>
       </div>
 
-      <p className="text-xs text-slate-400 -mt-3">
+      <p className="text-xs text-[#707A8C] -mt-3">
         {t('onboarding.step2Subtitle', 'This is only used to build your baseline profile — we won\'t calculate any scores yet.')}
       </p>
 
@@ -53,7 +53,7 @@ export const Step2Financials: React.FC<Step2FinancialsProps> = ({ data, errors, 
             helperText={field.helperText}
           >
             <div className="relative">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">₹</span>
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#707A8C] text-sm">₹</span>
               <input
                 type="number"
                 value={data[field.key]}

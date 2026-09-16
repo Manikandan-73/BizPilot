@@ -171,25 +171,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
   };
 
   return (
-    <div className="min-h-screen bg-[#0F172A] text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#090B10] text-[#F8FAFC] flex flex-col font-sans">
       
       {/* Admin Header */}
-      <header className="sticky top-0 z-40 w-full border-b border-slate-800 bg-slate-950/90 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 w-full border-b border-[#222936] bg-[#0B0E14]/90 backdrop-blur-xl shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           
           {/* Brand & Admin Badge */}
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-sky-400 flex items-center justify-center text-white shadow-lg shadow-purple-600/30">
+            <div className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center text-white shadow-sm">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <div className="text-base font-extrabold text-white flex items-center gap-2">
-                BizPilot <span className="text-purple-400">AI</span>
-                <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-md bg-purple-500/20 text-purple-300 border border-purple-500/40">
+              <div className="text-base font-extrabold text-[#F8FAFC] flex items-center gap-2">
+                BizPilot <span className="text-violet-400">AI</span>
+                <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-md bg-violet-950/60 text-violet-300 border border-violet-800/50">
                   {t('admin.adminBadge', 'SUPER ADMIN')}
                 </span>
               </div>
-              <p className="text-[10px] text-slate-400 -mt-0.5">
+              <p className="text-[10px] text-[#707A8C] -mt-0.5">
                 {t('admin.adminPortal', 'Platform Management Console')}
               </p>
             </div>
@@ -201,10 +201,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
             {/* Language Selector */}
             <button
               onClick={() => setLanguage(language === 'en' ? 'ta' : 'en')}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 transition-all shadow-sm"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#121722] hover:bg-[#161C27] text-[#F8FAFC] border border-[#222936] transition-all shadow-sm"
               title={t('header.changeLanguage', 'Change Language')}
             >
-              <Languages className="w-3.5 h-3.5 text-purple-400" />
+              <Languages className="w-3.5 h-3.5 text-violet-400" />
               <span>{language === 'en' ? 'தமிழ்' : 'English'}</span>
             </button>
 
@@ -212,7 +212,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
             {onSwitchToUserWorkspace && (
               <button
                 onClick={onSwitchToUserWorkspace}
-                className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-xs font-semibold text-purple-300 hover:border-purple-500/40 transition-all"
+                className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#121722] hover:bg-[#161C27] border border-[#222936] text-xs font-semibold text-violet-300 shadow-sm transition-all"
               >
                 <Building className="w-3.5 h-3.5" />
                 <span>{t('admin.switchToUserView', 'Preview MSME Workspace')}</span>
@@ -220,17 +220,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
             )}
 
             {/* Admin User Pill & Logout */}
-            <div className="flex items-center gap-2 pl-2 border-l border-slate-800">
+            <div className="flex items-center gap-2 pl-2 border-l border-[#222936]">
               <div className="text-right hidden md:block">
-                <div className="text-xs font-semibold text-white">{user?.displayName || 'Administrator'}</div>
-                <div className="text-[10px] text-slate-400">{user?.email}</div>
+                <div className="text-xs font-semibold text-[#F8FAFC]">{user?.displayName || 'Administrator'}</div>
+                <div className="text-[10px] text-[#707A8C]">{user?.email}</div>
               </div>
               <button
                 onClick={logout}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-rose-950/40 hover:text-rose-300 hover:border-rose-500/40 border border-slate-700/80 text-xs font-semibold text-slate-300 transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#121722] hover:bg-rose-950/40 hover:text-rose-300 hover:border-rose-800/40 border border-[#222936] text-xs font-semibold text-[#A7B0C0] shadow-sm transition-all"
                 title={t('auth.logout', 'Log Out')}
               >
-                <LogOut className="w-3.5 h-3.5 text-slate-400" />
+                <LogOut className="w-3.5 h-3.5 text-[#707A8C]" />
                 <span className="hidden sm:inline">{t('auth.logout', 'Log Out')}</span>
               </button>
             </div>
@@ -246,10 +246,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
         {/* Page Title & Refresh */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-[#F8FAFC] tracking-tight">
               {t('admin.manageMsmes', 'Manage MSMEs & Subscriptions')}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-[#A7B0C0] mt-1">
               {t('admin.dashboardSubtitle', 'Monitor registered MSMEs, track subscription expiries, and manage account statuses.')}
             </p>
           </div>
@@ -257,9 +257,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
           <button
             onClick={fetchRecords}
             disabled={loading}
-            className="self-start sm:self-auto flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700/80 text-xs font-semibold transition-all hover:border-purple-500/50 disabled:opacity-50"
+            className="self-start sm:self-auto flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#121722] hover:bg-[#161C27] text-[#F8FAFC] border border-[#222936] text-xs font-semibold shadow-sm transition-all hover:border-violet-500/50 disabled:opacity-50"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-purple-400' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-violet-400' : 'text-[#707A8C]'}`} />
             <span>Refresh</span>
           </button>
         </div>
@@ -267,81 +267,81 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
         {/* Top KPI Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           
-          <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-xl shadow-lg">
+          <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-400">{t('admin.totalMsmes', 'Total MSMEs')}</span>
-              <div className="p-2 rounded-lg bg-purple-950/60 text-purple-400 border border-purple-500/20">
+              <span className="text-xs font-semibold text-[#A7B0C0]">{t('admin.totalMsmes', 'Total MSMEs')}</span>
+              <div className="p-2 rounded-lg bg-violet-950/40 text-violet-400 border border-violet-800/40">
                 <Users className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-3xl font-black text-white mt-3">{stats.total}</div>
-            <div className="text-[11px] text-slate-400 mt-1">Platform Accounts</div>
+            <div className="text-3xl font-black text-[#F8FAFC] mt-3">{stats.total}</div>
+            <div className="text-[11px] text-[#707A8C] mt-1">Platform Accounts</div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-xl shadow-lg">
+          <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-400">{t('admin.activeSubscriptions', 'Active Subscriptions')}</span>
-              <div className="p-2 rounded-lg bg-emerald-950/60 text-emerald-400 border border-emerald-500/20">
+              <span className="text-xs font-semibold text-[#A7B0C0]">{t('admin.activeSubscriptions', 'Active Subscriptions')}</span>
+              <div className="p-2 rounded-lg bg-emerald-950/40 text-emerald-400 border border-emerald-800/40">
                 <CheckCircle2 className="w-4 h-4" />
               </div>
             </div>
             <div className="text-3xl font-black text-emerald-400 mt-3">{stats.active}</div>
-            <div className="text-[11px] text-slate-400 mt-1">Trial &amp; Paid Plans</div>
+            <div className="text-[11px] text-[#707A8C] mt-1">Trial &amp; Paid Plans</div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-xl shadow-lg">
+          <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-400">{t('admin.pendingPayment', 'Pending Payment')}</span>
-              <div className="p-2 rounded-lg bg-amber-950/60 text-amber-400 border border-amber-500/20">
+              <span className="text-xs font-semibold text-[#A7B0C0]">{t('admin.pendingPayment', 'Pending Payment')}</span>
+              <div className="p-2 rounded-lg bg-amber-950/40 text-amber-400 border border-amber-800/40">
                 <Clock className="w-4 h-4" />
               </div>
             </div>
             <div className="text-3xl font-black text-amber-400 mt-3">{stats.pendingPayment}</div>
-            <div className="text-[11px] text-slate-400 mt-1">Awaiting Checkout</div>
+            <div className="text-[11px] text-[#707A8C] mt-1">Awaiting Checkout</div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-xl shadow-lg">
+          <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-400">{t('admin.expiringSoon', 'Expiring Soon (30d)')}</span>
-              <div className="p-2 rounded-lg bg-amber-950/60 text-amber-400 border border-amber-500/20">
+              <span className="text-xs font-semibold text-[#A7B0C0]">{t('admin.expiringSoon', 'Expiring Soon (30d)')}</span>
+              <div className="p-2 rounded-lg bg-amber-950/40 text-amber-400 border border-amber-800/40">
                 <Clock className="w-4 h-4" />
               </div>
             </div>
             <div className="text-3xl font-black text-amber-400 mt-3">{stats.expiringSoon}</div>
-            <div className="text-[11px] text-slate-400 mt-1">Needs Extension or Renewal</div>
+            <div className="text-[11px] text-[#707A8C] mt-1">Needs Extension or Renewal</div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-xl shadow-lg">
+          <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-400">{t('admin.suspendedAccounts', 'Suspended Accounts')}</span>
-              <div className="p-2 rounded-lg bg-rose-950/60 text-rose-400 border border-rose-500/20">
+              <span className="text-xs font-semibold text-[#A7B0C0]">{t('admin.suspendedAccounts', 'Suspended Accounts')}</span>
+              <div className="p-2 rounded-lg bg-rose-950/40 text-rose-400 border border-rose-800/40">
                 <XCircle className="w-4 h-4" />
               </div>
             </div>
             <div className="text-3xl font-black text-rose-400 mt-3">{stats.suspended}</div>
-            <div className="text-[11px] text-slate-400 mt-1">Access Restricted</div>
+            <div className="text-[11px] text-[#707A8C] mt-1">Access Restricted</div>
           </div>
 
         </div>
 
         {/* Search & Filters */}
-        <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 shadow-md">
+        <div className="p-4 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
           
           {/* Search Input */}
           <div className="relative flex-1">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#707A8C]" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t('admin.searchPlaceholder', 'Search by business name, owner or email...')}
-              className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-100 text-xs focus:outline-none focus:border-purple-500"
+              className="w-full pl-10 pr-4 py-2 rounded-xl bg-[#0D1118] border border-[#222936] text-[#F8FAFC] placeholder-[#707A8C] text-xs focus:outline-none focus:ring-1 focus:ring-violet-500/20 focus:border-violet-500"
             />
           </div>
 
           {/* Filter dropdowns */}
           <div className="flex items-center gap-2.5">
-            <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium">
+            <div className="flex items-center gap-1.5 text-xs text-[#707A8C] font-medium">
               <Filter className="w-3.5 h-3.5" />
             </div>
 
@@ -349,37 +349,37 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
             <select
               value={filterPlan}
               onChange={(e) => setFilterPlan(e.target.value)}
-              className="px-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-200 text-xs focus:outline-none focus:border-purple-500"
+              className="px-3 py-2 rounded-xl bg-[#0D1118] border border-[#222936] text-[#F8FAFC] text-xs focus:outline-none focus:border-violet-500"
             >
-              <option value="all">{t('admin.allPlans', 'All Plans')}</option>
-              <option value="starter">Starter (₹1)</option>
-              <option value="professional">Professional (₹2)</option>
+              <option value="all" className="bg-[#0D1118] text-[#F8FAFC]">{t('admin.allPlans', 'All Plans')}</option>
+              <option value="starter" className="bg-[#0D1118] text-[#F8FAFC]">Starter (₹1)</option>
+              <option value="professional" className="bg-[#0D1118] text-[#F8FAFC]">Professional (₹2)</option>
             </select>
 
             {/* Status Filter */}
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-200 text-xs focus:outline-none focus:border-purple-500"
+              className="px-3 py-2 rounded-xl bg-[#0D1118] border border-[#222936] text-[#F8FAFC] text-xs focus:outline-none focus:border-violet-500"
             >
-              <option value="all">{t('admin.allStatuses', 'All Statuses')}</option>
-              <option value="active">{t('admin.active', 'Active')}</option>
-              <option value="pending">{t('admin.pending', 'Pending Payment')}</option>
-              <option value="trial">{t('admin.trial', 'Trial')}</option>
-              <option value="expired">{t('admin.expired', 'Expired')}</option>
-              <option value="suspended">{t('admin.suspended', 'Suspended')}</option>
+              <option value="all" className="bg-[#0D1118] text-[#F8FAFC]">{t('admin.allStatuses', 'All Statuses')}</option>
+              <option value="active" className="bg-[#0D1118] text-[#F8FAFC]">{t('admin.active', 'Active')}</option>
+              <option value="pending" className="bg-[#0D1118] text-[#F8FAFC]">{t('admin.pending', 'Pending Payment')}</option>
+              <option value="trial" className="bg-[#0D1118] text-[#F8FAFC]">{t('admin.trial', 'Trial')}</option>
+              <option value="expired" className="bg-[#0D1118] text-[#F8FAFC]">{t('admin.expired', 'Expired')}</option>
+              <option value="suspended" className="bg-[#0D1118] text-[#F8FAFC]">{t('admin.suspended', 'Suspended')}</option>
             </select>
           </div>
 
         </div>
 
         {/* MSME Table */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/80 backdrop-blur-xl overflow-hidden shadow-xl">
+        <div className="rounded-2xl border border-[#222936] bg-[#121722] shadow-sm overflow-hidden">
           
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-slate-800 bg-slate-950/60 text-slate-400 uppercase text-[10px] font-bold tracking-wider">
+                <tr className="border-b border-[#222936] bg-[#0F1219] text-[#707A8C] uppercase text-[10px] font-bold tracking-wider">
                   <th className="py-3.5 px-4">{t('admin.businessName', 'Business Name')}</th>
                   <th className="py-3.5 px-4">{t('admin.owner', 'Owner')}</th>
                   <th className="py-3.5 px-4">{t('admin.plan', 'Plan')}</th>
@@ -388,13 +388,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
                   <th className="py-3.5 px-4 text-right">{t('admin.actions', 'Actions')}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/70">
+              <tbody className="divide-y divide-[#222936]">
                 {filteredRecords.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="py-12 text-center text-slate-400">
+                    <td colSpan={6} className="py-12 text-center text-[#707A8C]">
                       {loading ? (
                         <div className="flex items-center justify-center gap-2">
-                          <RefreshCw className="w-4 h-4 animate-spin text-purple-400" />
+                          <RefreshCw className="w-4 h-4 animate-spin text-violet-400" />
                           <span>Loading registered MSMEs...</span>
                         </div>
                       ) : (
@@ -431,7 +431,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
                         );
                       } else {
                         expiryBadge = (
-                          <span className="text-[10px] text-slate-400">
+                          <span className="text-[10px] text-[#707A8C]">
                             {days} {t('admin.daysLeft', 'days left')}
                           </span>
                         );
@@ -439,31 +439,31 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
                     }
 
                     return (
-                      <tr key={org.id} className="hover:bg-slate-800/40 transition-colors">
+                      <tr key={org.id} className="hover:bg-[#161C27] transition-colors">
                         
                         {/* Business Name */}
                         <td className="py-3.5 px-4">
-                          <div className="font-bold text-white text-xs">
+                          <div className="font-bold text-[#F8FAFC] text-xs">
                             {org.businessProfile.businessName || org.name}
                           </div>
-                          <div className="text-[10px] text-slate-400">
+                          <div className="text-[10px] text-[#707A8C]">
                             {org.businessProfile.industry || 'Enterprise'} • {org.businessProfile.location || 'India'}
                           </div>
                         </td>
 
                         {/* Owner Info */}
                         <td className="py-3.5 px-4">
-                          <div className="font-medium text-slate-200">
+                          <div className="font-medium text-[#F8FAFC]">
                             {rec.user?.name || 'Owner'}
                           </div>
-                          <div className="text-[10px] text-purple-400 truncate max-w-[150px]" title={rec.ownerEmail}>
+                          <div className="text-[10px] text-violet-400 truncate max-w-[150px]" title={rec.ownerEmail}>
                             {rec.ownerEmail || rec.user?.email || '—'}
                           </div>
                         </td>
 
                         {/* Plan */}
                         <td className="py-3.5 px-4">
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-purple-950/60 text-purple-300 border border-purple-500/30">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-violet-950/50 text-violet-300 border border-violet-800/50">
                             {sub?.plan ? sub.plan.replace('_', ' ') : 'NO PLAN'}
                           </span>
                         </td>
@@ -471,23 +471,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
                         {/* Status */}
                         <td className="py-3.5 px-4">
                           {isSuspended ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-950/60 text-rose-300 border border-rose-500/40">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-950/50 text-rose-400 border border-rose-800/50">
                               <XCircle className="w-3 h-3" /> {t('admin.suspended', 'Suspended')}
                             </span>
                           ) : isPending ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-950/60 text-amber-400 border border-amber-500/40">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-950/50 text-amber-400 border border-amber-800/50">
                               <Clock className="w-3 h-3" /> {t('admin.pending', 'Pending Payment')}
                             </span>
                           ) : sub?.status === 'trial' ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-950/60 text-sky-300 border border-sky-500/40">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-teal-950/50 text-teal-400 border border-teal-800/50">
                               <Sparkles className="w-3 h-3" /> {t('admin.trial', 'Trial')}
                             </span>
                           ) : sub?.status === 'expired' ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-950/60 text-amber-300 border border-amber-500/40">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-950/50 text-amber-400 border border-amber-800/50">
                               <AlertTriangle className="w-3 h-3" /> {t('admin.expired', 'Expired')}
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/60 text-emerald-300 border border-emerald-500/40">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/50 text-emerald-400 border border-emerald-800/50">
                               <CheckCircle2 className="w-3 h-3" /> {t('admin.active', 'Active')}
                             </span>
                           )}
@@ -495,7 +495,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
 
                         {/* Expiry Date */}
                         <td className="py-3.5 px-4">
-                          <div className="text-slate-300 text-xs font-mono">
+                          <div className="text-[#F8FAFC] text-xs font-mono">
                             {sub?.expiryDate ? new Date(sub.expiryDate).toLocaleDateString() : '—'}
                           </div>
                           {expiryBadge}
@@ -508,19 +508,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
                             {/* Snapshot */}
                             <button
                               onClick={() => setSelectedRecordForSnapshot(rec)}
-                              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
+                              className="p-1.5 rounded-lg bg-[#0F1219] hover:bg-[#161C27] text-teal-400 border border-[#222936] transition-colors"
                               title={t('admin.viewSnapshot', 'View Snapshot')}
                             >
-                              <Eye className="w-3.5 h-3.5 text-sky-400" />
+                              <Eye className="w-3.5 h-3.5" />
                             </button>
 
                             {/* Edit Subscription */}
                             <button
                               onClick={() => setSelectedRecordForEdit(rec)}
-                              className="p-1.5 rounded-lg bg-slate-800 hover:bg-purple-950/50 text-slate-300 hover:text-purple-200 border border-slate-700 hover:border-purple-500/50 transition-colors"
+                              className="p-1.5 rounded-lg bg-[#0F1219] hover:bg-[#161C27] text-violet-400 border border-[#222936] transition-colors"
                               title={t('admin.editSubscription', 'Edit Subscription')}
                             >
-                              <Edit className="w-3.5 h-3.5 text-purple-400" />
+                              <Edit className="w-3.5 h-3.5" />
                             </button>
 
                             {/* Toggle Suspend/Activate */}
@@ -528,8 +528,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
                               onClick={() => handleToggleAccountStatus(rec)}
                               className={`p-1.5 rounded-lg border transition-colors ${
                                 isSuspended
-                                  ? 'bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 border-emerald-500/40'
-                                  : 'bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border-rose-500/40'
+                                  ? 'bg-emerald-950/40 hover:bg-emerald-900/50 text-emerald-400 border-emerald-800/40'
+                                  : 'bg-rose-950/40 hover:bg-rose-900/50 text-rose-400 border border-rose-800/40'
                               }`}
                               title={isSuspended ? t('admin.activateAccount', 'Activate Account') : t('admin.suspendAccount', 'Suspend Account')}
                             >

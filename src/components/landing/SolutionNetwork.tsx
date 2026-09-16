@@ -74,18 +74,18 @@ export const SolutionNetwork: React.FC = () => {
   ];
 
   return (
-    <section className="py-20 relative bg-[#0F172A]">
+    <section className="py-20 relative bg-[#090B10]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-950/50 border border-purple-500/30 text-purple-300 text-xs font-semibold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#121722] border border-[#222936] text-violet-400 text-xs font-semibold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" /> Autonomous MSME Financial Engine
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#F8FAFC] tracking-tight">
             {t('landing.solutionTitle', 'The BizPilot Financial Network')}
           </h2>
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+          <p className="text-[#A7B0C0] text-sm sm:text-base leading-relaxed">
             {t('landing.solutionSubtitle', 'A synchronized platform connecting transaction data to institutional underwriting protocols.')}
           </p>
         </div>
@@ -94,18 +94,18 @@ export const SolutionNetwork: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           {/* Left / Central AI Engine Hub Visual */}
-          <div className="lg:col-span-6 relative flex flex-col items-center justify-center p-8 rounded-3xl bg-slate-900/60 border border-slate-800 backdrop-blur-xl">
+          <div className="lg:col-span-6 relative flex flex-col items-center justify-center p-8 rounded-3xl bg-[#0F1219] border border-[#222936] shadow-xl">
             
-            {/* Pulsing Concentric Rings */}
-            <div className="absolute w-72 h-72 rounded-full border border-purple-500/20 animate-ping opacity-20 pointer-events-none" />
-            <div className="absolute w-96 h-96 rounded-full border border-sky-500/20 pointer-events-none" />
+            {/* Concentric Rings */}
+            <div className="absolute w-72 h-72 rounded-full border border-violet-500/10 animate-ping opacity-40 pointer-events-none" />
+            <div className="absolute w-96 h-96 rounded-full border border-violet-500/5 pointer-events-none" />
 
             {/* Central Core */}
-            <div className="relative z-10 w-32 h-32 rounded-3xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-sky-400 p-1 shadow-2xl shadow-purple-600/50 flex flex-col items-center justify-center text-center">
-              <div className="w-full h-full bg-slate-950/80 rounded-[22px] flex flex-col items-center justify-center p-2 backdrop-blur-md">
-                <Sparkles className="w-8 h-8 text-sky-300 animate-pulse" />
-                <span className="text-xs font-black text-white mt-1">BizPilot Core</span>
-                <span className="text-[9px] text-purple-300 uppercase tracking-widest font-semibold">AI Neural Bus</span>
+            <div className="relative z-10 w-32 h-32 rounded-3xl bg-gradient-to-tr from-violet-600 via-indigo-600 to-teal-400 p-1 shadow-lg shadow-violet-500/20 flex flex-col items-center justify-center text-center">
+              <div className="w-full h-full bg-[#0B0E14] rounded-[22px] flex flex-col items-center justify-center p-2">
+                <Sparkles className="w-8 h-8 text-violet-400" />
+                <span className="text-xs font-black text-[#F8FAFC] mt-1">BizPilot Core</span>
+                <span className="text-[9px] text-teal-400 uppercase tracking-widest font-semibold">AI Neural Bus</span>
               </div>
             </div>
 
@@ -120,17 +120,17 @@ export const SolutionNetwork: React.FC = () => {
                     onClick={() => setActiveNode(n.id)}
                     className={`p-3 rounded-xl border text-left transition-all relative overflow-hidden group ${
                       isSelected
-                        ? 'bg-purple-950/70 border-purple-500 text-white shadow-lg shadow-purple-900/30 scale-105'
-                        : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-900'
+                        ? 'bg-[#161C27] border-violet-500 text-[#F8FAFC] shadow-md shadow-violet-500/10 scale-105'
+                        : 'bg-[#121722] border-[#222936] text-[#A7B0C0] hover:border-[#303848] hover:bg-[#171D29]'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <div className={`w-7 h-7 rounded-lg bg-gradient-to-tr ${n.color} flex items-center justify-center text-white shadow-sm`}>
                         <Icon className="w-4 h-4" />
                       </div>
-                      <span className="text-[9px] font-mono text-slate-400 font-semibold">{n.metric}</span>
+                      <span className="text-[9px] font-mono text-[#707A8C] font-semibold">{n.metric}</span>
                     </div>
-                    <div className="text-xs font-bold truncate text-white">{n.title}</div>
+                    <div className="text-xs font-bold truncate text-[#F8FAFC]">{n.title}</div>
                   </button>
                 );
               })}
@@ -140,17 +140,17 @@ export const SolutionNetwork: React.FC = () => {
 
           {/* Right Selected Node Deep Dive */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="p-8 rounded-3xl bg-slate-900/80 border border-slate-800 relative overflow-hidden shadow-2xl">
+            <div className="p-8 rounded-3xl bg-[#0F1219] border border-[#222936] relative overflow-hidden shadow-xl">
               
               {/* Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+              <div className="flex items-center justify-between pb-4 border-b border-[#222936]">
                 <div className="flex items-center gap-3">
-                  <div className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${nodes[activeNode].color} flex items-center justify-center text-white shadow-lg`}>
+                  <div className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${nodes[activeNode].color} flex items-center justify-center text-white shadow-md`}>
                     {React.createElement(nodes[activeNode].icon, { className: 'w-6 h-6' })}
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Selected Subsystem</span>
-                    <h3 className="text-xl font-extrabold text-white">{nodes[activeNode].title}</h3>
+                    <span className="text-[10px] font-bold text-[#707A8C] uppercase tracking-widest">Selected Subsystem</span>
+                    <h3 className="text-xl font-extrabold text-[#F8FAFC]">{nodes[activeNode].title}</h3>
                   </div>
                 </div>
                 <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${nodes[activeNode].badgeColor}`}>
@@ -160,15 +160,15 @@ export const SolutionNetwork: React.FC = () => {
 
               {/* Description & Impact */}
               <div className="py-6 space-y-4">
-                <p className="text-slate-200 text-sm sm:text-base leading-relaxed">
+                <p className="text-[#A7B0C0] text-sm sm:text-base leading-relaxed">
                   {nodes[activeNode].desc}
                 </p>
 
-                <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 space-y-2 text-xs">
-                  <div className="font-bold text-purple-300 flex items-center gap-1.5">
-                    <Zap className="w-3.5 h-3.5 text-purple-400" /> Explainable AI Automation
+                <div className="p-4 rounded-xl bg-[#121722] border border-[#222936] space-y-2 text-xs">
+                  <div className="font-bold text-violet-400 flex items-center gap-1.5">
+                    <Zap className="w-3.5 h-3.5 text-violet-400" /> Explainable AI Automation
                   </div>
-                  <p className="text-slate-400 leading-relaxed">
+                  <p className="text-[#A7B0C0] leading-relaxed">
                     BizPilot constantly reconciles operational telemetry with standard banking underwriting rules, removing guesswork for MSME leaders.
                   </p>
                 </div>
@@ -176,10 +176,10 @@ export const SolutionNetwork: React.FC = () => {
 
               {/* Action */}
               <div className="pt-2 flex items-center justify-between text-xs">
-                <span className="text-slate-400">Click any subsystem node on the left to explore</span>
+                <span className="text-[#707A8C]">Click any subsystem node on the left to explore</span>
                 <button
                   onClick={() => setActiveNode((activeNode + 1) % nodes.length)}
-                  className="text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1 transition-colors"
+                  className="text-violet-400 hover:text-violet-300 font-semibold flex items-center gap-1 transition-colors"
                 >
                   Next Node
                   <ArrowRight className="w-3.5 h-3.5" />

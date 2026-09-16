@@ -104,19 +104,19 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
   ];
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-6 pb-12 font-sans">
       
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-purple-950/40 to-slate-900 border border-purple-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+      <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-purple-300">
-            <SlidersHorizontal className="w-4 h-4 text-purple-400" />
+          <div className="flex items-center gap-2 text-xs font-semibold text-[#A78BFA]">
+            <SlidersHorizontal className="w-4 h-4 text-[#8B5CF6]" />
             <span>{t('whatIf.bannerTag', 'INTERACTIVE SCENARIO MODELING')}</span>
           </div>
-          <h2 className="text-2xl font-black text-white mt-1">
+          <h2 className="text-2xl font-black text-[#F8FAFC] mt-1">
             {t('whatIf.title', 'What-If Business & Capital Simulator')}
           </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-[#A7B0C0] mt-0.5">
             {language === 'ta' 
               ? 'வணிக முடிவுகளை நிகழ்நேரத்தில் உருவகப்படுத்துங்கள். உங்கள் உண்மையான அடிப்படை எண்களின் அடிப்படையில் கட்டமைக்கப்பட்டது.'
               : `Test business decisions in real-time. Modeled dynamically on ${analysis?.organizationName || profile.name}'s actual baseline numbers.`}
@@ -125,29 +125,29 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
 
         <button
           onClick={resetDefaults}
-          className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-slate-700 transition-all"
+          className="px-3.5 py-2 rounded-xl bg-[#161C27] hover:bg-[#1E2536] text-[#F8FAFC] text-xs font-semibold flex items-center gap-1.5 border border-[#303848] transition-all shadow-sm"
         >
-          <RotateCcw className="w-3.5 h-3.5" />
+          <RotateCcw className="w-3.5 h-3.5 text-[#A78BFA]" />
           {t('whatIf.resetBaseline', 'Reset Baseline')}
         </button>
       </div>
 
       {/* Main Simulator Grid */}
-      <div className="p-3 px-4 rounded-xl bg-purple-950/20 border border-purple-500/20 text-xs text-purple-200">
-        <span className="font-bold text-purple-400 uppercase tracking-wider text-[10px] bg-purple-500/20 px-2 py-0.5 rounded border border-purple-500/30 mr-2">Simulation Notice</span>
+      <div className="p-3 px-4 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 text-xs text-[#A78BFA]">
+        <span className="font-bold text-[#F8FAFC] uppercase tracking-wider text-[10px] bg-[#8B5CF6]/20 px-2 py-0.5 rounded border border-[#8B5CF6]/30 mr-2">Simulation Notice</span>
         <span>Scenario Simulation Disclaimer: Projections are mathematical sensitivity models based on user-adjusted parameters and your organization's actual financial baseline. They do not constitute guaranteed financial outcomes.</span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Left 5 Cols: Sliders Control Station */}
-        <div className="lg:col-span-5 p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-5 shadow-xl">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-              <Zap className="w-4 h-4 text-purple-400" /> 
+        <div className="lg:col-span-5 p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-5 shadow-lg shadow-black/20">
+          <div className="flex items-center justify-between border-b border-[#222936] pb-3">
+            <h3 className="text-xs font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-1.5">
+              <Zap className="w-4 h-4 text-[#8B5CF6]" /> 
               {t('whatIf.decisionVars', 'Decision Variables')}
             </h3>
-            <span className="text-[10px] text-purple-300 font-semibold bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/30">
+            <span className="text-[10px] text-[#A78BFA] font-semibold bg-[#8B5CF6]/15 px-2 py-0.5 rounded border border-[#8B5CF6]/30">
               {t('whatIf.liveBaseline', 'Live Baseline')}
             </span>
           </div>
@@ -155,7 +155,7 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           {/* Slider 1: Product Pricing Change */}
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">
+              <span className="text-[#A7B0C0] font-medium">
                 {t('whatIf.pricing', 'Product / Service Pricing')}:
               </span>
               <strong className={priceChange >= 0 ? 'text-emerald-400' : 'text-rose-400'}>
@@ -169,9 +169,9 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
               step="1"
               value={priceChange}
               onChange={(e) => setPriceChange(Number(e.target.value))}
-              className="w-full accent-purple-500 bg-slate-800 h-1.5 rounded-lg cursor-pointer"
+              className="w-full accent-[#8B5CF6] bg-[#161C27] h-1.5 rounded-lg cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-500">
+            <div className="flex justify-between text-[10px] text-[#707A8C]">
               <span>-20% ({language === 'ta' ? 'தள்ளுபடி' : 'Discount'})</span>
               <span>0%</span>
               <span>+30% ({language === 'ta' ? 'உயர்வு' : 'Premium'})</span>
@@ -181,11 +181,11 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           {/* Slider 2: Additional Hires */}
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium flex items-center gap-1">
+              <span className="text-[#A7B0C0] font-medium flex items-center gap-1">
                 <Users className="w-3.5 h-3.5 text-sky-400" /> 
                 {t('whatIf.employees', 'New Employees')}:
               </span>
-              <strong className="text-white">
+              <strong className="text-[#F8FAFC]">
                 {hiringCount > 0 ? `+${hiringCount}` : hiringCount === 0 ? '0' : `${hiringCount}`}
               </strong>
             </div>
@@ -196,9 +196,9 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
               step="1"
               value={hiringCount}
               onChange={(e) => setHiringCount(Number(e.target.value))}
-              className="w-full accent-sky-500 bg-slate-800 h-1.5 rounded-lg cursor-pointer"
+              className="w-full accent-sky-500 bg-[#161C27] h-1.5 rounded-lg cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-500">
+            <div className="flex justify-between text-[10px] text-[#707A8C]">
               <span>-3</span>
               <span>0</span>
               <span>+10</span>
@@ -208,7 +208,7 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           {/* Slider 3: Raw Material Inflation */}
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">
+              <span className="text-[#A7B0C0] font-medium">
                 {t('whatIf.materialCost', 'Material / Direct Cost Shift')}:
               </span>
               <strong className={materialCostChange <= 0 ? 'text-emerald-400' : 'text-rose-400'}>
@@ -222,9 +222,9 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
               step="1"
               value={materialCostChange}
               onChange={(e) => setMaterialCostChange(Number(e.target.value))}
-              className="w-full accent-rose-500 bg-slate-800 h-1.5 rounded-lg cursor-pointer"
+              className="w-full accent-rose-500 bg-[#161C27] h-1.5 rounded-lg cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-500">
+            <div className="flex justify-between text-[10px] text-[#707A8C]">
               <span>-15%</span>
               <span>0%</span>
               <span>+25%</span>
@@ -234,10 +234,10 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           {/* Slider 4: Marketing Budget Boost */}
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">
+              <span className="text-[#A7B0C0] font-medium">
                 {t('whatIf.marketing', 'Marketing & Sales Spend')}:
               </span>
-              <strong className="text-purple-300">+{marketingBoost}%</strong>
+              <strong className="text-[#A78BFA]">+{marketingBoost}%</strong>
             </div>
             <input 
               type="range" 
@@ -246,9 +246,9 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
               step="5"
               value={marketingBoost}
               onChange={(e) => setMarketingBoost(Number(e.target.value))}
-              className="w-full accent-indigo-500 bg-slate-800 h-1.5 rounded-lg cursor-pointer"
+              className="w-full accent-[#8B5CF6] bg-[#161C27] h-1.5 rounded-lg cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-500">
+            <div className="flex justify-between text-[10px] text-[#707A8C]">
               <span>0%</span>
               <span>+25%</span>
               <span>+50%</span>
@@ -258,11 +258,11 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           {/* Slider 5: Additional Debt Facility */}
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium flex items-center gap-1">
+              <span className="text-[#A7B0C0] font-medium flex items-center gap-1">
                 <Coins className="w-3.5 h-3.5 text-amber-400" /> 
                 {t('whatIf.newLoan', 'New Working Capital Loan')}:
               </span>
-              <strong className="text-amber-300">
+              <strong className="text-amber-400">
                 {additionalLoanLakhs > 0 ? `₹${additionalLoanLakhs} ${t('common.lakhs', 'Lakhs')}` : '₹0'}
               </strong>
             </div>
@@ -273,9 +273,9 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
               step="5"
               value={additionalLoanLakhs}
               onChange={(e) => setAdditionalLoanLakhs(Number(e.target.value))}
-              className="w-full accent-amber-500 bg-slate-800 h-1.5 rounded-lg cursor-pointer"
+              className="w-full accent-amber-500 bg-[#161C27] h-1.5 rounded-lg cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-500">
+            <div className="flex justify-between text-[10px] text-[#707A8C]">
               <span>₹0</span>
               <span>₹25 L</span>
               <span>₹50 L</span>
@@ -290,11 +290,11 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           {/* 3 Simulation Result Scorecards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 shadow-lg space-y-1">
-              <div className="text-[10px] text-slate-400 uppercase font-bold">
+            <div className="p-4 rounded-xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 space-y-1">
+              <div className="text-[10px] text-[#707A8C] uppercase font-bold">
                 {t('whatIf.simProfit', 'Simulated Net Profit')}
               </div>
-              <div className="text-2xl font-black text-white">₹{simProfit.toFixed(1)} L</div>
+              <div className="text-2xl font-black text-[#F8FAFC]">₹{simProfit.toFixed(1)} L</div>
               <div className="flex items-center text-xs">
                 {profitDelta >= 0 ? (
                   <span className="text-emerald-400 font-semibold flex items-center">
@@ -308,51 +308,53 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-purple-500/40 shadow-lg space-y-1 bg-gradient-to-b from-purple-950/20 to-slate-900">
-              <div className="text-[10px] text-purple-300 uppercase font-bold">
+            <div className="p-4 rounded-xl bg-[#121722] border border-[#8B5CF6]/30 shadow-lg shadow-black/20 space-y-1">
+              <div className="text-[10px] text-[#A78BFA] uppercase font-bold">
                 {t('whatIf.simHealth', 'Simulated Health Score')}
               </div>
-              <div className="text-2xl font-black text-purple-300">{simulatedHealthScore}<span className="text-xs text-slate-400">/100</span></div>
-              <div className="text-xs font-semibold text-slate-300">
+              <div className="text-2xl font-black text-[#A78BFA]">{simulatedHealthScore}<span className="text-xs text-[#707A8C]">/100</span></div>
+              <div className="text-xs font-semibold text-[#A7B0C0]">
                 Shift: {scoreShift >= 0 ? `+${scoreShift}` : scoreShift} pts
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 shadow-lg space-y-1">
-              <div className="text-[10px] text-slate-400 uppercase font-bold">
+            <div className="p-4 rounded-xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 space-y-1">
+              <div className="text-[10px] text-[#707A8C] uppercase font-bold">
                 {t('whatIf.simRunway', 'Simulated Runway')}
               </div>
               <div className="text-2xl font-black text-sky-400">{simRunway} Mo</div>
-              <div className="text-xs text-slate-400">
-                DSCR: <strong className="text-white">{simDscr ? `${simDscr}x` : t('executive.debtFree', 'Debt-Free')}</strong>
+              <div className="text-xs text-[#A7B0C0]">
+                DSCR: <strong className="text-[#F8FAFC]">{simDscr ? `${simDscr}x` : t('executive.debtFree', 'Debt-Free')}</strong>
               </div>
             </div>
 
           </div>
 
           {/* Side-by-Side Comparison Chart */}
-          <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3 shadow-xl">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-purple-400" /> 
+          <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] space-y-3 shadow-lg shadow-black/20">
+            <h4 className="text-xs font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-[#8B5CF6]" /> 
               {t('whatIf.chartTitle', 'Baseline vs Simulated Projection (in ₹ Lakhs)')}
             </h4>
             <div className="h-60 w-full pt-2">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={comparisonData} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" vertical={false} />
-                  <XAxis dataKey="metric" stroke="#64748B" fontSize={11} tickLine={false} />
-                  <YAxis stroke="#64748B" fontSize={11} tickLine={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#222936" vertical={false} />
+                  <XAxis dataKey="metric" stroke="#707A8C" fontSize={11} tickLine={false} />
+                  <YAxis stroke="#707A8C" fontSize={11} tickLine={false} />
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: '#0F172A', 
-                      borderColor: '#334155', 
+                      backgroundColor: '#161C27', 
+                      borderColor: '#303848', 
                       borderRadius: '8px', 
-                      fontSize: '12px'
+                      fontSize: '12px',
+                      color: '#F8FAFC',
+                      boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.3)'
                     }}
                     itemStyle={{ color: '#F8FAFC' }}
                   />
-                  <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
-                  <Bar dataKey="Baseline" fill="#64748B" radius={[4, 4, 0, 0]} />
+                  <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px', color: '#A7B0C0' }} />
+                  <Bar dataKey="Baseline" fill="#475569" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="Simulated" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -360,12 +362,12 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           </div>
 
           {/* AI Simulation Commentary Banner */}
-          <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 text-xs space-y-2">
-            <div className="font-bold text-white flex items-center gap-1.5">
+          <div className="p-4 rounded-xl bg-[#0F1219] border border-[#222936] text-xs space-y-2 shadow-sm">
+            <div className="font-bold text-[#F8FAFC] flex items-center gap-1.5">
               <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 
               {t('whatIf.diagnosticSummary', 'Simulator Diagnostic Summary')}
             </div>
-            <p className="text-slate-300 leading-relaxed">
+            <p className="text-[#A7B0C0] leading-relaxed">
               {profitDelta >= 0 
                 ? (language === 'ta'
                     ? `இந்த சூழ்நிலை மாதாந்திர நிகர லாபத்தை ₹${profitDelta.toFixed(1)} இலட்சம் அதிகரிக்கிறது. உங்கள் நிதி ஆரோக்கிய மதிப்பெண் ${simulatedHealthScore}/100 ஆக உயர்ந்து கடன் தகுதியை மேம்படுத்துகிறது.`

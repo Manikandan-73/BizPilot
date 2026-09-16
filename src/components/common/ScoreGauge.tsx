@@ -30,10 +30,10 @@ export const ScoreGauge: React.FC<ScoreGaugeProps> = ({
   const getGradientId = () => `gauge-grad-${colorScheme}-${score}`;
 
   const getGrade = (val: number) => {
-    if (val >= 80) return { text: 'Tier A • Prime', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' };
-    if (val >= 70) return { text: 'Tier B+ • Healthy', color: 'text-sky-400 bg-sky-500/10 border-sky-500/30' };
-    if (val >= 55) return { text: 'Tier B • Moderate', color: 'text-amber-400 bg-amber-500/10 border-amber-500/30' };
-    return { text: 'Tier C • High Risk', color: 'text-rose-400 bg-rose-500/10 border-rose-500/30' };
+    if (val >= 80) return { text: 'Tier A • Prime', color: 'text-emerald-400 bg-emerald-950/40 border-emerald-500/30 font-semibold' };
+    if (val >= 70) return { text: 'Tier B+ • Healthy', color: 'text-teal-400 bg-teal-950/40 border-teal-500/30 font-semibold' };
+    if (val >= 55) return { text: 'Tier B • Moderate', color: 'text-amber-400 bg-amber-950/40 border-amber-500/30 font-semibold' };
+    return { text: 'Tier C • High Risk', color: 'text-rose-400 bg-rose-950/40 border-rose-500/30 font-semibold' };
   };
 
   const grade = getGrade(score);
@@ -51,32 +51,32 @@ export const ScoreGauge: React.FC<ScoreGaugeProps> = ({
             <linearGradient id={getGradientId()} x1="0%" y1="0%" x2="100%" y2="100%">
               {colorScheme === 'purple' && (
                 <>
-                  <stop offset="0%" stopColor="#6C63FF" />
-                  <stop offset="60%" stopColor="#8B5CF6" />
-                  <stop offset="100%" stopColor="#38BDF8" />
+                  <stop offset="0%" stopColor="#8B5CF6" />
+                  <stop offset="60%" stopColor="#7C3AED" />
+                  <stop offset="100%" stopColor="#14B8A6" />
                 </>
               )}
               {colorScheme === 'emerald' && (
                 <>
                   <stop offset="0%" stopColor="#10B981" />
-                  <stop offset="100%" stopColor="#34D399" />
+                  <stop offset="100%" stopColor="#059669" />
                 </>
               )}
               {colorScheme === 'blue' && (
                 <>
-                  <stop offset="0%" stopColor="#38BDF8" />
-                  <stop offset="100%" stopColor="#6366F1" />
+                  <stop offset="0%" stopColor="#8B5CF6" />
+                  <stop offset="100%" stopColor="#7C3AED" />
                 </>
               )}
               {colorScheme === 'amber' && (
                 <>
                   <stop offset="0%" stopColor="#F59E0B" />
-                  <stop offset="100%" stopColor="#EF4444" />
+                  <stop offset="100%" stopColor="#D97706" />
                 </>
               )}
             </linearGradient>
             <filter id="glow-gauge" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feGaussianBlur stdDeviation="3" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
             </filter>
           </defs>
@@ -86,7 +86,7 @@ export const ScoreGauge: React.FC<ScoreGaugeProps> = ({
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="#1E293B"
+            stroke="#222936"
             strokeWidth={strokeWidth}
             fill="none"
             strokeDasharray={`${circumference * 0.75} ${circumference * 0.25}`}
@@ -111,14 +111,14 @@ export const ScoreGauge: React.FC<ScoreGaugeProps> = ({
 
         {/* Inner Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-          <span className="text-3xl font-extrabold text-white tracking-tight flex items-baseline">
+          <span className="text-3xl font-extrabold text-[#F8FAFC] tracking-tight flex items-baseline">
             {score}
-            <span className="text-xs text-slate-400 font-normal ml-0.5">/{maxScore}</span>
+            <span className="text-xs text-[#707A8C] font-normal ml-0.5">/{maxScore}</span>
           </span>
-          <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider mt-0.5">
+          <span className="text-xs font-semibold text-[#A7B0C0] uppercase tracking-wider mt-0.5">
             {label}
           </span>
-          <span className="text-[10px] text-slate-400">
+          <span className="text-[10px] text-[#707A8C]">
             {sublabel}
           </span>
         </div>

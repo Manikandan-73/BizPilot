@@ -48,28 +48,28 @@ export const SubscriptionPage: React.FC<SubscriptionPageProps> = ({
       
       {/* Notifications / Alerts */}
       {checkoutError && (
-        <div className="p-4 rounded-xl bg-rose-950/60 border border-rose-500/50 text-rose-200 text-xs flex items-center justify-between shadow-lg">
+        <div className="p-4 rounded-xl bg-rose-950/40 border border-rose-800/40 text-rose-300 text-xs flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-2">
             <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
             <span>{checkoutError}</span>
           </div>
-          <button onClick={clearMessages} className="text-slate-400 hover:text-white font-bold ml-2">✕</button>
+          <button onClick={clearMessages} className="text-[#707A8C] hover:text-[#F8FAFC] font-bold ml-2">✕</button>
         </div>
       )}
 
       {paymentSuccessMessage && (
-        <div className="p-5 rounded-xl bg-emerald-950/60 border border-emerald-500/50 text-emerald-200 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xl">
+        <div className="p-5 rounded-xl bg-emerald-950/40 border border-emerald-800/40 text-emerald-300 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
           <div className="flex items-center gap-2.5">
             <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
             <div>
-              <div className="font-bold text-white text-sm">{t('subscription.paymentSuccessful', 'Payment Successful!')}</div>
-              <div>{paymentSuccessMessage}</div>
+              <div className="font-bold text-[#F8FAFC] text-sm">{t('subscription.paymentSuccessful', 'Payment Successful!')}</div>
+              <div className="text-emerald-400">{paymentSuccessMessage}</div>
             </div>
           </div>
           {onContinueToDashboard && (
             <button
               onClick={onContinueToDashboard}
-              className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-all shadow-md shrink-0"
+              className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-all shadow-sm shrink-0"
             >
               {t('subscription.continueToDashboard', 'Continue to Dashboard')}
             </button>

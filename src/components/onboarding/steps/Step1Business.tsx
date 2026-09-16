@@ -17,7 +17,7 @@ export const Step1Business: React.FC<Step1BusinessProps> = ({ data, errors, onCh
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 text-purple-300">
+      <div className="flex items-center gap-2 text-violet-400">
         <Building2 className="w-4 h-4" />
         <h2 className="text-sm font-bold uppercase tracking-wider">{t('onboarding.step1', 'Business Information')}</h2>
       </div>
@@ -96,7 +96,7 @@ export const Step1Business: React.FC<Step1BusinessProps> = ({ data, errors, onCh
           helperText="Approximate figure in Indian Rupees (₹) for the last financial year"
         >
           <div className="relative">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">₹</span>
+            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#707A8C] text-sm">₹</span>
             <input
               type="number"
               value={data.annualTurnover}

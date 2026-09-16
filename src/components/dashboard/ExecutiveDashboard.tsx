@@ -96,37 +96,37 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
     <div className="space-y-6 pb-12">
       
       {/* Top Welcome Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-purple-950/40 to-slate-900 border border-purple-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+      <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#8B5CF6]/10 text-[#A78BFA] border border-[#8B5CF6]/20">
               {t('executive.activePortfolio', 'Active Business Portfolio')}
             </span>
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-[#707A8C] font-mono">
               UDYAM: {profile.udyamNumber || (language === 'ta' ? 'வழங்கப்படவில்லை' : 'Not provided')}
             </span>
           </div>
-          <h1 className="text-2xl font-black text-white">
+          <h1 className="text-2xl font-black text-[#F8FAFC] tracking-tight">
             {analysis?.organizationName || profile.name}
           </h1>
-          <p className="text-xs text-slate-300">
+          <p className="text-xs text-[#A7B0C0] font-medium">
             {analysis?.businessType || profile.sector} • {analysis?.location || profile.location} • {language === 'ta' ? 'விற்றுமுதல்: ' : 'Turnover: '}
-            <strong className="text-purple-300">{profile.turnover}</strong>
+            <strong className="text-[#8B5CF6] font-bold">{profile.turnover}</strong>
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <button
             onClick={() => onNavigate('what-if-simulator')}
-            className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-slate-700 transition-all"
+            className="px-3.5 py-2 rounded-xl bg-[#161C27] hover:bg-[#1A2230] text-[#F8FAFC] text-xs font-semibold flex items-center gap-1.5 border border-[#222936] hover:border-[#303848] transition-all"
           >
-            <Zap className="w-3.5 h-3.5 text-purple-400" />
+            <Zap className="w-3.5 h-3.5 text-[#8B5CF6]" />
             {t('executive.simulateDecision', 'Simulate Decision')}
           </button>
 
           <button
             onClick={onOpenPassport}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-lg shadow-purple-600/30 transition-all"
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white text-xs font-bold flex items-center gap-1.5 shadow-lg shadow-[#8B5CF6]/20 transition-all hover:-translate-y-0.5"
           >
             <FileText className="w-3.5 h-3.5" />
             {t('executive.downloadPassport', 'Download Passport')}
@@ -140,21 +140,21 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
         {/* KPI 1: Business Health Score */}
         <div 
           onClick={() => onNavigate('financial-health')}
-          className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-purple-500/50 transition-all cursor-pointer group shadow-lg"
+          className="p-4 rounded-2xl bg-[#121722] border border-[#222936] hover:border-[#8B5CF6]/50 hover:bg-[#171D29] hover:shadow-lg hover:shadow-black/40 hover:-translate-y-0.5 transition-all cursor-pointer group shadow-sm"
         >
-          <div className="flex items-center justify-between text-xs text-slate-400">
+          <div className="flex items-center justify-between text-xs text-[#707A8C] group-hover:text-[#A7B0C0]">
             <span className="font-semibold">{t('executive.kpiHealth', 'Business Health')}</span>
-            <HeartPulse className="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform" />
+            <HeartPulse className="w-4 h-4 text-[#8B5CF6] group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl font-black text-white">{healthScore}</span>
-            <span className="text-xs text-slate-400">/100</span>
+            <span className="text-2xl font-black text-[#F8FAFC]">{healthScore}</span>
+            <span className="text-xs text-[#707A8C] font-medium">/100</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
-            <span className="text-emerald-400 font-semibold flex items-center">
+            <span className="text-[#10B981] font-bold flex items-center">
               <ArrowUpRight className="w-3 h-3 mr-0.5" /> {analysis?.health.rating || t('common.optimal', 'Optimal')}
             </span>
-            <span className="text-slate-400">
+            <span className="text-[#707A8C] font-medium">
               {healthScore >= 75 ? t('executive.tierAPrime', 'Tier-A Prime') : t('executive.monitored', 'Monitored')}
             </span>
           </div>
@@ -163,42 +163,42 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
         {/* KPI 2: Funding Readiness Score */}
         <div 
           onClick={() => onNavigate('funding-readiness')}
-          className="p-4 rounded-xl bg-slate-900/80 border border-purple-500/40 hover:border-purple-500 transition-all cursor-pointer group shadow-lg bg-gradient-to-b from-purple-950/20 to-slate-900"
+          className="p-4 rounded-2xl bg-[#121722] border border-[#222936] hover:border-[#8B5CF6]/50 hover:bg-[#171D29] hover:shadow-lg hover:shadow-black/40 hover:-translate-y-0.5 transition-all cursor-pointer group shadow-sm"
         >
-          <div className="flex items-center justify-between text-xs text-purple-300">
+          <div className="flex items-center justify-between text-xs text-[#A78BFA] group-hover:text-[#C4B5FD]">
             <span className="font-bold flex items-center gap-1">
-              <Sparkles className="w-3 h-3" /> {t('executive.kpiFunding', 'Funding Score')}
+              <Sparkles className="w-3 h-3 text-[#8B5CF6]" /> {t('executive.kpiFunding', 'Funding Score')}
             </span>
-            <Award className="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform" />
+            <Award className="w-4 h-4 text-[#8B5CF6] group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl font-black text-purple-300">{fundingScore}</span>
-            <span className="text-xs text-slate-400">/100</span>
+            <span className="text-2xl font-black text-[#8B5CF6]">{fundingScore}</span>
+            <span className="text-xs text-[#707A8C] font-medium">/100</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
-            <span className="text-purple-300 font-semibold">
+            <span className="text-[#A78BFA] font-semibold">
               {loanEligibility}
             </span>
-            <span className="text-slate-400">{creditLimit}</span>
+            <span className="text-[#707A8C] font-medium">{creditLimit}</span>
           </div>
         </div>
 
         {/* KPI 3: Operating Margin */}
         <div 
           onClick={() => onNavigate('financial-health')}
-          className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/50 transition-all cursor-pointer group shadow-lg"
+          className="p-4 rounded-2xl bg-[#121722] border border-[#222936] hover:border-[#14B8A6]/50 hover:bg-[#171D29] hover:shadow-lg hover:shadow-black/40 hover:-translate-y-0.5 transition-all cursor-pointer group shadow-sm"
         >
-          <div className="flex items-center justify-between text-xs text-slate-400">
+          <div className="flex items-center justify-between text-xs text-[#707A8C] group-hover:text-[#A7B0C0]">
             <span className="font-semibold">{t('executive.kpiMargin', 'Operating Margin')}</span>
-            <TrendingUp className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
+            <TrendingUp className="w-4 h-4 text-[#14B8A6] group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl font-black text-emerald-400">{opMargin !== null ? `${opMargin}%` : '—'}</span>
-            <span className="text-xs text-slate-400">EBITDA</span>
+            <span className="text-2xl font-black text-[#10B981]">{opMargin !== null ? `${opMargin}%` : '—'}</span>
+            <span className="text-xs text-[#707A8C] font-medium">EBITDA</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
-            <span className="text-slate-300 font-medium">Gross: {grossMargin !== null ? `${grossMargin}%` : '—'}</span>
-            <span className="text-emerald-400 font-medium">
+            <span className="text-[#707A8C] font-medium">Gross: {grossMargin !== null ? `${grossMargin}%` : '—'}</span>
+            <span className="text-[#10B981] font-bold">
               {opMargin !== null ? (opMargin >= 12 ? t('common.healthy', 'Healthy') : t('common.needsAttention', 'Needs Focus')) : '—'}
             </span>
           </div>
@@ -207,18 +207,18 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
         {/* KPI 4: Cash Runway */}
         <div 
           onClick={() => onNavigate('cash-flow')}
-          className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/50 transition-all cursor-pointer group shadow-lg"
+          className="p-4 rounded-2xl bg-[#121722] border border-[#222936] hover:border-[#14B8A6]/50 hover:bg-[#171D29] hover:shadow-lg hover:shadow-black/40 hover:-translate-y-0.5 transition-all cursor-pointer group shadow-sm"
         >
-          <div className="flex items-center justify-between text-xs text-slate-400">
+          <div className="flex items-center justify-between text-xs text-[#707A8C] group-hover:text-[#A7B0C0]">
             <span className="font-semibold">{t('executive.kpiRunway', 'Cash Runway')}</span>
-            <Coins className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
+            <Coins className="w-4 h-4 text-[#14B8A6] group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl font-black text-white">{runwayMonths !== null ? runwayMonths : '—'}</span>
-            <span className="text-xs text-slate-400">{t('common.months', 'Months')}</span>
+            <span className="text-2xl font-black text-[#F8FAFC]">{runwayMonths !== null ? runwayMonths : '—'}</span>
+            <span className="text-xs text-[#707A8C] font-medium">{t('common.months', 'Months')}</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
-            <span className="text-slate-300 font-medium">
+            <span className="text-[#707A8C] font-medium">
               Net: ₹{(() => {
                 if (analysis) return (analysis.financials.monthlyNetCashFlow / 100000).toFixed(1);
                 if (organization?.financialProfile) {
@@ -229,7 +229,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
                 return '0.0';
               })()}L/mo
             </span>
-            <span className={(runwayMonths ?? 0) >= 3 ? 'text-emerald-400 font-semibold' : 'text-amber-400 font-semibold'}>
+            <span className={(runwayMonths ?? 0) >= 3 ? 'text-[#10B981] font-bold' : 'text-[#F59E0B] font-bold'}>
               {runwayMonths !== null ? (runwayMonths >= 3 ? t('common.optimal', 'Stable') : t('common.critical', 'Vulnerable')) : t('common.notAvailable', 'N/A')}
             </span>
           </div>
@@ -238,18 +238,18 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
         {/* KPI 5: Loan Eligibility Tier */}
         <div 
           onClick={() => onNavigate('funding-readiness')}
-          className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 transition-all cursor-pointer group shadow-lg"
+          className="p-4 rounded-2xl bg-[#121722] border border-[#222936] hover:border-[#10B981]/50 hover:bg-[#171D29] hover:shadow-lg hover:shadow-black/40 hover:-translate-y-0.5 transition-all cursor-pointer group shadow-sm"
         >
-          <div className="flex items-center justify-between text-xs text-slate-400">
+          <div className="flex items-center justify-between text-xs text-[#707A8C] group-hover:text-[#A7B0C0]">
             <span className="font-semibold">{t('executive.kpiEligibility', 'Loan Eligibility')}</span>
-            <Landmark className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+            <Landmark className="w-4 h-4 text-[#10B981] group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl font-black text-emerald-400">{loanEligibility}</span>
+            <span className="text-2xl font-black text-[#10B981]">{loanEligibility}</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
-            <span className="text-slate-300">{t('executive.cgtmseCoverage', 'CGTMSE Coverage')}</span>
-            <span className="text-purple-300 font-semibold">{t('executive.bankReady', 'Bank Ready')}</span>
+            <span className="text-[#707A8C]">{t('executive.cgtmseCoverage', 'CGTMSE Coverage')}</span>
+            <span className="text-[#8B5CF6] font-bold">{t('executive.bankReady', 'Bank Ready')}</span>
           </div>
         </div>
 
@@ -257,32 +257,32 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
 
 
       {/* Flagship Decision Intelligence Showcase */}
-      <div className="rounded-2xl border p-5 transition-all shadow-xl ${
+      <div className={`rounded-2xl p-5 transition-all shadow-lg ${
         isPro 
-          ? 'bg-gradient-to-r from-purple-950/40 via-slate-900 to-indigo-950/40 border-purple-500/30' 
-          : 'bg-slate-900/90 border-slate-800'
-      }">
+          ? 'bg-[#121722] border-2 border-[#8B5CF6]/40 shadow-[#8B5CF6]/5' 
+          : 'bg-[#121722] border border-[#222936]'
+      }`}>
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-purple-600/20 text-purple-300 border border-purple-500/30">
-                <Sparkles className="w-4 h-4 text-purple-400" />
+              <span className="p-1.5 rounded-lg bg-[#8B5CF6]/10 text-[#A78BFA] border border-[#8B5CF6]/20">
+                <Sparkles className="w-4 h-4 text-[#8B5CF6]" />
               </span>
-              <span className="text-xs font-bold uppercase tracking-wider text-purple-300">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#A78BFA]">
                 {isPro 
                   ? (language === 'ta' ? 'மேம்பட்ட வணிக முடிவு நுண்ணறிவு (செயலில் உள்ளது)' : 'Professional Decision Intelligence Active')
                   : (language === 'ta' ? 'மேம்பட்ட வணிக முடிவு நுண்ணறிவு' : 'Professional Decision Intelligence')}
               </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-purple-500 text-white shadow-sm">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-[#8B5CF6]/20 text-[#A78BFA] border border-[#8B5CF6]/30 shadow-sm">
                 PRO
               </span>
             </div>
-            <h2 className="text-base sm:text-lg font-bold text-white">
+            <h2 className="text-base sm:text-lg font-bold text-[#F8FAFC]">
               {language === 'ta' 
                 ? 'பணத்தை செலவழிக்கும் முன் வணிக முடிவுகளை உருவகப்படுத்துங்கள்'
                 : 'Simulate business decisions & stress-test impact before spending money'}
             </h2>
-            <p className="text-xs text-slate-400 max-w-2xl">
+            <p className="text-xs text-[#A7B0C0] max-w-2xl">
               {language === 'ta'
                 ? 'விலை உயர்வு, புதிய பணியாளர் சேர்த்தல், வங்கி கடன் மற்றும் செலவு குறைப்பு போன்ற முடிவுகளின் லாப மற்றும் பணப்புழக்க தாக்கத்தை நிகழ்நேரத்தில் கணிக்கவும்.'
                 : 'Model price changes, new hires, term loans, and cost cuts with deterministic financial math and grounded AI diagnostic advisory.'}
@@ -294,17 +294,17 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
               <>
                 <button
                   onClick={() => onNavigate('decision-lab')}
-                  className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs transition-all shadow-md shadow-purple-600/30"
+                  className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white font-semibold text-xs transition-all shadow-md shadow-[#8B5CF6]/20"
                 >
-                  <FlaskConical className="w-4 h-4 text-purple-200" />
+                  <FlaskConical className="w-4 h-4 text-white" />
                   <span>{language === 'ta' ? 'முடிவு ஆய்வகம் திறக்க' : 'Open Decision Lab'}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={() => onNavigate('ai-advisor')}
-                  className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-purple-200 font-semibold text-xs border border-purple-500/30 transition-all"
+                  className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#161C27] hover:bg-[#1C2433] text-[#14B8A6] font-semibold text-xs border border-[#14B8A6]/30 transition-all shadow-sm"
                 >
-                  <Bot className="w-4 h-4 text-purple-400" />
+                  <Bot className="w-4 h-4 text-[#14B8A6]" />
                   <span>{language === 'ta' ? 'AI வணிக ஆலோசகர்' : 'AI Business Advisor'}</span>
                 </button>
               </>
@@ -312,9 +312,9 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
               <div className="flex items-center gap-3 w-full md:w-auto">
                 <button
                   onClick={() => onNavigate('billing')}
-                  className="w-full md:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs shadow-lg shadow-purple-600/30 transition-all"
+                  className="w-full md:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white font-bold text-xs shadow-lg shadow-[#8B5CF6]/25 transition-all hover:shadow-[#8B5CF6]/40"
                 >
-                  <Lock className="w-3.5 h-3.5 text-purple-200" />
+                  <Lock className="w-3.5 h-3.5 text-white" />
                   <span>{language === 'ta' ? 'புரோவுக்கு மேம்படுத்து (₹2 மட்டும்)' : 'Unlock with Professional (₹2 Test Mode)'}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
@@ -328,61 +328,61 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Left 8 Cols: Revenue, Expense, & Cash Flow Multi-Graph */}
-        <div className="lg:col-span-8 p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4 shadow-xl">
+        <div className="lg:col-span-8 p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20">
           
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-800">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#222936]">
             <div>
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
+              <h3 className="text-base font-bold text-[#F8FAFC] flex items-center gap-2">
                 {t('executive.revenueExpenseTitle', 'Revenue, Expense & Cash Generation')}
-                <span className="text-xs font-normal text-slate-400">
+                <span className="text-xs font-normal text-[#707A8C]">
                   {t('executive.inLakhs', '(in ₹ Lakhs)')}
                 </span>
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#707A8C]">
                 {language === 'ta' 
                   ? 'செயலில் உள்ள வணிகத் தரவு மற்றும் மாதாந்திர செலவுகளின் அடிப்படையில்'
                   : 'Based on active operational financial data and recurring expense structures'}
               </p>
-              <div className="pt-1">
-                <span className="text-[10px] font-semibold text-purple-300 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20">
+              <div className="pt-1.5">
+                <span className="text-[10px] font-semibold text-[#A78BFA] bg-[#8B5CF6]/10 px-2 py-0.5 rounded-md border border-[#8B5CF6]/20">
                   Projected: Forecast based on current operational assumptions
                 </span>
               </div>
             </div>
 
             <div className="flex items-center gap-2 text-xs">
-              <div className="p-1 bg-slate-950 rounded-lg border border-slate-800 flex">
+              <div className="p-1 bg-[#0D1118] rounded-xl border border-[#222936] flex">
                 <button
                   onClick={() => setChartView('area')}
-                  className={`px-2.5 py-1 rounded-md font-medium transition-all ${
-                    chartView === 'area' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'
+                  className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
+                    chartView === 'area' ? 'bg-[#8B5CF6] text-white shadow-sm font-semibold' : 'text-[#707A8C] hover:text-[#F8FAFC]'
                   }`}
                 >
                   {t('executive.trendArea', 'Trend Area')}
                 </button>
                 <button
                   onClick={() => setChartView('bar')}
-                  className={`px-2.5 py-1 rounded-md font-medium transition-all ${
-                    chartView === 'bar' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'
+                  className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
+                    chartView === 'bar' ? 'bg-[#8B5CF6] text-white shadow-sm font-semibold' : 'text-[#707A8C] hover:text-[#F8FAFC]'
                   }`}
                 >
                   {t('executive.monthlyBars', 'Monthly Bars')}
                 </button>
               </div>
 
-              <div className="p-1 bg-slate-950 rounded-lg border border-slate-800 flex">
+              <div className="p-1 bg-[#0D1118] rounded-xl border border-[#222936] flex">
                 <button
                   onClick={() => setTimeframe('12m')}
-                  className={`px-2.5 py-1 rounded-md font-medium transition-all ${
-                    timeframe === '12m' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'
+                  className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
+                    timeframe === '12m' ? 'bg-[#161C27] text-[#F8FAFC] shadow-sm font-semibold' : 'text-[#707A8C] hover:text-[#F8FAFC]'
                   }`}
                 >
                   {t('executive.timeframe12M', '12M')}
                 </button>
                 <button
                   onClick={() => setTimeframe('6m')}
-                  className={`px-2.5 py-1 rounded-md font-medium transition-all ${
-                    timeframe === '6m' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'
+                  className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
+                    timeframe === '6m' ? 'bg-[#161C27] text-[#F8FAFC] shadow-sm font-semibold' : 'text-[#707A8C] hover:text-[#F8FAFC]'
                   }`}
                 >
                   {t('executive.timeframe6M', '6M')}
@@ -398,70 +398,74 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
                 <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
                   <defs>
                     <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.4} />
+                      <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.3} />
                       <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.0} />
                     </linearGradient>
                     <linearGradient id="expGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#38BDF8" stopOpacity={0.2} />
-                      <stop offset="95%" stopColor="#38BDF8" stopOpacity={0.0} />
+                      <stop offset="5%" stopColor="#64748B" stopOpacity={0.2} />
+                      <stop offset="95%" stopColor="#64748B" stopOpacity={0.0} />
                     </linearGradient>
                     <linearGradient id="cashGrad" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#10B981" stopOpacity={0.3} />
                       <stop offset="95%" stopColor="#10B981" stopOpacity={0.0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" vertical={false} />
-                  <XAxis dataKey="month" stroke="#64748B" fontSize={11} tickLine={false} />
-                  <YAxis stroke="#64748B" fontSize={11} tickLine={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#222936" vertical={false} />
+                  <XAxis dataKey="month" stroke="#707A8C" fontSize={11} tickLine={false} />
+                  <YAxis stroke="#707A8C" fontSize={11} tickLine={false} />
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: '#0F172A', 
-                      borderColor: '#334155', 
-                      borderRadius: '8px', 
-                      fontSize: '12px'
+                      backgroundColor: '#161C27', 
+                      borderColor: '#303848', 
+                      borderRadius: '12px', 
+                      fontSize: '12px',
+                      color: '#F8FAFC',
+                      boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)'
                     }}
                     itemStyle={{ color: '#F8FAFC' }}
                   />
                   <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
                   <Area type="monotone" dataKey="revenue" name={t('executive.revenue', 'Revenue (₹L)')} stroke="#8B5CF6" strokeWidth={2.5} fillOpacity={1} fill="url(#revGrad)" />
-                  <Area type="monotone" dataKey="expense" name={t('executive.cost', 'Cost (₹L)')} stroke="#38BDF8" strokeWidth={2} fillOpacity={1} fill="url(#expGrad)" />
+                  <Area type="monotone" dataKey="expense" name={t('executive.cost', 'Cost (₹L)')} stroke="#64748B" strokeWidth={2} fillOpacity={1} fill="url(#expGrad)" />
                   <Area type="monotone" dataKey="cashFlow" name={t('executive.netCash', 'Net Cash (₹L)')} stroke="#10B981" strokeWidth={2} fillOpacity={1} fill="url(#cashGrad)" />
                 </AreaChart>
               ) : (
                 <BarChart data={chartData} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" vertical={false} />
-                  <XAxis dataKey="month" stroke="#64748B" fontSize={11} tickLine={false} />
-                  <YAxis stroke="#64748B" fontSize={11} tickLine={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#222936" vertical={false} />
+                  <XAxis dataKey="month" stroke="#707A8C" fontSize={11} tickLine={false} />
+                  <YAxis stroke="#707A8C" fontSize={11} tickLine={false} />
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: '#0F172A', 
-                      borderColor: '#334155', 
-                      borderRadius: '8px', 
-                      fontSize: '12px'
+                      backgroundColor: '#161C27', 
+                      borderColor: '#303848', 
+                      borderRadius: '12px', 
+                      fontSize: '12px',
+                      color: '#F8FAFC',
+                      boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)'
                     }}
                     itemStyle={{ color: '#F8FAFC' }}
                   />
                   <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
                   <Bar dataKey="revenue" name={t('executive.revenue', 'Revenue (₹L)')} fill="#8B5CF6" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="expense" name={t('executive.cost', 'Cost (₹L)')} fill="#38BDF8" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="expense" name={t('executive.cost', 'Cost (₹L)')} fill="#475569" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="profit" name={t('executive.netProfit', 'Net Profit (₹L)')} fill="#10B981" radius={[4, 4, 0, 0]} />
                 </BarChart>
               )}
             </ResponsiveContainer>
           </div>
 
-          <div className="pt-2 flex flex-wrap items-center justify-between text-xs text-slate-400 border-t border-slate-800">
+          <div className="pt-3 flex flex-wrap items-center justify-between text-xs text-[#707A8C] border-t border-[#222936]">
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-purple-400"></span>
-              {t('executive.grossMarginLabel', 'Gross Margin')}: <strong className="text-white">{grossMargin}%</strong>
+              <span className="w-2 h-2 rounded-full bg-[#8B5CF6]"></span>
+              {t('executive.grossMarginLabel', 'Gross Margin')}: <strong className="text-[#F8FAFC]">{grossMargin}%</strong>
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-              {t('executive.operatingMarginLabel', 'Operating Margin')}: <strong className="text-white">{opMargin}%</strong>
+              <span className="w-2 h-2 rounded-full bg-[#10B981]"></span>
+              {t('executive.operatingMarginLabel', 'Operating Margin')}: <strong className="text-[#F8FAFC]">{opMargin}%</strong>
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-sky-400"></span>
-              {t('executive.netMarginLabel', 'Net Profit Margin')}: <strong className="text-white">{netMargin}%</strong>
+              <span className="w-2 h-2 rounded-full bg-[#14B8A6]"></span>
+              {t('executive.netMarginLabel', 'Net Profit Margin')}: <strong className="text-[#F8FAFC]">{netMargin}%</strong>
             </span>
           </div>
 
@@ -470,12 +474,12 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
         {/* Right 4 Cols: AI Executive Insights Panel */}
         <div className="lg:col-span-4 space-y-4">
           
-          <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4 shadow-xl">
+          <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-purple-400" /> {t('executive.aiBriefTitle', 'AI Executive Brief')}
+              <h3 className="text-xs font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-[#14B8A6]" /> {t('executive.aiBriefTitle', 'AI Executive Brief')}
               </h3>
-              <span className="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+              <span className="text-[10px] text-[#10B981] font-semibold bg-[#10B981]/10 px-2.5 py-0.5 rounded-full border border-[#10B981]/20">
                 {t('executive.liveAnalysis', 'Live Analysis')}
               </span>
             </div>
@@ -515,28 +519,28 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
           </div>
 
           {/* Business Diagnostics Summary */}
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
-            <div className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+          <div className="p-4 rounded-2xl bg-[#0F1219] border border-[#222936] space-y-2.5">
+            <div className="text-[11px] font-bold text-[#F8FAFC] uppercase tracking-wider">
               {t('executive.diagnosticsTitle', 'Financial Diagnostics Breakdown')}
             </div>
-            <div className="space-y-1.5 text-xs">
+            <div className="space-y-2 text-xs">
               <div className="flex justify-between">
-                <span className="text-slate-400">{t('executive.monthlyRevLabel', 'Monthly Revenue')}</span>
-                <span className="text-white font-semibold">{analysis ? `₹${(analysis.financials.monthlyRevenue / 100000).toFixed(2)}L` : '—'}</span>
+                <span className="text-[#707A8C]">{t('executive.monthlyRevLabel', 'Monthly Revenue')}</span>
+                <span className="text-[#F8FAFC] font-bold">{analysis ? `₹${(analysis.financials.monthlyRevenue / 100000).toFixed(2)}L` : '—'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">{t('executive.monthlyCostLabel', 'Total Monthly Cost')}</span>
-                <span className="text-slate-300 font-semibold">{analysis ? `₹${(analysis.financials.totalMonthlyExpenses / 100000).toFixed(2)}L` : '—'}</span>
+                <span className="text-[#707A8C]">{t('executive.monthlyCostLabel', 'Total Monthly Cost')}</span>
+                <span className="text-[#A7B0C0] font-medium">{analysis ? `₹${(analysis.financials.totalMonthlyExpenses / 100000).toFixed(2)}L` : '—'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">{t('executive.workingCapLabel', 'Working Capital')}</span>
-                <span className={analysis && analysis.financials.workingCapital >= 0 ? 'text-emerald-400 font-semibold' : 'text-rose-400 font-semibold'}>
+                <span className="text-[#707A8C]">{t('executive.workingCapLabel', 'Working Capital')}</span>
+                <span className={analysis && analysis.financials.workingCapital >= 0 ? 'text-[#10B981] font-bold' : 'text-[#F43F5E] font-bold'}>
                   {analysis ? `₹${(analysis.financials.workingCapital / 100000).toFixed(2)}L` : '—'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">{t('executive.dscrCoverageLabel', 'DSCR Coverage')}</span>
-                <span className="text-purple-300 font-semibold">
+                <span className="text-[#707A8C]">{t('executive.dscrCoverageLabel', 'DSCR Coverage')}</span>
+                <span className="text-[#8B5CF6] font-bold">
                   {analysis?.financials.dscr ? `${analysis.financials.dscr}x` : t('executive.debtFree', 'Debt-Free')}
                 </span>
               </div>

@@ -235,19 +235,19 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
       <div className="space-y-8 pb-16 font-sans">
         
         {/* Header Banner */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-slate-900 via-purple-950/40 to-slate-900 border border-purple-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+        <div className="p-6 sm:p-8 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
           <div>
-            <div className="flex items-center gap-2 text-xs font-bold text-purple-300">
-              <FlaskConical className="w-4 h-4 text-purple-400" />
+            <div className="flex items-center gap-2 text-xs font-bold text-[#A78BFA]">
+              <FlaskConical className="w-4 h-4 text-[#8B5CF6]" />
               <span>{t('decisionLab.tagline', 'FLAGSHIP FINANCIAL SIMULATION')}</span>
-              <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40">
+              <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-[#8B5CF6]/15 text-[#A78BFA] border border-[#8B5CF6]/30">
                 PRO EXCLUSIVE
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-white mt-1.5 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-[#F8FAFC] mt-1.5 tracking-tight">
               {t('decisionLab.headerTitle', 'Decision Lab')}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+            <p className="text-xs sm:text-sm text-[#A7B0C0] mt-1 max-w-2xl">
               {t('decisionLab.headerSubtitle', 'Test business decisions before you make them. Model pricing, hiring, loans, and cost cuts against your live financial baseline.')}
             </p>
           </div>
@@ -255,55 +255,55 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={() => onNavigate('ai-advisor')}
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-purple-300 border border-slate-700 hover:border-purple-500/50 transition-all flex items-center gap-1.5 shadow-md"
+              className="px-4 py-2 rounded-xl text-xs font-bold bg-[#161C27] hover:bg-[#1E2536] text-[#F8FAFC] border border-[#303848] hover:border-[#8B5CF6]/50 transition-all flex items-center gap-1.5 shadow-sm"
             >
-              <Sparkles className="w-3.5 h-3.5" />
+              <Sparkles className="w-3.5 h-3.5 text-[#A78BFA]" />
               <span>{t('decisionLab.consultAi', 'Consult AI Advisor')}</span>
             </button>
           </div>
         </div>
 
         {/* Current Business Baseline Card */}
-        <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-xl shadow-lg space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-[#222936]">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <h2 className="text-sm font-bold text-white uppercase tracking-wider">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <h2 className="text-sm font-bold text-[#F8FAFC] uppercase tracking-wider">
                 {t('decisionLab.baselineTitle', 'Current Business Baseline')}
               </h2>
             </div>
-            <span className="text-[11px] text-slate-400 font-mono">
+            <span className="text-[11px] text-[#707A8C] font-mono">
               {effectiveAnalysis.organizationName}
             </span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-xs">
-            <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
-              <span className="text-[10px] text-slate-400 uppercase">Monthly Revenue</span>
-              <div className="font-bold text-white text-sm mt-0.5">₹{fmtLakh(effectiveAnalysis.financials.monthlyRevenue)}L</div>
+            <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
+              <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Monthly Revenue</span>
+              <div className="font-bold text-[#F8FAFC] text-sm mt-0.5">₹{fmtLakh(effectiveAnalysis.financials.monthlyRevenue)}L</div>
             </div>
-            <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
-              <span className="text-[10px] text-slate-400 uppercase">Total Expenses</span>
-              <div className="font-bold text-slate-300 text-sm mt-0.5">₹{fmtLakh(effectiveAnalysis.financials.totalMonthlyExpenses)}L</div>
+            <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
+              <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Total Expenses</span>
+              <div className="font-bold text-[#A7B0C0] text-sm mt-0.5">₹{fmtLakh(effectiveAnalysis.financials.totalMonthlyExpenses)}L</div>
             </div>
-            <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
-              <span className="text-[10px] text-slate-400 uppercase">Monthly EBITDA</span>
-              <div className="font-bold text-purple-300 text-sm mt-0.5">₹{fmtLakh(effectiveAnalysis.financials.monthlyEbitda)}L</div>
+            <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
+              <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Monthly EBITDA</span>
+              <div className="font-bold text-[#A78BFA] text-sm mt-0.5">₹{fmtLakh(effectiveAnalysis.financials.monthlyEbitda)}L</div>
             </div>
-            <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
-              <span className="text-[10px] text-slate-400 uppercase">EBITDA Margin</span>
-              <div className="font-bold text-white text-sm mt-0.5">{effectiveAnalysis.financials.operatingMarginPercent ?? 0}%</div>
+            <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
+              <span className="text-[10px] text-[#707A8C] uppercase font-semibold">EBITDA Margin</span>
+              <div className="font-bold text-[#F8FAFC] text-sm mt-0.5">{effectiveAnalysis.financials.operatingMarginPercent ?? 0}%</div>
             </div>
-            <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
-              <span className="text-[10px] text-slate-400 uppercase">Net Cash Flow</span>
+            <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
+              <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Net Cash Flow</span>
               <div className="font-bold text-emerald-400 text-sm mt-0.5">₹{fmtLakh(effectiveAnalysis.financials.monthlyNetCashFlow)}L</div>
             </div>
-            <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
-              <span className="text-[10px] text-slate-400 uppercase">DSCR Coverage</span>
-              <div className="font-bold text-white text-sm mt-0.5">{effectiveAnalysis.financials.dscr ? `${effectiveAnalysis.financials.dscr}x` : 'Debt-Free'}</div>
+            <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
+              <span className="text-[10px] text-[#707A8C] uppercase font-semibold">DSCR Coverage</span>
+              <div className="font-bold text-[#F8FAFC] text-sm mt-0.5">{effectiveAnalysis.financials.dscr ? `${effectiveAnalysis.financials.dscr}x` : 'Debt-Free'}</div>
             </div>
-            <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
-              <span className="text-[10px] text-slate-400 uppercase">Cash Runway</span>
+            <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
+              <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Cash Runway</span>
               <div className="font-bold text-amber-400 text-sm mt-0.5">{effectiveAnalysis.financials.runwayMonths ?? 0}m</div>
             </div>
           </div>
@@ -312,10 +312,10 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
         {/* Scenario Builder Presets */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-white tracking-tight">
+            <h2 className="text-base font-bold text-[#F8FAFC] tracking-tight">
               {t('decisionLab.chooseScenario', '1. Select Decision to Simulate')}
             </h2>
-            <span className="text-xs text-slate-400">8 Standard Presets + Combined Multi-Variable</span>
+            <span className="text-xs text-[#707A8C]">8 Standard Presets + Combined Multi-Variable</span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
@@ -328,11 +328,11 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                   onClick={() => setSelectedType(btn.type as ScenarioType)}
                   className={`p-3 rounded-xl border text-left transition-all flex items-center gap-2.5 text-xs font-semibold ${
                     isSelected
-                      ? 'bg-purple-600/20 text-purple-200 border-purple-500 shadow-md shadow-purple-600/20 ring-1 ring-purple-500/40'
-                      : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:border-slate-700 hover:bg-slate-800/60'
+                      ? 'bg-[#8B5CF6]/15 text-[#A78BFA] border-[#8B5CF6]/40 shadow-sm ring-1 ring-[#8B5CF6]/40'
+                      : 'bg-[#0F1219] text-[#A7B0C0] border-[#222936] hover:border-[#303848] hover:bg-[#161C27] hover:text-[#F8FAFC]'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-purple-400' : 'text-slate-400'}`} />
+                  <Icon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-[#8B5CF6]' : 'text-[#707A8C]'}`} />
                   <span className="truncate">{btn.label}</span>
                 </button>
               );
@@ -341,20 +341,20 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
         </div>
 
         {/* Dynamic Scenario Parameter Inputs */}
-        <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-6">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-            <h3 className="text-sm font-bold text-white">
+        <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-6 shadow-lg shadow-black/20">
+          <div className="flex items-center justify-between pb-3 border-b border-[#222936]">
+            <h3 className="text-sm font-bold text-[#F8FAFC]">
               {t('decisionLab.adjustVariables', '2. Set Scenario Assumptions')}
             </h3>
-            <span className="text-xs text-purple-400 font-semibold">{currentResult.name}</span>
+            <span className="text-xs text-[#A78BFA] font-semibold">{currentResult.name}</span>
           </div>
 
           {/* Price Increase / Reduction */}
           {(selectedType === 'price_increase' || selectedType === 'price_reduction') && (
             <div className="space-y-4 max-w-xl">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-300 font-medium">Price Adjustment Percentage</span>
-                <span className="font-bold text-purple-400 text-sm">{selectedType === 'price_increase' ? `+${pricePct}%` : `-${pricePct}%`}</span>
+                <span className="text-[#A7B0C0] font-medium">Price Adjustment Percentage</span>
+                <span className="font-bold text-[#A78BFA] text-sm">{selectedType === 'price_increase' ? `+${pricePct}%` : `-${pricePct}%`}</span>
               </div>
               <div className="flex items-center gap-3">
                 {[5, 10, 15, 20].map((val) => (
@@ -363,15 +363,15 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                     onClick={() => setPricePct(val)}
                     className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${
                       pricePct === val
-                        ? 'bg-purple-600 text-white border-purple-500 shadow-md'
-                        : 'bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-600'
+                        ? 'bg-[#8B5CF6] text-white border-[#8B5CF6] shadow-sm'
+                        : 'bg-[#0F1219] text-[#A7B0C0] border-[#222936] hover:border-[#303848] hover:text-[#F8FAFC]'
                     }`}
                   >
                     {selectedType === 'price_increase' ? `+${val}%` : `-${val}%`}
                   </button>
                 ))}
               </div>
-              <p className="text-[11px] text-slate-400 italic">
+              <p className="text-[11px] text-[#707A8C] italic">
                 Assumption: Sales unit volume remains unchanged (inelastic demand benchmark).
               </p>
             </div>
@@ -381,8 +381,8 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
           {selectedType === 'sales_growth' && (
             <div className="space-y-4 max-w-xl">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-300 font-medium">Sales Volume Growth Percentage</span>
-                <span className="font-bold text-purple-400 text-sm">+{salesGrowthPct}%</span>
+                <span className="text-[#A7B0C0] font-medium">Sales Volume Growth Percentage</span>
+                <span className="font-bold text-[#A78BFA] text-sm">+{salesGrowthPct}%</span>
               </div>
               <div className="flex items-center gap-3">
                 {[5, 10, 15, 20, 30].map((val) => (
@@ -391,15 +391,15 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                     onClick={() => setSalesGrowthPct(val)}
                     className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${
                       salesGrowthPct === val
-                        ? 'bg-purple-600 text-white border-purple-500 shadow-md'
-                        : 'bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-600'
+                        ? 'bg-[#8B5CF6] text-white border-[#8B5CF6] shadow-sm'
+                        : 'bg-[#0F1219] text-[#A7B0C0] border-[#222936] hover:border-[#303848] hover:text-[#F8FAFC]'
                     }`}
                   >
                     +{val}%
                   </button>
                 ))}
               </div>
-              <p className="text-[11px] text-slate-400 italic">
+              <p className="text-[11px] text-[#707A8C] italic">
                 Assumption: Variable material procurement scales proportionally with sales volume; fixed overhead remains constant.
               </p>
             </div>
@@ -412,7 +412,7 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                 <button
                   onClick={() => setCostTarget('opex')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-                    costTarget === 'opex' ? 'bg-purple-600 text-white border-purple-500' : 'bg-slate-800 text-slate-400 border-slate-700'
+                    costTarget === 'opex' ? 'bg-[#8B5CF6] text-white border-[#8B5CF6] shadow-sm' : 'bg-[#0F1219] text-[#A7B0C0] border-[#222936] hover:text-[#F8FAFC]'
                   }`}
                 >
                   Operating Expenses (Rent, Utilities, Admin)
@@ -420,15 +420,15 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                 <button
                   onClick={() => setCostTarget('material')}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
-                    costTarget === 'material' ? 'bg-purple-600 text-white border-purple-500' : 'bg-slate-800 text-slate-400 border-slate-700'
+                    costTarget === 'material' ? 'bg-[#8B5CF6] text-white border-[#8B5CF6] shadow-sm' : 'bg-[#0F1219] text-[#A7B0C0] border-[#222936] hover:text-[#F8FAFC]'
                   }`}
                 >
                   Raw Material Procurement
                 </button>
               </div>
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-300 font-medium">Reduction Percentage</span>
-                <span className="font-bold text-purple-400 text-sm">-{costReductionPct}%</span>
+                <span className="text-[#A7B0C0] font-medium">Reduction Percentage</span>
+                <span className="font-bold text-[#A78BFA] text-sm">-{costReductionPct}%</span>
               </div>
               <div className="flex items-center gap-3">
                 {[5, 10, 15, 20].map((val) => (
@@ -437,8 +437,8 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                     onClick={() => setCostReductionPct(val)}
                     className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${
                       costReductionPct === val
-                        ? 'bg-purple-600 text-white border-purple-500 shadow-md'
-                        : 'bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-600'
+                        ? 'bg-[#8B5CF6] text-white border-[#8B5CF6] shadow-sm'
+                        : 'bg-[#0F1219] text-[#A7B0C0] border-[#222936] hover:border-[#303848] hover:text-[#F8FAFC]'
                     }`}
                   >
                     -{val}%
@@ -452,7 +452,7 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
           {selectedType === 'material_cost' && (
             <div className="space-y-4 max-w-xl">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-300 font-medium">Raw Material Inflation Surge</span>
+                <span className="text-[#A7B0C0] font-medium">Raw Material Inflation Surge</span>
                 <span className="font-bold text-rose-400 text-sm">+{materialSurgePct}%</span>
               </div>
               <div className="flex items-center gap-3">
@@ -462,15 +462,15 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                     onClick={() => setMaterialSurgePct(val)}
                     className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${
                       materialSurgePct === val
-                        ? 'bg-rose-600 text-white border-rose-500 shadow-md'
-                        : 'bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-600'
+                        ? 'bg-rose-600 text-white border-rose-600 shadow-sm'
+                        : 'bg-[#0F1219] text-[#A7B0C0] border-[#222936] hover:border-[#303848] hover:text-[#F8FAFC]'
                     }`}
                   >
                     +{val}%
                   </button>
                 ))}
               </div>
-              <p className="text-[11px] text-slate-400 italic">
+              <p className="text-[11px] text-[#707A8C] italic">
                 Tests business shock-absorption capacity if suppliers raise raw material rates without pricing flexibility.
               </p>
             </div>
@@ -480,18 +480,18 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
           {selectedType === 'new_hire' && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
                   Monthly Gross Salary (₹)
                 </label>
                 <input
                   type="number"
                   value={hireSalary}
                   onChange={(e) => setHireSalary(Number(e.target.value) || 0)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#0F1219] border border-[#303848] text-[#F8FAFC] text-xs focus:outline-none focus:border-[#8B5CF6] focus:bg-[#161C27]"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
                   Number of Employees
                 </label>
                 <input
@@ -500,10 +500,10 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                   max={20}
                   value={hireCount}
                   onChange={(e) => setHireCount(Number(e.target.value) || 1)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#0F1219] border border-[#303848] text-[#F8FAFC] text-xs focus:outline-none focus:border-[#8B5CF6] focus:bg-[#161C27]"
                 />
               </div>
-              <div className="sm:col-span-2 text-[11px] text-purple-300">
+              <div className="sm:col-span-2 text-[11px] text-[#A78BFA] font-medium">
                 Total monthly payroll addition: <strong>₹{(hireSalary * hireCount).toLocaleString('en-IN')}</strong>/month
               </div>
             </div>
@@ -513,7 +513,7 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
           {selectedType === 'new_loan' && (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
                   Loan Amount (₹)
                 </label>
                 <input
@@ -521,14 +521,14 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                   value={loanAmount}
                   step={50000}
                   onChange={(e) => setLoanAmount(Number(e.target.value) || 0)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#0F1219] border border-[#303848] text-[#F8FAFC] text-xs focus:outline-none focus:border-[#8B5CF6] focus:bg-[#161C27]"
                 />
-                <span className="text-[10px] text-slate-400 mt-1 block">
+                <span className="text-[10px] text-[#707A8C] mt-1 block">
                   ₹{(loanAmount / 100000).toFixed(1)} Lakhs
                 </span>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
                   Annual Interest Rate (% p.a.)
                 </label>
                 <input
@@ -536,22 +536,22 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                   step={0.25}
                   value={loanRate}
                   onChange={(e) => setLoanRate(Number(e.target.value) || 0)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#0F1219] border border-[#303848] text-[#F8FAFC] text-xs focus:outline-none focus:border-[#8B5CF6] focus:bg-[#161C27]"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
                   Tenure (Months)
                 </label>
                 <input
                   type="number"
                   value={loanTenure}
                   onChange={(e) => setLoanTenure(Number(e.target.value) || 12)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#0F1219] border border-[#303848] text-[#F8FAFC] text-xs focus:outline-none focus:border-[#8B5CF6] focus:bg-[#161C27]"
                 />
               </div>
-              <div className="sm:col-span-3 p-3 rounded-xl bg-slate-950/60 border border-slate-800 text-xs flex items-center justify-between">
-                <span className="text-slate-400">Calculated Additional Monthly EMI:</span>
+              <div className="sm:col-span-3 p-3 rounded-xl bg-[#0F1219] border border-[#222936] text-xs flex items-center justify-between">
+                <span className="text-[#A7B0C0]">Calculated Additional Monthly EMI:</span>
                 <span className="font-bold text-amber-400 text-sm">
                   ₹{currentResult.simulated.monthlyEMI - effectiveAnalysis.financials.monthlyEmi > 0
                     ? (currentResult.simulated.monthlyEMI - effectiveAnalysis.financials.monthlyEmi).toLocaleString('en-IN')
@@ -565,25 +565,25 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
           {selectedType === 'marketing_spend' && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
                   Additional Monthly Marketing Budget (₹)
                 </label>
                 <input
                   type="number"
                   value={marketingSpend}
                   onChange={(e) => setMarketingSpend(Number(e.target.value) || 0)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#0F1219] border border-[#303848] text-[#F8FAFC] text-xs focus:outline-none focus:border-[#8B5CF6] focus:bg-[#161C27]"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
                   Target Sales Uplift (% growth)
                 </label>
                 <input
                   type="number"
                   value={marketingGrowth}
                   onChange={(e) => setMarketingGrowth(Number(e.target.value) || 0)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#0F1219] border border-[#303848] text-[#F8FAFC] text-xs focus:outline-none focus:border-[#8B5CF6] focus:bg-[#161C27]"
                 />
               </div>
             </div>
@@ -593,36 +593,36 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
           {selectedType === 'combined' && (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
                   Price Change (%)
                 </label>
                 <input
                   type="number"
                   value={combPrice}
                   onChange={(e) => setCombPrice(Number(e.target.value) || 0)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-[#0F1219] border border-[#303848] text-[#F8FAFC] text-xs focus:outline-none focus:border-[#8B5CF6] focus:bg-[#161C27]"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
                   Sales Growth (%)
                 </label>
                 <input
                   type="number"
                   value={combSales}
                   onChange={(e) => setCombSales(Number(e.target.value) || 0)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-[#0F1219] border border-[#303848] text-[#F8FAFC] text-xs focus:outline-none focus:border-[#8B5CF6] focus:bg-[#161C27]"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
                   OPEX Reduction (%)
                 </label>
                 <input
                   type="number"
                   value={combOpex}
                   onChange={(e) => setCombOpex(Number(e.target.value) || 0)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs"
+                  className="w-full px-3 py-2 rounded-xl bg-[#0F1219] border border-[#303848] text-[#F8FAFC] text-xs focus:outline-none focus:border-[#8B5CF6] focus:bg-[#161C27]"
                 />
               </div>
             </div>
@@ -632,12 +632,12 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
         {/* SIMULATION OUTPUT & VERDICT */}
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-white tracking-tight">
+            <h2 className="text-base font-bold text-[#F8FAFC] tracking-tight">
               {t('decisionLab.simulationOutput', '3. Simulation Analysis & Decision Verdict')}
             </h2>
             <button
               onClick={handleSaveScenario}
-              className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all shadow-md flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-xs font-bold transition-all shadow-md shadow-[#8B5CF6]/20 flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>{t('decisionLab.saveToCompare', 'Save to Comparison')}</span>
@@ -648,30 +648,30 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             
             {/* BizPilot Scenario Score */}
-            <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
+            <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col justify-between shadow-lg shadow-black/20">
               <div>
-                <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
+                <span className="text-xs font-bold uppercase tracking-widest text-[#707A8C]">
                   Scenario Resilience
                 </span>
-                <div className="text-xl font-bold text-white mt-1">BizPilot Scenario Score</div>
-                <p className="text-[11px] text-slate-400 mt-1">
+                <div className="text-xl font-bold text-[#F8FAFC] mt-1">BizPilot Scenario Score</div>
+                <p className="text-[11px] text-[#A7B0C0] mt-1">
                   Transparent composite rating derived from margin, net cash flow, DSCR, and runway resilience.
                 </p>
               </div>
 
               <div className="pt-6">
                 <div className="flex items-baseline justify-between mb-2">
-                  <span className="text-4xl font-black text-white">{currentResult.simulated.score}</span>
-                  <span className="text-xs text-slate-400 font-bold">/ 100</span>
+                  <span className="text-4xl font-black text-[#F8FAFC]">{currentResult.simulated.score}</span>
+                  <span className="text-xs text-[#707A8C] font-bold">/ 100</span>
                 </div>
-                <div className="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                <div className="w-full bg-[#161C27] h-2.5 rounded-full overflow-hidden border border-[#222936]">
                   <div
                     className={`h-full rounded-full transition-all ${
                       currentResult.simulated.score >= 70
-                        ? 'bg-emerald-400'
+                        ? 'bg-emerald-500'
                         : currentResult.simulated.score >= 45
-                        ? 'bg-amber-400'
-                        : 'bg-rose-400'
+                        ? 'bg-amber-500'
+                        : 'bg-rose-500'
                     }`}
                     style={{ width: `${currentResult.simulated.score}%` }}
                   />
@@ -680,54 +680,54 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
             </div>
 
             {/* Decision Verdict */}
-            <div className="md:col-span-2 p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-purple-950/30 border border-slate-800 flex flex-col justify-between">
+            <div className="md:col-span-2 p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col justify-between shadow-lg shadow-black/20">
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#707A8C]">
                     Decision Verdict
                   </span>
                   
                   {currentResult.simulated.verdict === 'Recommended' && (
-                    <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-950/40 text-emerald-300 border border-emerald-800/60 flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                       Recommended
                     </span>
                   )}
                   {currentResult.simulated.verdict === 'Caution' && (
-                    <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5" />
+                    <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-amber-950/40 text-amber-300 border border-amber-800/60 flex items-center gap-1.5">
+                      <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
                       Proceed with Caution
                     </span>
                   )}
                   {currentResult.simulated.verdict === 'High Risk' && (
-                    <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-rose-500/20 text-rose-300 border border-rose-500/40 flex items-center gap-1.5">
-                      <AlertOctagon className="w-3.5 h-3.5" />
+                    <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-rose-950/40 text-rose-300 border border-rose-800/60 flex items-center gap-1.5">
+                      <AlertOctagon className="w-3.5 h-3.5 text-rose-400" />
                       High Risk
                     </span>
                   )}
                 </div>
 
-                <h3 className="text-xl font-bold text-white">
+                <h3 className="text-xl font-bold text-[#F8FAFC]">
                   {currentResult.simulated.verdict === 'Recommended'
                     ? 'Viable Strategic Decision'
                     : currentResult.simulated.verdict === 'Caution'
                     ? 'Requires Operational Safeguards'
                     : 'Significant Financial Strain Detected'}
                 </h3>
-                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                <p className="text-xs text-[#A7B0C0] mt-2 leading-relaxed">
                   {currentResult.simulated.verdictRationale}
                 </p>
               </div>
 
               {/* Assumptions Tag List */}
-              <div className="pt-4 border-t border-slate-800/80 mt-4">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+              <div className="pt-4 border-t border-[#222936] mt-4">
+                <span className="text-[10px] font-bold text-[#707A8C] uppercase tracking-wider block mb-2">
                   Active Assumptions:
                 </span>
                 <ul className="space-y-1">
                   {currentResult.simulated.assumptions.map((ass, i) => (
-                    <li key={i} className="text-[11px] text-slate-400 flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                    <li key={i} className="text-[11px] text-[#A7B0C0] flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]"></span>
                       <span>{ass}</span>
                     </li>
                   ))}
@@ -738,12 +738,12 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
           </div>
 
           {/* Baseline vs Scenario Side-by-Side Comparison Table */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/90 overflow-hidden shadow-xl">
-            <div className="p-4 bg-slate-950/60 border-b border-slate-800 flex items-center justify-between">
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+          <div className="rounded-2xl border border-[#222936] bg-[#121722] overflow-hidden shadow-lg shadow-black/20">
+            <div className="p-4 bg-[#0F1219] border-b border-[#222936] flex items-center justify-between">
+              <h3 className="text-xs font-bold text-[#F8FAFC] uppercase tracking-wider">
                 Baseline vs. Scenario Comparison Matrix
               </h3>
-              <span className="text-[10px] text-slate-400">
+              <span className="text-[10px] text-[#707A8C]">
                 All currency values in ₹ Lakhs unless specified
               </span>
             </div>
@@ -751,15 +751,15 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-slate-800 bg-slate-950/40 text-slate-400 text-[10px] uppercase font-bold tracking-wider">
+                  <tr className="border-b border-[#222936] bg-[#0F1219]/80 text-[#707A8C] text-[10px] uppercase font-bold tracking-wider">
                     <th className="py-3 px-4">Financial Metric</th>
                     <th className="py-3 px-4">Current Baseline</th>
-                    <th className="py-3 px-4 text-purple-300">Projected Scenario</th>
+                    <th className="py-3 px-4 text-[#A78BFA]">Projected Scenario</th>
                     <th className="py-3 px-4">Net Variance</th>
                     <th className="py-3 px-4 text-right">Indicator</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/70">
+                <tbody className="divide-y divide-[#222936]">
                   {Object.values(currentResult.comparisons).map((comp) => {
                     const isCurrency = comp.unit === 'currency';
                     const isPercent = comp.unit === 'percent';
@@ -791,10 +791,10 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                       : `${(comp.delta ?? 0) >= 0 ? '+' : ''}${comp.delta}m`;
 
                     return (
-                      <tr key={comp.key} className="hover:bg-slate-800/30 transition-colors">
-                        <td className="py-3 px-4 font-semibold text-slate-200">{comp.label}</td>
-                        <td className="py-3 px-4 font-mono text-slate-400">{baseDisplay}</td>
-                        <td className="py-3 px-4 font-mono font-bold text-white">{simDisplay}</td>
+                      <tr key={comp.key} className="hover:bg-[#161C27]/50 transition-colors">
+                        <td className="py-3 px-4 font-semibold text-[#F8FAFC]">{comp.label}</td>
+                        <td className="py-3 px-4 font-mono text-[#A7B0C0]">{baseDisplay}</td>
+                        <td className="py-3 px-4 font-mono font-bold text-[#F8FAFC]">{simDisplay}</td>
                         <td className="py-3 px-4 font-mono">
                           <span
                             className={`${
@@ -802,7 +802,7 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                                 ? 'text-emerald-400 font-bold'
                                 : comp.direction === 'worsens'
                                 ? 'text-rose-400 font-bold'
-                                : 'text-slate-400'
+                                : 'text-[#707A8C]'
                             }`}
                           >
                             {deltaDisplay}
@@ -810,19 +810,19 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                         </td>
                         <td className="py-3 px-4 text-right">
                           {comp.direction === 'improves' && (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/60 text-emerald-300 border border-emerald-500/40">
-                              <TrendingUp className="w-3 h-3" />
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/40 text-emerald-300 border border-emerald-800/50">
+                              <TrendingUp className="w-3 h-3 text-emerald-400" />
                               Improves
                             </span>
                           )}
                           {comp.direction === 'worsens' && (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-950/60 text-rose-300 border border-rose-500/40">
-                              <TrendingDown className="w-3 h-3" />
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-950/40 text-rose-300 border border-rose-800/50">
+                              <TrendingDown className="w-3 h-3 text-rose-400" />
                               Worsens
                             </span>
                           )}
                           {comp.direction === 'neutral' && (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-slate-800 text-slate-400">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-[#161C27] text-[#707A8C] border border-[#222936]">
                               <Minus className="w-3 h-3" />
                               Neutral
                             </span>
@@ -837,25 +837,25 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
           </div>
 
           {/* Expandable "How This Was Calculated" Section */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 overflow-hidden">
+          <div className="rounded-2xl border border-[#222936] bg-[#121722] overflow-hidden shadow-lg shadow-black/20">
             <button
               onClick={() => setShowCalculations(!showCalculations)}
-              className="w-full p-4 flex items-center justify-between text-xs font-bold text-slate-300 hover:text-white transition-colors"
+              className="w-full p-4 flex items-center justify-between text-xs font-bold text-[#A7B0C0] hover:text-[#F8FAFC] transition-colors"
             >
               <div className="flex items-center gap-2">
-                <Calculator className="w-4 h-4 text-purple-400" />
+                <Calculator className="w-4 h-4 text-[#8B5CF6]" />
                 <span>How This Was Calculated (Exact Mathematical Formulas)</span>
               </div>
               {showCalculations ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </button>
 
             {showCalculations && (
-              <div className="p-4 pt-0 space-y-3 text-xs border-t border-slate-800/60 font-mono">
+              <div className="p-4 pt-0 space-y-3 text-xs border-t border-[#222936] font-mono">
                 {currentResult.simulated.calculations.map((calc, i) => (
-                  <div key={i} className="p-3 rounded-xl bg-slate-950/70 border border-slate-800/80 space-y-1">
-                    <div className="font-bold text-purple-300 text-[11px]">{calc.name}</div>
-                    <div className="text-[10px] text-slate-400">Formula: {calc.formula}</div>
-                    <div className="text-[11px] text-slate-200">
+                  <div key={i} className="p-3 rounded-xl bg-[#0F1219] border border-[#222936] space-y-1">
+                    <div className="font-bold text-[#A78BFA] text-[11px]">{calc.name}</div>
+                    <div className="text-[10px] text-[#707A8C]">Formula: {calc.formula}</div>
+                    <div className="text-[11px] text-[#A7B0C0]">
                       {calc.values} = <span className="font-bold text-emerald-400">{calc.result}</span>
                     </div>
                   </div>
@@ -867,29 +867,29 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
 
         {/* MULTI-SCENARIO COMPARISON TABLE */}
         {savedScenarios.length > 0 && (
-          <div className="space-y-4 pt-4 border-t border-slate-800">
+          <div className="space-y-4 pt-4 border-t border-[#222936]">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-base font-bold text-white tracking-tight">
+                <h2 className="text-base font-bold text-[#F8FAFC] tracking-tight">
                   {t('decisionLab.comparisonTableTitle', '4. Compare Saved Scenarios')}
                 </h2>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-[#A7B0C0]">
                   Side-by-side strategic analysis across multiple alternative business decisions.
                 </p>
               </div>
               <button
                 onClick={() => setSavedScenarios([])}
-                className="text-xs text-rose-400 hover:text-rose-300 font-semibold"
+                className="text-xs text-rose-400 hover:text-rose-300 font-semibold transition-colors"
               >
                 Clear All
               </button>
             </div>
 
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/90 overflow-hidden shadow-xl">
+            <div className="rounded-2xl border border-[#222936] bg-[#121722] overflow-hidden shadow-lg shadow-black/20">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="border-b border-slate-800 bg-slate-950/60 text-slate-400 text-[10px] uppercase font-bold tracking-wider">
+                    <tr className="border-b border-[#222936] bg-[#0F1219] text-[#707A8C] text-[10px] uppercase font-bold tracking-wider">
                       <th className="py-3 px-4">Scenario Name</th>
                       <th className="py-3 px-4">Monthly Revenue</th>
                       <th className="py-3 px-4">Net Cash Flow</th>
@@ -900,20 +900,20 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                       <th className="py-3 px-4 text-right">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/70">
+                  <tbody className="divide-y divide-[#222936]">
                     {/* Baseline Row */}
-                    <tr className="bg-slate-950/40">
-                      <td className="py-3 px-4 font-bold text-white flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-slate-500"></span>
+                    <tr className="bg-[#0F1219]/60">
+                      <td className="py-3 px-4 font-bold text-[#F8FAFC] flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-gray-400"></span>
                         Baseline
                       </td>
-                      <td className="py-3 px-4 font-mono text-slate-300">₹{fmtLakh(effectiveAnalysis.financials.monthlyRevenue)}L</td>
-                      <td className="py-3 px-4 font-mono text-emerald-400">₹{fmtLakh(effectiveAnalysis.financials.monthlyNetCashFlow)}L</td>
-                      <td className="py-3 px-4 font-mono text-slate-300">{effectiveAnalysis.financials.operatingMarginPercent}%</td>
-                      <td className="py-3 px-4 font-mono text-slate-300">{effectiveAnalysis.financials.dscr ? `${effectiveAnalysis.financials.dscr}x` : 'Debt-Free'}</td>
-                      <td className="py-3 px-4 font-mono text-slate-400">55 / 100</td>
+                      <td className="py-3 px-4 font-mono text-[#A7B0C0]">₹{fmtLakh(effectiveAnalysis.financials.monthlyRevenue)}L</td>
+                      <td className="py-3 px-4 font-mono text-emerald-400 font-bold">₹{fmtLakh(effectiveAnalysis.financials.monthlyNetCashFlow)}L</td>
+                      <td className="py-3 px-4 font-mono text-[#A7B0C0]">{effectiveAnalysis.financials.operatingMarginPercent}%</td>
+                      <td className="py-3 px-4 font-mono text-[#A7B0C0]">{effectiveAnalysis.financials.dscr ? `${effectiveAnalysis.financials.dscr}x` : 'Debt-Free'}</td>
+                      <td className="py-3 px-4 font-mono text-[#707A8C]">55 / 100</td>
                       <td className="py-3 px-4">
-                        <span className="text-[10px] text-slate-400 font-semibold uppercase">Current State</span>
+                        <span className="text-[10px] text-[#707A8C] font-semibold uppercase">Current State</span>
                       </td>
                       <td className="py-3 px-4 text-right">—</td>
                     </tr>
@@ -925,45 +925,45 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                         scen.simulated.score === Math.max(...savedScenarios.map((s) => s.simulated.score));
 
                       return (
-                        <tr key={scen.id} className="hover:bg-slate-800/30 transition-colors">
-                          <td className="py-3 px-4 font-bold text-white">
+                        <tr key={scen.id} className="hover:bg-[#161C27]/50 transition-colors">
+                          <td className="py-3 px-4 font-bold text-[#F8FAFC]">
                             <div className="flex items-center gap-2">
                               <span>{scen.name}</span>
                               {isBest && (
-                                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-emerald-950/50 text-emerald-300 border border-emerald-800/60">
                                   Top Pick
                                 </span>
                               )}
                             </div>
                           </td>
-                          <td className="py-3 px-4 font-mono text-slate-200">
+                          <td className="py-3 px-4 font-mono text-[#A7B0C0]">
                             ₹{fmtLakh(scen.simulated.monthlyRevenue)}L
                           </td>
                           <td className="py-3 px-4 font-mono font-bold text-emerald-400">
                             ₹{fmtLakh(scen.simulated.monthlyNetCashFlow)}L
                           </td>
-                          <td className="py-3 px-4 font-mono text-slate-200">
+                          <td className="py-3 px-4 font-mono text-[#A7B0C0]">
                             {scen.simulated.operatingMarginPercent}%
                           </td>
-                          <td className="py-3 px-4 font-mono text-slate-200">
+                          <td className="py-3 px-4 font-mono text-[#A7B0C0]">
                             {scen.simulated.dscr ? `${scen.simulated.dscr}x` : 'Debt-Free'}
                           </td>
-                          <td className="py-3 px-4 font-mono font-bold text-white">
+                          <td className="py-3 px-4 font-mono font-bold text-[#F8FAFC]">
                             {scen.simulated.score} / 100
                           </td>
                           <td className="py-3 px-4">
                             {scen.simulated.verdict === 'Recommended' && (
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/60 text-emerald-300 border border-emerald-500/40">
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/40 text-emerald-300 border border-emerald-800/60">
                                 Recommended
                               </span>
                             )}
                             {scen.simulated.verdict === 'Caution' && (
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-950/60 text-amber-300 border border-amber-500/40">
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-950/40 text-amber-300 border border-amber-800/60">
                                 Caution
                               </span>
                             )}
                             {scen.simulated.verdict === 'High Risk' && (
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-950/60 text-rose-300 border border-rose-500/40">
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-950/40 text-rose-300 border border-rose-800/60">
                                 High Risk
                               </span>
                             )}
@@ -971,7 +971,7 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                           <td className="py-3 px-4 text-right">
                             <button
                               onClick={() => handleRemoveSaved(scen.id)}
-                              className="text-slate-500 hover:text-rose-400 p-1"
+                              className="text-[#707A8C] hover:text-rose-400 p-1 transition-colors"
                               title="Delete scenario"
                             >
                               <Trash2 className="w-3.5 h-3.5" />

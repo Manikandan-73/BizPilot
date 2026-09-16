@@ -23,7 +23,7 @@ export const FormField: React.FC<FormFieldProps> = ({
 }) => {
   return (
     <div className={cn('space-y-1.5', className)}>
-      <label htmlFor={htmlFor} className="text-xs font-semibold text-slate-300 flex items-center gap-1">
+      <label htmlFor={htmlFor} className="text-xs font-semibold text-[#A7B0C0] flex items-center gap-1">
         {label}
         {required && <span className="text-rose-400">*</span>}
       </label>
@@ -34,7 +34,7 @@ export const FormField: React.FC<FormFieldProps> = ({
           {error}
         </p>
       ) : helperText ? (
-        <p className="text-[11px] text-slate-500">{helperText}</p>
+        <p className="text-[11px] text-[#707A8C]">{helperText}</p>
       ) : null}
     </div>
   );
@@ -43,7 +43,7 @@ export const FormField: React.FC<FormFieldProps> = ({
 /** Shared input classes so every control in the wizard looks consistent. */
 export const fieldInputClasses = (hasError?: boolean) =>
   cn(
-    'w-full px-3.5 py-2.5 bg-slate-950 border rounded-xl text-white text-sm placeholder:text-slate-600',
-    'focus:outline-none focus:ring-2 focus:ring-purple-500/40 transition-all',
-    hasError ? 'border-rose-500/60' : 'border-slate-800 focus:border-purple-500'
+    'w-full px-3.5 py-2.5 bg-[#0D1118] border rounded-xl text-[#F8FAFC] text-sm placeholder:text-[#707A8C]',
+    'focus:outline-none focus:ring-2 focus:ring-violet-500/20 transition-all',
+    hasError ? 'border-rose-500' : 'border-[#222936] focus:border-violet-500'
   );

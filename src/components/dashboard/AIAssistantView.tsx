@@ -174,19 +174,19 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
   };
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-6 pb-12 font-sans">
       
-      {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+      {/* Top Banner */}
+      <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-indigo-300">
-            <Bot className="w-4 h-4 text-indigo-400" />
+          <div className="flex items-center gap-2 text-xs font-bold text-[#14B8A6]">
+            <Bot className="w-4 h-4 text-[#14B8A6]" />
             <span>{t('assistant.bannerTag', 'AI BUSINESS ADVISOR & ASSISTANT')}</span>
           </div>
-          <h2 className="text-2xl font-black text-white mt-1">
+          <h2 className="text-2xl font-black text-[#F8FAFC] mt-1 tracking-tight">
             {t('assistant.title', 'Multilingual Financial Copilot')}
           </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-[#A7B0C0] mt-0.5">
             {language === 'ta' 
               ? `${businessName} நிறுவனத்தின் நேரலை நிதி மற்றும் கடன் எண்களைப் பயன்படுத்தி பதிலளிக்கும் AI ஆலோசகர்.`
               : `Context-aware business advisor answering queries using ${businessName}'s actual financials and credit metrics.`}
@@ -194,8 +194,8 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 text-xs">
-            <Globe className="w-3.5 h-3.5 text-sky-400" />
+          <div className="flex items-center gap-1.5 bg-[#161C27] px-3 py-1.5 rounded-xl border border-[#303848] text-xs">
+            <Globe className="w-3.5 h-3.5 text-[#14B8A6]" />
             <select
               value={language}
               onChange={(e) => {
@@ -203,16 +203,16 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
                 setLanguage(newLang);
                 onSelectLanguage(newLang);
               }}
-              className="bg-transparent text-white outline-none font-semibold cursor-pointer"
+              className="bg-transparent text-[#F8FAFC] outline-none font-semibold cursor-pointer"
             >
-              <option value="en" className="text-slate-900">English (🇬🇧)</option>
-              <option value="ta" className="text-slate-900">தமிழ் (🇮🇳)</option>
+              <option value="en" className="bg-[#121722] text-[#F8FAFC]">English (🇬🇧)</option>
+              <option value="ta" className="bg-[#121722] text-[#F8FAFC]">தமிழ் (🇮🇳)</option>
             </select>
           </div>
 
           <button
             onClick={resetChat}
-            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all"
+            className="p-2 rounded-xl bg-[#161C27] hover:bg-[#1E2536] text-[#A7B0C0] hover:text-[#F8FAFC] border border-[#303848] shadow-sm transition-all"
             title={t('assistant.resetConversation', 'Reset Conversation')}
           >
             <RotateCcw className="w-4 h-4" />
@@ -221,21 +221,21 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
       </div>
 
       {/* Local Engine Disclosure Pill */}
-      <div className="px-4 py-2 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between text-xs text-slate-400">
-        <div className="flex items-center gap-2">
-          <Info className="w-4 h-4 text-purple-400 shrink-0" />
-          <span>Active Context: <strong className="text-white">{businessName}</strong> • Rev: ₹{revL}L/mo • Outflow: ₹{expL}L/mo • DSCR: {dscrText}</span>
+      <div className="px-4 py-2.5 rounded-xl bg-[#0F1219] border border-[#222936] flex items-center justify-between text-xs text-[#A7B0C0] shadow-sm">
+        <div className="flex items-center gap-2 truncate pr-2">
+          <Info className="w-4 h-4 text-[#14B8A6] shrink-0" />
+          <span className="truncate">Active Context: <strong className="text-[#F8FAFC]">{businessName}</strong> • Rev: ₹{revL}L/mo • Outflow: ₹{expL}L/mo • DSCR: {dscrText}</span>
         </div>
-        <span className="text-[10px] text-indigo-300 font-semibold bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+        <span className="text-[10px] text-[#14B8A6] font-semibold bg-[#14B8A6]/15 px-2.5 py-0.5 rounded-full border border-[#14B8A6]/30 shrink-0">
           Gemini 2.5 Flash-Lite
         </span>
       </div>
 
       {/* Chat Conversation Box */}
-      <div className="rounded-2xl bg-slate-900/90 border border-slate-800 shadow-2xl flex flex-col h-[520px] overflow-hidden">
+      <div className="rounded-2xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 flex flex-col h-[520px] overflow-hidden">
         
         {/* Messages Feed */}
-        <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
+        <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 bg-[#090B10]">
           {messages.map((msg) => (
             <div
               key={msg.id}
@@ -243,34 +243,34 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
             >
               <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
                 msg.sender === 'user' 
-                  ? 'bg-purple-600 text-white' 
-                  : 'bg-gradient-to-tr from-indigo-600 to-purple-600 text-white shadow-md'
+                  ? 'bg-[#8B5CF6] text-white shadow-sm' 
+                  : 'bg-[#14B8A6] text-white shadow-sm'
               }`}>
                 {msg.sender === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
               </div>
 
               <div className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 text-xs leading-relaxed space-y-2.5 ${
                 msg.sender === 'user'
-                  ? 'bg-purple-600 text-white rounded-tr-none'
-                  : 'bg-slate-950/80 border border-slate-800 text-slate-200 rounded-tl-none'
+                  ? 'bg-[#8B5CF6] text-white rounded-tr-none shadow-md shadow-[#8B5CF6]/20'
+                  : 'bg-[#161C27] border border-[#222936] text-[#F8FAFC] rounded-tl-none shadow-sm'
               }`}>
-                <div className="whitespace-pre-line">{msg.text}</div>
+                <div className="whitespace-pre-line font-medium">{msg.text}</div>
 
                 {msg.actionButtons && (
-                  <div className="flex flex-wrap gap-2 pt-1 border-t border-slate-800/80">
+                  <div className="flex flex-wrap gap-2 pt-2 border-t border-[#222936]">
                     {msg.actionButtons.map((btn, bIdx) => (
                       <button
                         key={bIdx}
                         onClick={() => handleActionButton(btn.action)}
-                        className="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-purple-900/40 text-purple-300 border border-purple-500/30 text-[11px] font-semibold transition-all flex items-center gap-1"
+                        className="px-2.5 py-1 rounded-lg bg-[#0F1219] hover:bg-[#121722] text-[#14B8A6] border border-[#14B8A6]/40 text-[11px] font-semibold transition-all flex items-center gap-1 shadow-sm"
                       >
-                        {btn.label} <ArrowRight className="w-3 h-3" />
+                        {btn.label} <ArrowRight className="w-3 h-3 text-[#14B8A6]" />
                       </button>
                     ))}
                   </div>
                 )}
 
-                <div className="text-[10px] text-slate-400 opacity-60 text-right">
+                <div className={`text-[10px] text-right ${msg.sender === 'user' ? 'text-violet-200' : 'text-[#707A8C]'}`}>
                   {msg.timestamp}
                 </div>
               </div>
@@ -278,8 +278,8 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
           ))}
 
           {isTyping && (
-            <div className="flex items-center gap-2 text-xs text-purple-400 italic py-2">
-              <Sparkles className="w-4 h-4 animate-spin text-purple-400" />
+            <div className="flex items-center gap-2 text-xs text-[#14B8A6] font-medium italic py-2">
+              <Sparkles className="w-4 h-4 animate-spin text-[#14B8A6]" />
               {t('assistant.analyzing', 'Analyzing business records...')}
             </div>
           )}
@@ -288,20 +288,20 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
         </div>
 
         {/* Chat Input Bar */}
-        <div className="p-3 sm:p-4 border-t border-slate-800 bg-slate-950/90 flex items-center gap-2">
+        <div className="p-3 sm:p-4 border-t border-[#222936] bg-[#121722] flex items-center gap-2">
           <input
             type="text"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             placeholder={language === 'ta' ? 'வருவாய், பண இருப்பு, கடன் அல்லது இடர்கள் குறித்து கேளுங்கள்...' : `Ask about ${businessName}'s revenue, runway, loans, or risks...`}
-            className="flex-1 bg-slate-900 border border-slate-700/80 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 outline-none focus:border-purple-500 transition-all"
+            className="flex-1 bg-[#0D1118] border border-[#222936] rounded-xl px-4 py-2.5 text-xs text-[#F8FAFC] placeholder-[#707A8C] outline-none focus:bg-[#161C27] focus:border-[#8B5CF6] transition-all"
           />
 
           <button
             onClick={() => handleSend()}
             disabled={!inputText.trim()}
-            className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-md shadow-purple-600/20 flex items-center gap-1.5"
+            className="px-4 py-2.5 rounded-xl bg-[#8B5CF6] hover:bg-[#7C3AED] disabled:opacity-50 text-white text-xs font-bold transition-all shadow-md shadow-[#8B5CF6]/20 flex items-center gap-1.5"
           >
             <Send className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">{t('assistant.send', 'Send')}</span>

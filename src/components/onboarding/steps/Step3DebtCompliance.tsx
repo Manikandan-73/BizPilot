@@ -34,7 +34,7 @@ export const Step3DebtCompliance: React.FC<Step3DebtComplianceProps> = ({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 text-purple-300">
+      <div className="flex items-center gap-2 text-violet-400">
         <ShieldCheck className="w-4 h-4" />
         <h2 className="text-sm font-bold uppercase tracking-wider">{t('onboarding.step3', 'Debt & Compliance')}</h2>
       </div>
@@ -44,14 +44,14 @@ export const Step3DebtCompliance: React.FC<Step3DebtComplianceProps> = ({
       </FormField>
 
       {data.hasLoans === true && (
-        <div className="p-4 sm:p-5 rounded-xl bg-slate-950/60 border border-purple-500/20 space-y-4">
-          <p className="text-[11px] font-semibold text-purple-300 uppercase tracking-wider">
+        <div className="p-4 sm:p-5 rounded-xl bg-[#0F1219] border border-[#222936] space-y-4">
+          <p className="text-[11px] font-semibold text-violet-400 uppercase tracking-wider">
             {t('onboarding.existingLoanDetails', 'Existing Loan Details')}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <FormField label={t('onboarding.outstandingLoan', 'Outstanding Loan Amount')} required error={errors.loanDetails?.outstandingLoanAmount}>
               <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">₹</span>
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#707A8C] text-sm">₹</span>
                 <input
                   type="number"
                   value={loan.outstandingLoanAmount}
@@ -65,7 +65,7 @@ export const Step3DebtCompliance: React.FC<Step3DebtComplianceProps> = ({
 
             <FormField label={t('onboarding.monthlyEMI', 'Monthly EMI')} required error={errors.loanDetails?.monthlyEMI}>
               <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">₹</span>
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#707A8C] text-sm">₹</span>
                 <input
                   type="number"
                   value={loan.monthlyEMI}
@@ -88,7 +88,7 @@ export const Step3DebtCompliance: React.FC<Step3DebtComplianceProps> = ({
                   step={0.1}
                   className={fieldInputClasses(!!errors.loanDetails?.interestRate) + ' pr-8'}
                 />
-                <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">%</span>
+                <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#707A8C] text-sm">%</span>
               </div>
             </FormField>
 

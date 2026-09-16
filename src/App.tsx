@@ -598,14 +598,14 @@ export const App: React.FC = () => {
   // Full-screen session loading indicator
   if (authLoading || (user && !isAdmin && orgLoading && userOrgs.length === 0 && !showOnboarding)) {
     return (
-      <div className="min-h-screen bg-[#0F172A] flex flex-col items-center justify-center text-slate-100 p-4">
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-sky-400 flex items-center justify-center text-white shadow-2xl shadow-purple-600/40 animate-pulse mb-4">
+      <div className="min-h-screen bg-[#090B10] flex flex-col items-center justify-center text-[#F8FAFC] p-4">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#8B5CF6] to-[#7C3AED] flex items-center justify-center text-white shadow-xl shadow-[#8B5CF6]/25 animate-pulse mb-4">
           <Sparkles className="w-7 h-7" />
         </div>
-        <div className="text-base font-bold text-white tracking-tight">
-          BizPilot <span className="text-purple-400">AI</span>
+        <div className="text-base font-bold text-[#F8FAFC] tracking-tight">
+          BizPilot <span className="text-[#8B5CF6]">AI</span>
         </div>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-[#707A8C] mt-1">
           {language === 'ta' ? 'அமர்வை ஏற்றுகிறது...' : 'Loading workspace...'}
         </p>
       </div>
@@ -705,7 +705,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0F172A] text-slate-100 font-sans">
+    <div className="min-h-screen flex flex-col bg-[#090B10] text-[#F8FAFC] font-sans">
       
       {/* Header */}
       <Header
@@ -731,14 +731,14 @@ export const App: React.FC = () => {
       />
 
       {dataError && (
-        <div className="border-b border-rose-500/30 bg-rose-950/40 px-4 py-2 text-center text-xs text-rose-200">
+        <div className="border-b border-rose-500/30 bg-rose-950/40 px-4 py-2 text-center text-xs text-rose-300 font-medium">
           {dataError}
         </div>
       )}
 
       {/* Account status alert banner for suspended MSME accounts */}
       {user && !isAdmin && activeOrg?.subscription?.status === 'suspended' && (
-        <div className="border-b border-rose-500/30 bg-rose-950/60 px-4 py-2.5 text-center text-xs text-rose-200 flex items-center justify-center gap-2">
+        <div className="border-b border-rose-500/30 bg-rose-950/40 px-4 py-2.5 text-center text-xs text-rose-300 flex items-center justify-center gap-2 font-medium">
           <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
           <span>{t('settings.accountSuspendedBanner', 'Your account is currently suspended. Please contact admin@bizpilot.in to restore access.')}</span>
         </div>
@@ -746,7 +746,7 @@ export const App: React.FC = () => {
 
       {/* Account status alert banner for expired MSME subscriptions */}
       {user && !isAdmin && activeOrg?.subscription?.status === 'expired' && (
-        <div className="border-b border-amber-500/30 bg-amber-950/60 px-4 py-2.5 text-center text-xs text-amber-200 flex items-center justify-center gap-2">
+        <div className="border-b border-amber-500/30 bg-amber-950/40 px-4 py-2.5 text-center text-xs text-amber-300 flex items-center justify-center gap-2 font-medium">
           <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
           <span>{t('settings.subscriptionExpiredBanner', 'Your subscription plan has expired. Please contact administration to renew.')}</span>
         </div>

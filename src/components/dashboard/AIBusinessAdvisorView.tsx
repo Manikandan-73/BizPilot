@@ -466,19 +466,19 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
       <div className="space-y-6 pb-16 font-sans">
         
         {/* Top Header Banner */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+        <div className="p-6 sm:p-8 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
           <div>
-            <div className="flex items-center gap-2 text-xs font-bold text-indigo-300">
-              <Bot className="w-4 h-4 text-indigo-400" />
+            <div className="flex items-center gap-2 text-xs font-bold text-[#A78BFA]">
+              <Bot className="w-4 h-4 text-[#8B5CF6]" />
               <span>{t('advisor.tagline', 'EXECUTIVE DECISION INTELLIGENCE')}</span>
-              <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">
+              <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-[#8B5CF6]/15 text-[#A78BFA] border border-[#8B5CF6]/30">
                 PRO EXCLUSIVE
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-white mt-1.5 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-[#F8FAFC] mt-1.5 tracking-tight">
               {t('advisor.headerTitle', 'AI Business Advisor')}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+            <p className="text-xs sm:text-sm text-[#A7B0C0] mt-1 max-w-2xl">
               {t('advisor.headerSubtitle', 'Your financial decision partner. Grounded in your actual numbers, delivering structured diagnoses, risk evaluations, and practical next steps.')}
             </p>
           </div>
@@ -486,7 +486,7 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={() => onNavigate('decision-lab')}
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white transition-all flex items-center gap-1.5 shadow-lg shadow-purple-600/30"
+              className="px-4 py-2 rounded-xl text-xs font-bold bg-[#8B5CF6] hover:bg-[#7C3AED] text-white transition-all flex items-center gap-1.5 shadow-md shadow-[#8B5CF6]/20"
             >
               <span>{t('advisor.openDecisionLab', 'Open Decision Lab')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -495,46 +495,46 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
         </div>
 
         {/* Compact Business Snapshot Bar */}
-        <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-xl shadow-md">
-          <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-800 text-xs">
-            <span className="font-bold text-slate-300 flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <div className="p-4 rounded-2xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20">
+          <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#222936] text-xs">
+            <span className="font-bold text-[#F8FAFC] flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               Live Financial Telemetry Snapshot
             </span>
-            <span className="text-[11px] text-slate-400">{busName}</span>
+            <span className="text-[11px] font-medium text-[#707A8C]">{busName}</span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
-            <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
-              <span className="text-[10px] text-slate-400 uppercase">Monthly Revenue</span>
-              <div className="font-bold text-white text-sm mt-0.5">₹{revL}L</div>
+            <div className="p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+              <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Monthly Revenue</span>
+              <div className="font-bold text-[#F8FAFC] text-sm mt-0.5">₹{revL}L</div>
             </div>
-            <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
-              <span className="text-[10px] text-slate-400 uppercase">Operating Margin</span>
-              <div className="font-bold text-purple-300 text-sm mt-0.5">{fin.operatingMarginPercent ?? 0}%</div>
+            <div className="p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+              <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Operating Margin</span>
+              <div className="font-bold text-[#A78BFA] text-sm mt-0.5">{fin.operatingMarginPercent ?? 0}%</div>
             </div>
-            <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
-              <span className="text-[10px] text-slate-400 uppercase">Cash Runway</span>
+            <div className="p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+              <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Cash Runway</span>
               <div className="font-bold text-amber-400 text-sm mt-0.5">{fin.runwayMonths ?? 0} months</div>
             </div>
-            <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
-              <span className="text-[10px] text-slate-400 uppercase">DSCR Coverage</span>
-              <div className="font-bold text-white text-sm mt-0.5">{dscrText}</div>
+            <div className="p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+              <span className="text-[10px] text-[#707A8C] uppercase font-semibold">DSCR Coverage</span>
+              <div className="font-bold text-[#F8FAFC] text-sm mt-0.5">{dscrText}</div>
             </div>
-            <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
-              <span className="text-[10px] text-slate-400 uppercase">Funding Readiness</span>
+            <div className="p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+              <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Funding Readiness</span>
               <div className="font-bold text-emerald-400 text-sm mt-0.5">{effectiveAnalysis.funding.overallScore}/100</div>
             </div>
-            <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
-              <span className="text-[10px] text-slate-400 uppercase">Financial Health</span>
-              <div className="font-bold text-indigo-400 text-sm mt-0.5">{effectiveAnalysis.health.overallScore}/100</div>
+            <div className="p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+              <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Financial Health</span>
+              <div className="font-bold text-[#A78BFA] text-sm mt-0.5">{effectiveAnalysis.health.overallScore}/100</div>
             </div>
           </div>
         </div>
 
         {/* Suggested Prompts Bar */}
         <div className="space-y-2">
-          <span className="text-xs font-semibold text-slate-400">
+          <span className="text-xs font-semibold text-[#A7B0C0]">
             {t('advisor.suggestedPromptsTitle', 'Decision Prompts (Grounded in Your Data):')}
           </span>
           <div className="flex items-center gap-2 overflow-x-auto pb-1">
@@ -542,7 +542,7 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
               <button
                 key={p.key}
                 onClick={() => handleSend(p.label)}
-                className="px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-900/90 hover:bg-slate-800 text-slate-200 border border-slate-800 hover:border-purple-500/40 transition-all shrink-0 shadow-sm"
+                className="px-3 py-1.5 rounded-xl text-xs font-medium bg-[#0F1219] hover:bg-[#161C27] text-[#A7B0C0] hover:text-[#F8FAFC] border border-[#222936] hover:border-[#8B5CF6]/40 transition-all shrink-0 shadow-sm"
               >
                 {p.label}
               </button>
@@ -551,19 +551,19 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
         </div>
 
         {/* Advisor Structured Chat Stream */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/80 backdrop-blur-xl shadow-xl overflow-hidden flex flex-col h-[560px]">
+        <div className="rounded-2xl border border-[#222936] bg-[#121722] shadow-lg shadow-black/20 overflow-hidden flex flex-col h-[580px]">
           
           {/* Messages Scroll Area */}
-          <div className="flex-1 p-5 sm:p-6 overflow-y-auto space-y-6">
+          <div className="flex-1 p-5 sm:p-6 overflow-y-auto space-y-6 bg-[#090B10]">
             {messages.map((msg) => {
               const isUser = msg.sender === 'user';
 
               if (isUser) {
                 return (
                   <div key={msg.id} className="flex justify-end">
-                    <div className="max-w-xl p-4 rounded-2xl bg-purple-600 text-white text-xs font-medium shadow-md">
+                    <div className="max-w-xl p-4 rounded-2xl bg-[#8B5CF6] text-white text-xs font-medium shadow-md shadow-[#8B5CF6]/20">
                       <div>{msg.rawText}</div>
-                      <div className="text-[10px] text-purple-200 mt-1 text-right">{msg.timestamp}</div>
+                      <div className="text-[10px] text-violet-200 mt-1 text-right">{msg.timestamp}</div>
                     </div>
                   </div>
                 );
@@ -573,20 +573,20 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
 
               return (
                 <div key={msg.id} className="flex gap-3 max-w-3xl">
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white shrink-0 mt-1 shadow-md shadow-indigo-600/30">
+                  <div className="w-8 h-8 rounded-xl bg-[#8B5CF6] flex items-center justify-center text-white shrink-0 mt-1 shadow-sm">
                     <Bot className="w-4 h-4" />
                   </div>
 
-                  <div className="flex-1 p-5 sm:p-6 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-4 text-xs shadow-lg">
+                  <div className="flex-1 p-5 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 text-xs shadow-lg shadow-black/20">
                     
                     {/* Diagnosis */}
                     {msg.diagnosis && (
                       <div className="space-y-1">
-                        <div className="text-[10px] font-black uppercase tracking-wider text-indigo-400 flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
+                        <div className="text-[10px] font-black uppercase tracking-wider text-[#A78BFA] flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#8B5CF6]" />
                           <span>Diagnosis</span>
                         </div>
-                        <p className="text-slate-200 leading-relaxed font-medium">
+                        <p className="text-[#F8FAFC] leading-relaxed font-semibold">
                           {msg.diagnosis}
                         </p>
                       </div>
@@ -594,11 +594,11 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
 
                     {/* Why */}
                     {msg.why && (
-                      <div className="space-y-1 pt-2 border-t border-slate-800/80">
-                        <div className="text-[10px] font-black uppercase tracking-wider text-purple-400">
+                      <div className="space-y-1 pt-2 border-t border-[#222936]">
+                        <div className="text-[10px] font-black uppercase tracking-wider text-[#A78BFA]">
                           Why (Financial Metric Drivers)
                         </div>
-                        <p className="text-slate-300 leading-relaxed">
+                        <p className="text-[#A7B0C0] leading-relaxed">
                           {msg.why}
                         </p>
                       </div>
@@ -606,12 +606,12 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
 
                     {/* Recommendation */}
                     {msg.recommendation && (
-                      <div className="space-y-1 pt-2 border-t border-slate-800/80">
+                      <div className="space-y-1 pt-2 border-t border-[#222936]">
                         <div className="text-[10px] font-black uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-                          <TrendingUp className="w-3.5 h-3.5" />
+                          <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
                           <span>Strategic Recommendation</span>
                         </div>
-                        <p className="text-slate-200 leading-relaxed">
+                        <p className="text-[#F8FAFC] leading-relaxed font-medium">
                           {msg.recommendation}
                         </p>
                       </div>
@@ -619,17 +619,17 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
 
                     {/* Expected Impact & Risk Grid */}
                     {(msg.expectedImpact || msg.risk) && (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-800/80">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-[#222936]">
                         {msg.expectedImpact && (
-                          <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/20 space-y-1">
-                            <span className="text-[10px] font-bold text-emerald-300 uppercase">Expected Impact</span>
-                            <p className="text-[11px] text-slate-300 leading-relaxed">{msg.expectedImpact}</p>
+                          <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-800/50 space-y-1">
+                            <span className="text-[10px] font-bold text-emerald-400 uppercase">Expected Impact</span>
+                            <p className="text-[11px] text-emerald-200 leading-relaxed">{msg.expectedImpact}</p>
                           </div>
                         )}
                         {msg.risk && (
-                          <div className="p-3 rounded-xl bg-rose-950/30 border border-rose-500/20 space-y-1">
-                            <span className="text-[10px] font-bold text-rose-300 uppercase">Risk Considerations</span>
-                            <p className="text-[11px] text-slate-300 leading-relaxed">{msg.risk}</p>
+                          <div className="p-3 rounded-xl bg-rose-950/30 border border-rose-800/50 space-y-1">
+                            <span className="text-[10px] font-bold text-rose-400 uppercase">Risk Considerations</span>
+                            <p className="text-[11px] text-rose-200 leading-relaxed">{msg.risk}</p>
                           </div>
                         )}
                       </div>
@@ -637,14 +637,14 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
 
                     {/* Next Step */}
                     {msg.nextStep && (
-                      <div className="p-3 rounded-xl bg-purple-950/30 border border-purple-500/20 flex items-center justify-between gap-2">
+                      <div className="p-3 rounded-xl bg-[#0F1219] border border-[#8B5CF6]/30 flex items-center justify-between gap-2">
                         <div>
-                          <span className="text-[10px] font-bold text-purple-300 uppercase block">Practical Next Step:</span>
-                          <span className="text-[11px] text-slate-200">{msg.nextStep}</span>
+                          <span className="text-[10px] font-bold text-[#A78BFA] uppercase block">Practical Next Step:</span>
+                          <span className="text-[11px] text-[#F8FAFC] font-medium">{msg.nextStep}</span>
                         </div>
                         <button
                           onClick={() => onNavigate('decision-lab')}
-                          className="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-[10px] font-bold transition-all shrink-0 flex items-center gap-1"
+                          className="px-3 py-1.5 rounded-lg bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-[10px] font-bold transition-all shrink-0 flex items-center gap-1 shadow-sm"
                         >
                           <span>Test in Lab</span>
                           <ArrowRight className="w-3 h-3" />
@@ -654,10 +654,10 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
 
                     {/* Explainable AI Calculation Toggle */}
                     {msg.calculationExplanation && (
-                      <div className="pt-2 border-t border-slate-800/80">
+                      <div className="pt-2 border-t border-[#222936]">
                         <button
                           onClick={() => toggleCalc(msg.id)}
-                          className="inline-flex items-center gap-1.5 text-[11px] font-bold text-purple-400 hover:text-purple-300 transition-colors"
+                          className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#A78BFA] hover:text-[#F8FAFC] transition-colors"
                         >
                           <Calculator className="w-3.5 h-3.5" />
                           <span>
@@ -667,10 +667,10 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
                         </button>
 
                         {isCalcExpanded && (
-                          <div className="mt-2.5 p-3 rounded-xl bg-slate-900 border border-slate-800 font-mono text-[11px] space-y-1.5">
-                            <div className="font-bold text-slate-200">{msg.calculationExplanation.metric}</div>
-                            <div className="text-[10px] text-slate-400">Formula: {msg.calculationExplanation.formula}</div>
-                            <div className="text-slate-300">
+                          <div className="mt-2.5 p-3 rounded-xl bg-[#0F1219] border border-[#222936] font-mono text-[11px] space-y-1.5">
+                            <div className="font-bold text-[#F8FAFC]">{msg.calculationExplanation.metric}</div>
+                            <div className="text-[10px] text-[#707A8C]">Formula: {msg.calculationExplanation.formula}</div>
+                            <div className="text-[#A7B0C0]">
                               Values: {msg.calculationExplanation.actualValues} = <span className="text-emerald-400 font-bold">{msg.calculationExplanation.result}</span>
                             </div>
                           </div>
@@ -685,11 +685,11 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
 
             {isTyping && (
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-purple-600/30 border border-purple-500/40 flex items-center justify-center text-purple-300 animate-pulse">
+                <div className="w-8 h-8 rounded-xl bg-[#8B5CF6]/20 border border-[#8B5CF6]/30 flex items-center justify-center text-[#A78BFA] animate-pulse">
                   <Bot className="w-4 h-4" />
                 </div>
-                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-400 flex items-center gap-2">
-                  <Sparkles className="w-3.5 h-3.5 animate-spin text-purple-400" />
+                <div className="p-3 rounded-xl bg-[#121722] border border-[#222936] text-xs text-[#A7B0C0] flex items-center gap-2 shadow-sm">
+                  <Sparkles className="w-3.5 h-3.5 animate-spin text-[#8B5CF6]" />
                   <span>Evaluating financial telemetry and simulating decisions...</span>
                 </div>
               </div>
@@ -699,7 +699,7 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
           </div>
 
           {/* User Input Bar */}
-          <div className="p-4 bg-slate-950/90 border-t border-slate-800">
+          <div className="p-4 bg-[#121722] border-t border-[#222936]">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -712,12 +712,12 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 placeholder={t('advisor.inputPlaceholder', 'Ask a financial or strategic decision question...')}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 text-xs focus:outline-none focus:border-purple-500"
+                className="flex-1 px-4 py-2.5 rounded-xl bg-[#0D1118] border border-[#222936] text-[#F8FAFC] text-xs placeholder-[#707A8C] focus:outline-none focus:border-[#8B5CF6] focus:bg-[#161C27]"
               />
               <button
                 type="submit"
                 disabled={!inputText.trim() || isTyping}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold transition-all shadow-md disabled:opacity-50 flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-xl bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-xs font-bold transition-all shadow-md shadow-[#8B5CF6]/20 disabled:opacity-50 flex items-center gap-1.5"
               >
                 <span>{t('common.send', 'Ask Advisor')}</span>
                 <Send className="w-3.5 h-3.5" />

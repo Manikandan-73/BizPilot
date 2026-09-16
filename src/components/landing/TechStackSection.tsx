@@ -16,17 +16,17 @@ export const TechStackSection: React.FC = () => {
     {
       category: 'Frontend & UI',
       icon: Code2,
-      color: 'text-sky-400 bg-sky-500/10 border-sky-500/20',
+      color: 'text-violet-400 bg-violet-950/40 border-violet-800/40',
       items: [
         { name: 'React 18', role: 'Component Architecture & State' },
-        { name: 'Tailwind CSS', role: 'Fintech Dark Navy & Glassmorphism Design System' },
+        { name: 'Tailwind CSS', role: 'Fintech Modern Design System & Clean Cards' },
         { name: 'Lucide & Canvas', role: 'Vector Graphics & Rich Micro-Interactions' }
       ]
     },
     {
       category: 'Backend Architecture',
       icon: Server,
-      color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
+      color: 'text-teal-400 bg-teal-950/40 border-teal-800/40',
       items: [
         { name: 'Python FastAPI', role: 'High-Throughput Asynchronous Core' },
         { name: 'Uvicorn & Celery', role: 'Distributed Background Queue for GST Parsing' },
@@ -36,7 +36,7 @@ export const TechStackSection: React.FC = () => {
     {
       category: 'Data & Security',
       icon: Database,
-      color: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
+      color: 'text-amber-400 bg-amber-950/40 border-amber-800/40',
       items: [
         { name: 'MySQL / PostgreSQL', role: 'ACID-Compliant Relational Financial Store' },
         { name: 'Redis Cache', role: 'Sub-millisecond Session & Telemetry Caching' },
@@ -46,7 +46,7 @@ export const TechStackSection: React.FC = () => {
     {
       category: 'Generative AI & LLMs',
       icon: BrainCircuit,
-      color: 'text-purple-400 bg-purple-500/10 border-purple-500/20',
+      color: 'text-violet-400 bg-violet-950/40 border-violet-800/40',
       items: [
         { name: 'Google Gemini API', role: 'Multilingual Vernacular Reasoning & Synthesis' },
         { name: 'LangChain & RAG', role: 'MSME Credit Policy Retrieval-Augmented Generation' },
@@ -56,7 +56,7 @@ export const TechStackSection: React.FC = () => {
     {
       category: 'Machine Learning & Forecasting',
       icon: Cpu,
-      color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20',
+      color: 'text-teal-400 bg-teal-950/40 border-teal-800/40',
       items: [
         { name: 'Facebook Prophet', role: 'Time-Series Seasonality & Trend Decomposition' },
         { name: 'XGBoost & Scikit-Learn', role: 'Default Risk Classification & Credit Scoring' },
@@ -66,7 +66,7 @@ export const TechStackSection: React.FC = () => {
     {
       category: 'Visual Analytics & BI',
       icon: LineChart,
-      color: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20',
+      color: 'text-violet-400 bg-violet-950/40 border-violet-800/40',
       items: [
         { name: 'Recharts & Chart.js', role: 'Interactive SVG Financial Visualizations' },
         { name: 'Power BI Embedded', role: 'Institutional Investor & Bank Reporting' },
@@ -76,18 +76,18 @@ export const TechStackSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-24 relative bg-slate-950/70 border-t border-slate-800/80">
+    <section className="py-24 relative bg-[#0F1219] border-t border-[#222936]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-300 text-xs font-semibold uppercase tracking-wider">
-            <Layers className="w-3.5 h-3.5 text-purple-400" /> Enterprise-Grade Modern Stack
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#121722] border border-[#222936] text-violet-400 text-xs font-semibold uppercase tracking-wider">
+            <Layers className="w-3.5 h-3.5 text-violet-400" /> Enterprise-Grade Modern Stack
           </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-black text-[#F8FAFC] tracking-tight">
             Built with State-of-the-Art Technology
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+          <p className="text-[#A7B0C0] text-sm sm:text-base leading-relaxed">
             Engineered for security, sub-second latency, explainable machine intelligence, and bank-level compliance.
           </p>
         </div>
@@ -99,20 +99,20 @@ export const TechStackSection: React.FC = () => {
             return (
               <div 
                 key={idx}
-                className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-purple-500/30 transition-all space-y-4 shadow-lg"
+                className="p-6 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] hover:-translate-y-0.5 transition-all space-y-4"
               >
                 <div className="flex items-center gap-3">
                   <div className={`p-2.5 rounded-xl border ${cat.color}`}>
                     <Icon className="w-5 h-5" />
                   </div>
-                  <h3 className="font-bold text-white text-base">{cat.category}</h3>
+                  <h3 className="font-bold text-[#F8FAFC] text-base">{cat.category}</h3>
                 </div>
 
-                <div className="space-y-2.5 pt-2 border-t border-slate-800/80">
+                <div className="space-y-2.5 pt-2 border-t border-[#222936]">
                   {cat.items.map((item, iIdx) => (
                     <div key={iIdx} className="text-xs">
-                      <div className="font-bold text-slate-200">{item.name}</div>
-                      <div className="text-[11px] text-slate-400">{item.role}</div>
+                      <div className="font-bold text-[#F8FAFC]">{item.name}</div>
+                      <div className="text-[11px] text-[#A7B0C0]">{item.role}</div>
                     </div>
                   ))}
                 </div>

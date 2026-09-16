@@ -14,7 +14,7 @@ export const YesNoToggle: React.FC<YesNoToggleProps> = ({ value, onChange, error
 
   return (
     <div className="space-y-1.5">
-      <div className="inline-flex p-1 bg-slate-950 border border-slate-800 rounded-xl">
+      <div className="inline-flex p-1 bg-[#0D1118] border border-[#222936] rounded-xl">
         {(['Yes', 'No'] as const).map((label) => {
           const boolValue = label === 'Yes';
           const isActive = value === boolValue;
@@ -28,8 +28,8 @@ export const YesNoToggle: React.FC<YesNoToggleProps> = ({ value, onChange, error
               className={cn(
                 'px-5 py-2 rounded-lg text-xs font-bold transition-all',
                 isActive 
-                  ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30' 
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-violet-600 text-white shadow-sm' 
+                  : 'text-[#A7B0C0] hover:text-[#F8FAFC]'
               )}
             >
               {translatedLabel}
@@ -61,11 +61,11 @@ export function ChipMultiSelect<T extends string>({ options, selected, onToggle 
             className={cn(
               'flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all',
               isActive
-                ? 'bg-purple-600/20 border-purple-500 text-purple-200'
-                : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                ? 'bg-violet-950/40 border-violet-500 text-violet-300 shadow-sm'
+                : 'bg-[#121722] border-[#222936] text-[#A7B0C0] hover:border-[#303848] hover:text-[#F8FAFC]'
             )}
           >
-            {isActive && <Check className="w-3.5 h-3.5 text-purple-400" />}
+            {isActive && <Check className="w-3.5 h-3.5 text-violet-400" />}
             {option}
           </button>
         );
@@ -93,8 +93,8 @@ export function ChipSingleSelect<T extends string>({ options, selected, onSelect
             className={cn(
               'px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all',
               isActive
-                ? 'bg-purple-600 border-purple-500 text-white shadow-md shadow-purple-600/20'
-                : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                ? 'bg-violet-600 border-violet-600 text-white shadow-sm'
+                : 'bg-[#121722] border-[#222936] text-[#A7B0C0] hover:border-[#303848] hover:text-[#F8FAFC]'
             )}
           >
             {option}

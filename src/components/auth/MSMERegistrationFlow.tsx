@@ -265,15 +265,12 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#0F172A] text-slate-100 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative">
-      {/* Background ambient lighting */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-tr from-purple-600/20 via-indigo-500/15 to-sky-400/20 blur-[140px] pointer-events-none rounded-full" />
-
+    <div className="min-h-screen bg-[#090B10] text-[#F8FAFC] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative">
       {/* Top Header Bar */}
       <div className="absolute top-6 left-6 right-6 flex items-center justify-between z-10 max-w-5xl mx-auto w-full">
         <button
           onClick={onGoHome}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-all backdrop-blur-md"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#A7B0C0] hover:text-[#F8FAFC] bg-[#121722] border border-[#222936] hover:bg-[#161C27] transition-all shadow-sm"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>{t('common.back', 'Back to Home')}</span>
@@ -281,9 +278,9 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
 
         <button
           onClick={() => setLanguage(language === 'en' ? 'ta' : 'en')}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900/80 text-slate-300 border border-slate-800 hover:border-purple-400 transition-all shadow-sm backdrop-blur-md"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#121722] text-[#A7B0C0] border border-[#222936] hover:border-violet-500 hover:text-[#F8FAFC] transition-all shadow-sm"
         >
-          <Languages className="w-3.5 h-3.5 text-purple-400" />
+          <Languages className="w-3.5 h-3.5 text-violet-400" />
           <span>{language === 'en' ? 'தமிழ்' : 'English'}</span>
         </button>
       </div>
@@ -304,8 +301,8 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                 className={
                   'px-3 py-1 rounded-full text-[11px] font-bold border transition-all ' +
                   (isCurrent
-                    ? 'bg-purple-600 text-white border-purple-500 shadow-md shadow-purple-600/30'
-                    : 'bg-slate-900 text-slate-400 border-slate-800')
+                    ? 'bg-[#161C27] text-violet-400 border-violet-500 shadow-sm'
+                    : 'bg-[#121722] text-[#707A8C] border-[#222936]')
                 }
               >
                 {s.label}
@@ -316,12 +313,12 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
 
         {/* STEP 1: BUSINESS DETAILS */}
         {step === 'business' && (
-          <div className="glass-panel rounded-2xl p-6 sm:p-8 border border-slate-800 shadow-2xl bg-slate-900/90 backdrop-blur-xl space-y-6">
+          <div className="bg-[#121722] rounded-2xl p-6 sm:p-8 border border-[#222936] shadow-xl space-y-6">
             <div className="text-center space-y-1">
-              <h2 className="text-2xl font-black text-white tracking-tight">
+              <h2 className="text-2xl font-black text-[#F8FAFC] tracking-tight">
                 {t('auth.step1Title', 'Business Information')}
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#A7B0C0]">
                 {t('auth.step1Subtitle', 'Provide your MSME registration details to personalize your financial intelligence.')}
               </p>
             </div>
@@ -391,18 +388,18 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                 </FormField>
               </div>
 
-              <div className="pt-4 flex items-center justify-between border-t border-slate-800">
+              <div className="pt-4 flex items-center justify-between border-t border-[#222936]">
                 <button
                   type="button"
                   onClick={onSwitchToLogin}
-                  className="text-xs text-purple-400 hover:text-purple-300 font-semibold"
+                  className="text-xs text-violet-400 hover:text-violet-300 font-semibold"
                 >
                   {t('auth.alreadyHaveAccount', 'Already have an account? Sign in')}
                 </button>
 
                 <button
                   type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-lg shadow-purple-600/30"
+                  className="px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-lg shadow-violet-600/20"
                 >
                   <span>{t('common.next', 'Next: Login Credentials')}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -414,18 +411,18 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
 
         {/* STEP 2: ACCOUNT / CREDENTIALS */}
         {step === 'account' && (
-          <div className="glass-panel rounded-2xl p-6 sm:p-8 border border-slate-800 shadow-2xl bg-slate-900/90 backdrop-blur-xl space-y-6">
+          <div className="bg-[#121722] rounded-2xl p-6 sm:p-8 border border-[#222936] shadow-xl space-y-6">
             <div className="text-center space-y-1">
-              <h2 className="text-2xl font-black text-white tracking-tight">
+              <h2 className="text-2xl font-black text-[#F8FAFC] tracking-tight">
                 {t('auth.accountStepTitle', 'Create Sign-in Credentials')}
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#A7B0C0]">
                 {t('auth.accountStepSubtitle', 'Secure your MSME portal with Firebase authentication.')}
               </p>
             </div>
 
             {accountError && (
-              <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-500/40 text-rose-200 text-xs flex items-center gap-2">
+              <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-800/40 text-rose-300 text-xs flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
                 <span>{accountError}</span>
               </div>
@@ -433,80 +430,80 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
 
             <form onSubmit={handleProceedToPlan} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
                   {t('auth.fullName', 'Owner / Managing Director Name')}
                 </label>
                 <div className="relative">
-                  <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#707A8C]" />
                   <input
                     type="text"
                     value={ownerName}
                     onChange={(e) => setOwnerName(e.target.value)}
                     placeholder="e.g. Ramesh Kumar"
                     required
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-800/90 border border-slate-700 text-slate-100 text-xs focus:outline-none focus:border-purple-500"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0D1118] border border-[#222936] text-[#F8FAFC] text-xs focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 placeholder:text-[#707A8C]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
                   {t('auth.email', 'Email Address')}
                 </label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#707A8C]" />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="e.g. owner@mybusiness.com"
                     required
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-800/90 border border-slate-700 text-slate-100 text-xs focus:outline-none focus:border-purple-500"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0D1118] border border-[#222936] text-[#F8FAFC] text-xs focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 placeholder:text-[#707A8C]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
                     {t('auth.password', 'Password')}
                   </label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#707A8C]" />
                     <input
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="At least 6 characters"
                       required
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-800/90 border border-slate-700 text-slate-100 text-xs focus:outline-none focus:border-purple-500"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0D1118] border border-[#222936] text-[#F8FAFC] text-xs focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 placeholder:text-[#707A8C]"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
                     {t('auth.confirmPassword', 'Confirm Password')}
                   </label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#707A8C]" />
                     <input
                       type="password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Repeat password"
                       required
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-800/90 border border-slate-700 text-slate-100 text-xs focus:outline-none focus:border-purple-500"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0D1118] border border-[#222936] text-[#F8FAFC] text-xs focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 placeholder:text-[#707A8C]"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 flex items-center justify-between border-t border-slate-800">
+              <div className="pt-4 flex items-center justify-between border-t border-[#222936]">
                 <button
                   type="button"
                   onClick={() => setStep('business')}
-                  className="text-xs text-slate-400 hover:text-white flex items-center gap-1 font-semibold"
+                  className="text-xs text-[#A7B0C0] hover:text-[#F8FAFC] flex items-center gap-1 font-semibold"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>{t('common.back', 'Back')}</span>
@@ -515,7 +512,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                 <button
                   type="submit"
                   disabled={paymentLoading}
-                  className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-lg shadow-purple-600/30 disabled:opacity-50"
+                  className="px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-lg shadow-violet-600/20 disabled:opacity-50"
                 >
                   {paymentLoading ? (
                     <>
@@ -539,28 +536,28 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
           <div className="space-y-6">
             {/* Payment Failure / Cancellation Recovery Banner */}
             {paymentError && (
-              <div className="p-4 rounded-2xl bg-amber-950/60 border border-amber-500/50 text-amber-200 text-xs space-y-2 shadow-xl">
+              <div className="p-4 rounded-2xl bg-amber-950/30 border border-amber-800/40 text-amber-200 text-xs space-y-2 shadow-sm">
                 <div className="flex items-center gap-2 font-bold text-amber-300">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <AlertCircle className="w-4 h-4 shrink-0 text-amber-400" />
                   <span>{t('subscription.regIncompleteTitle', 'Registration Incomplete — Payment Required')}</span>
                 </div>
-                <p className="text-[11px] leading-relaxed">
+                <p className="text-[11px] leading-relaxed text-amber-200/80">
                   {paymentError}
                 </p>
-                <div className="text-[11px] text-amber-300/80">
+                <div className="text-[11px] text-amber-300">
                   {t('subscription.paymentRequiredNotice', 'Your BizPilot workspace cannot be opened until subscription payment is completed.')}
                 </div>
               </div>
             )}
 
             <div className="text-center space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
+              <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-[#121722] text-violet-400 border border-[#222936]">
                 Razorpay Test Mode
               </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-1">
+              <h2 className="text-2xl sm:text-3xl font-black text-[#F8FAFC] tracking-tight mt-1">
                 {t('subscription.choosePlanTitle', 'Select Plan & Activate Platform Access')}
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#A7B0C0]">
                 One-time 30-day term. Zero auto-renewal, test mode amounts.
               </p>
             </div>
@@ -574,27 +571,27 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                 className={
                   'rounded-2xl p-6 border cursor-pointer transition-all flex flex-col justify-between ' +
                   (selectedPlanId === 'starter'
-                    ? 'bg-purple-950/40 border-purple-500 ring-2 ring-purple-500/40 shadow-xl'
-                    : 'bg-slate-900/90 border-slate-800 hover:border-slate-700')
+                    ? 'bg-[#161C27] border-violet-500 ring-2 ring-violet-500/20 shadow-xl'
+                    : 'bg-[#121722] border-[#222936] hover:border-[#303848] shadow-sm')
                 }
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Financial Visibility</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">TEST: ₹1</span>
+                    <span className="text-xs font-bold uppercase tracking-widest text-[#707A8C]">Financial Visibility</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#0F1219] text-[#A7B0C0] font-mono border border-[#222936]">TEST: ₹1</span>
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-bold text-white">Starter</h3>
+                    <h3 className="text-xl font-bold text-[#F8FAFC]">Starter</h3>
                     <div className="flex items-baseline gap-1 mt-1">
-                      <span className="text-3xl font-black text-white">₹{PLAN_CONFIGS.starter.priceINR}</span>
-                      <span className="text-xs text-slate-400">/ 30 days</span>
+                      <span className="text-3xl font-black text-[#F8FAFC]">₹{PLAN_CONFIGS.starter.priceINR}</span>
+                      <span className="text-xs text-[#707A8C]">/ 30 days</span>
                     </div>
                   </div>
 
-                  <div className="space-y-2 text-xs pt-3 border-t border-slate-800">
+                  <div className="space-y-2 text-xs pt-3 border-t border-[#222936]">
                     {PLAN_CONFIGS.starter.features.slice(0, 6).map((f) => (
-                      <div key={f.key} className="flex items-center gap-2 text-slate-300 text-[11px]">
+                      <div key={f.key} className="flex items-center gap-2 text-[#A7B0C0] text-[11px]">
                         <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                         <span>{f.label}</span>
                       </div>
@@ -610,9 +607,9 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                       handleLaunchPayment('starter');
                     }}
                     disabled={paymentLoading}
-                    className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold border border-slate-700 hover:border-purple-500/40 transition-all flex items-center justify-center gap-2"
+                    className="w-full py-2.5 rounded-xl bg-[#161C27] hover:bg-[#1A2230] text-[#F8FAFC] border border-[#222936] hover:border-[#303848] text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-sm"
                   >
-                    <CreditCard className="w-3.5 h-3.5 text-purple-400" />
+                    <CreditCard className="w-3.5 h-3.5 text-violet-400" />
                     <span>Pay ₹1 &amp; Activate Starter</span>
                   </button>
                 </div>
@@ -624,35 +621,35 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                 className={
                   'rounded-2xl p-6 border-2 cursor-pointer transition-all flex flex-col justify-between relative ' +
                   (selectedPlanId === 'professional'
-                    ? 'bg-gradient-to-b from-purple-950/50 to-slate-900 border-purple-500 ring-2 ring-purple-500/40 shadow-2xl shadow-purple-900/30'
-                    : 'bg-slate-900/90 border-slate-800 hover:border-slate-700')
+                    ? 'bg-[#161C27] border-violet-500 ring-2 ring-violet-500/20 shadow-2xl shadow-violet-500/10'
+                    : 'bg-[#121722] border-violet-500/50 hover:border-violet-500 shadow-sm')
                 }
               >
                 <div className="absolute -top-3 right-6">
-                  <span className="px-3 py-0.5 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-[10px] font-black uppercase tracking-wider">
+                  <span className="px-3 py-0.5 rounded-full bg-violet-600 text-white text-[10px] font-black uppercase tracking-wider shadow-sm">
                     RECOMMENDED
                   </span>
                 </div>
 
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-widest text-purple-300">Decision Intelligence</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-mono">TEST: ₹2</span>
+                    <span className="text-xs font-bold uppercase tracking-widest text-violet-400">Decision Intelligence</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-violet-950/40 text-violet-300 font-mono border border-violet-800/40">TEST: ₹2</span>
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-bold text-white flex items-center gap-1.5">
+                    <h3 className="text-xl font-bold text-[#F8FAFC] flex items-center gap-1.5">
                       Professional
-                      <Zap className="w-4 h-4 text-purple-400 fill-purple-400" />
+                      <Zap className="w-4 h-4 text-violet-400 fill-violet-400" />
                     </h3>
                     <div className="flex items-baseline gap-1 mt-1">
-                      <span className="text-3xl font-black text-white">₹{PLAN_CONFIGS.professional.priceINR}</span>
-                      <span className="text-xs text-slate-400">/ 30 days</span>
+                      <span className="text-3xl font-black text-[#F8FAFC]">₹{PLAN_CONFIGS.professional.priceINR}</span>
+                      <span className="text-xs text-[#707A8C]">/ 30 days</span>
                     </div>
                   </div>
 
-                  <div className="space-y-2 text-xs pt-3 border-t border-slate-800">
-                    <div className="text-[10px] font-bold text-purple-300 uppercase">Everything in Starter, plus:</div>
+                  <div className="space-y-2 text-xs pt-3 border-t border-[#222936]">
+                    <div className="text-[10px] font-bold text-violet-400 uppercase">Everything in Starter, plus:</div>
                     {[
                       'Advanced AI Business Advisor',
                       'Advanced Decision Lab',
@@ -660,8 +657,8 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                       'Detailed AI Business Report',
                       'Export / Share Reports (PDF)',
                     ].map((feat) => (
-                      <div key={feat} className="flex items-center gap-2 text-slate-200 text-[11px]">
-                        <Check className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                      <div key={feat} className="flex items-center gap-2 text-[#A7B0C0] text-[11px]">
+                        <Check className="w-3.5 h-3.5 text-violet-400 shrink-0" />
                         <span>{feat}</span>
                       </div>
                     ))}
@@ -676,7 +673,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                       handleLaunchPayment('professional');
                     }}
                     disabled={paymentLoading}
-                    className="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-purple-600/30"
+                    className="w-full py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-violet-600/25 hover:shadow-violet-600/40"
                   >
                     <CreditCard className="w-3.5 h-3.5" />
                     <span>Pay ₹2 &amp; Activate Professional</span>
@@ -690,43 +687,43 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
 
         {/* STEP 4: VERIFIED ACCOUNT ACTIVATED SUCCESS */}
         {step === 'success' && (
-          <div className="glass-panel rounded-2xl p-8 border border-emerald-500/40 shadow-2xl bg-gradient-to-b from-emerald-950/40 via-slate-900 to-slate-900 text-center space-y-6">
-            <div className="w-16 h-16 rounded-3xl bg-emerald-950/80 border border-emerald-500/50 flex items-center justify-center text-emerald-400 mx-auto shadow-2xl shadow-emerald-950/50">
+          <div className="bg-[#121722] rounded-2xl p-8 border border-emerald-500/40 shadow-2xl text-center space-y-6">
+            <div className="w-16 h-16 rounded-3xl bg-emerald-950/40 border border-emerald-800/40 flex items-center justify-center text-emerald-400 mx-auto shadow-sm">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider">
-                <ShieldCheck className="w-4 h-4" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/40 text-emerald-400 text-xs font-bold uppercase tracking-wider border border-emerald-800/40">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
                 <span>Verified Payment &amp; Account Activated</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-white">
+              <h2 className="text-2xl sm:text-3xl font-black text-[#F8FAFC]">
                 {t('subscription.accountReadyTitle', 'Your BizPilot AI Account is Ready!')}
               </h2>
-              <p className="text-xs text-slate-300 max-w-md mx-auto">
+              <p className="text-xs text-[#A7B0C0] max-w-md mx-auto">
                 Payment has been confirmed with Razorpay. Your 30-day access is officially active.
               </p>
             </div>
 
             {/* Plan Details Confirmation */}
-            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 max-w-sm mx-auto grid grid-cols-2 gap-3 text-left text-xs">
+            <div className="p-4 rounded-xl bg-[#0F1219] border border-[#222936] max-w-sm mx-auto grid grid-cols-2 gap-3 text-left text-xs">
               <div>
-                <span className="text-[10px] text-slate-400 uppercase">Plan</span>
-                <div className="font-bold text-white capitalize">{verifiedSubscription?.plan || 'Professional'}</div>
+                <span className="text-[10px] text-[#707A8C] uppercase">Plan</span>
+                <div className="font-bold text-[#F8FAFC] capitalize">{verifiedSubscription?.plan || 'Professional'}</div>
               </div>
               <div>
-                <span className="text-[10px] text-slate-400 uppercase">Status</span>
+                <span className="text-[10px] text-[#707A8C] uppercase">Status</span>
                 <div className="font-bold text-emerald-400">Active (30 Days)</div>
               </div>
               <div>
-                <span className="text-[10px] text-slate-400 uppercase">Valid Until</span>
-                <div className="font-mono text-slate-200 text-[11px]">
+                <span className="text-[10px] text-[#707A8C] uppercase">Valid Until</span>
+                <div className="font-mono text-[#A7B0C0] text-[11px]">
                   {verifiedSubscription?.expiryDate ? new Date(verifiedSubscription.expiryDate).toLocaleDateString() : '30 days'}
                 </div>
               </div>
               <div>
-                <span className="text-[10px] text-slate-400 uppercase">Payment ID</span>
-                <div className="font-mono text-purple-300 text-[11px] truncate" title={verifiedSubscription?.paymentId || ''}>
+                <span className="text-[10px] text-[#707A8C] uppercase">Payment ID</span>
+                <div className="font-mono text-violet-400 text-[11px] truncate" title={verifiedSubscription?.paymentId || ''}>
                   {verifiedSubscription?.paymentId || 'Captured'}
                 </div>
               </div>
@@ -739,7 +736,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                     onRegistrationComplete(createdOrg);
                   }
                 }}
-                className="px-8 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-sm shadow-xl shadow-emerald-600/30 transition-all hover:scale-105 inline-flex items-center gap-2"
+                className="px-8 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm shadow-lg shadow-emerald-600/25 transition-all hover:scale-105 inline-flex items-center gap-2"
               >
                 <span>{t('subscription.enterPlatform', 'Enter BizPilot Platform')}</span>
                 <ArrowRight className="w-4 h-4" />

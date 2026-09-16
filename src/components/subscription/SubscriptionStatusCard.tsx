@@ -23,34 +23,34 @@ export const SubscriptionStatusCard: React.FC<SubscriptionStatusCardProps> = ({
   const isExpired = !active && Boolean(subscription?.expiryDate);
 
   return (
-    <div className="rounded-2xl bg-slate-900 border border-slate-800 p-6 sm:p-8 shadow-xl space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+    <div className="rounded-2xl bg-[#121722] border border-[#222936] p-6 sm:p-8 shadow-sm space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#222936]">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-purple-950/80 border border-purple-500/40 flex items-center justify-center text-purple-300">
+          <div className="w-12 h-12 rounded-xl bg-violet-950/40 border border-violet-800/40 flex items-center justify-center text-violet-400">
             <ShieldCheck className="w-6 h-6" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-lg font-bold text-white tracking-tight">
+              <h3 className="text-lg font-bold text-[#F8FAFC] tracking-tight">
                 {subscription?.plan ? planName + ' PLAN' : t('subscription.noActivePlan', 'No Active Subscription')}
               </h3>
               {active ? (
-                <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-950/50 border border-emerald-800/50 text-emerald-400 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3" />
                   {t('subscription.active', 'Active')}
                 </span>
               ) : isExpired ? (
-                <span className="px-2.5 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-300 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                <span className="px-2.5 py-0.5 rounded-full bg-rose-950/50 border border-rose-800/50 text-rose-400 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
                   <AlertTriangle className="w-3 h-3" />
                   {t('subscription.expired', 'Expired')}
                 </span>
               ) : (
-                <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-bold uppercase tracking-wider">
+                <span className="px-2.5 py-0.5 rounded-full bg-amber-950/50 border border-amber-800/50 text-amber-400 text-[10px] font-bold uppercase tracking-wider">
                   {t('subscription.pending', 'Pending Payment')}
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-[#707A8C] mt-0.5">
               {active
                 ? t('subscription.activeDesc', 'Full access to your MSME financial tools & intelligence.')
                 : isExpired
@@ -66,7 +66,7 @@ export const SubscriptionStatusCard: React.FC<SubscriptionStatusCardProps> = ({
             <button
               onClick={() => onRenewOrUpgrade('professional')}
               disabled={loading}
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg hover:from-purple-500 hover:to-indigo-500 transition-all flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl text-xs font-bold bg-violet-600 hover:bg-violet-500 text-white shadow-sm transition-all flex items-center gap-1.5"
             >
               <span>{t('subscription.upgradeToPro', 'Upgrade to Professional')}</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -78,14 +78,14 @@ export const SubscriptionStatusCard: React.FC<SubscriptionStatusCardProps> = ({
               <button
                 onClick={() => onRenewOrUpgrade('starter')}
                 disabled={loading}
-                className="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all"
+                className="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#161C27] hover:bg-[#1F2636] text-[#F8FAFC] border border-[#222936] shadow-sm transition-all"
               >
                 {t('subscription.renewStarter', 'Renew Starter')}
               </button>
               <button
                 onClick={() => onRenewOrUpgrade('professional')}
                 disabled={loading}
-                className="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-500 hover:to-indigo-500 transition-all"
+                className="px-4 py-2 rounded-xl text-xs font-bold bg-violet-600 hover:bg-violet-500 text-white shadow-sm transition-all"
               >
                 {t('subscription.renewPro', 'Renew Professional')}
               </button>
@@ -96,28 +96,28 @@ export const SubscriptionStatusCard: React.FC<SubscriptionStatusCardProps> = ({
 
       {/* Snapshot metrics */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-        <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800">
-          <div className="text-slate-400 font-medium">{t('subscription.planDuration', 'Billing Period')}</div>
-          <div className="text-sm font-bold text-white mt-1">30 {t('common.days', 'Days')}</div>
+        <div className="p-3.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+          <div className="text-[#707A8C] font-medium">{t('subscription.planDuration', 'Billing Period')}</div>
+          <div className="text-sm font-bold text-[#F8FAFC] mt-1">30 {t('common.days', 'Days')}</div>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800">
-          <div className="text-slate-400 font-medium">{t('subscription.startDate', 'Start Date')}</div>
-          <div className="text-sm font-bold text-white mt-1">
+        <div className="p-3.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+          <div className="text-[#707A8C] font-medium">{t('subscription.startDate', 'Start Date')}</div>
+          <div className="text-sm font-bold text-[#F8FAFC] mt-1">
             {subscription?.startDate ? new Date(subscription.startDate).toLocaleDateString() : '—'}
           </div>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800">
-          <div className="text-slate-400 font-medium">{t('subscription.expiryDate', 'Expiry Date')}</div>
-          <div className="text-sm font-bold text-white mt-1">
+        <div className="p-3.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+          <div className="text-[#707A8C] font-medium">{t('subscription.expiryDate', 'Expiry Date')}</div>
+          <div className="text-sm font-bold text-[#F8FAFC] mt-1">
             {subscription?.expiryDate ? new Date(subscription.expiryDate).toLocaleDateString() : '—'}
           </div>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800">
-          <div className="text-slate-400 font-medium">{t('subscription.daysRemaining', 'Days Remaining')}</div>
-          <div className="text-sm font-bold text-purple-400 mt-1 flex items-center gap-1">
+        <div className="p-3.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+          <div className="text-[#707A8C] font-medium">{t('subscription.daysRemaining', 'Days Remaining')}</div>
+          <div className="text-sm font-bold text-violet-400 mt-1 flex items-center gap-1">
             <Clock className="w-3.5 h-3.5" />
             <span>{daysLeft} {t('common.days', 'days')}</span>
           </div>

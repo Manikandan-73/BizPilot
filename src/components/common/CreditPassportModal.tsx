@@ -86,23 +86,23 @@ export const CreditPassportModal: React.FC<CreditPassportModalProps> = ({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md overflow-y-auto">
-      <div className="relative w-full max-w-4xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-md overflow-y-auto">
+      <div className="relative w-full max-w-4xl bg-[#121722] border border-[#303848] rounded-2xl shadow-2xl overflow-hidden my-8">
         
         {/* Header Bar */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950/70">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#222936] bg-[#0F1219]">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-purple-600 to-sky-500 flex items-center justify-center text-white font-bold shadow-lg shadow-purple-500/20">
+            <div className="w-9 h-9 rounded-lg bg-[#8B5CF6] flex items-center justify-center text-white font-bold shadow-sm">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-bold text-[#F8FAFC] flex items-center gap-2">
                 {t('passport.title', 'MSME Credit Passport')}
-                <span className="text-[10px] text-purple-300 font-normal px-2 py-0.5 rounded bg-purple-500/20 border border-purple-500/30">
+                <span className="text-[10px] text-[#A78BFA] font-medium px-2 py-0.5 rounded bg-[#8B5CF6]/15 border border-[#8B5CF6]/30">
                   {t('passport.indicativeCreditProfile', 'BizPilot Indicative Credit Profile')}
                 </span>
               </h3>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-[#707A8C]">
                 {t('passport.subtitle', 'Standardized institutional credit assessment summary for loan preparation and underwriting review.')}
               </p>
             </div>
@@ -110,14 +110,14 @@ export const CreditPassportModal: React.FC<CreditPassportModalProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all"
+              className="p-2 rounded-lg bg-[#161C27] hover:bg-[#171D29] text-[#A7B0C0] hover:text-[#F8FAFC] border border-[#222936] transition-all"
               title={t('common.printPdf', 'Print / Save PDF')}
             >
               <Printer className="w-4 h-4" />
             </button>
             <button
               onClick={onClose}
-              className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all"
+              className="p-2 rounded-lg bg-[#161C27] hover:bg-[#171D29] text-[#A7B0C0] hover:text-[#F8FAFC] border border-[#222936] transition-all"
             >
               <X className="w-4 h-4" />
             </button>
@@ -125,173 +125,173 @@ export const CreditPassportModal: React.FC<CreditPassportModalProps> = ({
         </div>
 
         {/* Modal Scrollable Content */}
-        <div className="p-6 max-h-[78vh] overflow-y-auto space-y-6">
+        <div className="p-6 max-h-[78vh] overflow-y-auto space-y-6 bg-[#121722]">
           
           {/* Institutional Header with Stamp */}
-          <div className="p-5 rounded-xl bg-gradient-to-r from-purple-950/40 via-slate-900 to-indigo-950/40 border border-purple-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="p-5 rounded-xl bg-[#0F1219] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#14B8A6]/15 text-[#2DD4BF] border border-[#14B8A6]/30 uppercase">
                   {profile.sector || 'MSME Enterprise'}
                 </span>
-                <span className="text-xs text-slate-400">
+                <span className="text-xs text-[#707A8C]">
                   ID: {profile.id ? profile.id.toUpperCase() : 'BIZ-2026-IND'}
                 </span>
               </div>
-              <h2 className="text-xl font-black text-white tracking-tight">{businessName}</h2>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-400 pt-1">
-                <span>{t('business.sector', 'Sector')}: <strong className="text-slate-200">{profile.sector || 'General Business'}</strong></span>
+              <h2 className="text-xl font-black text-[#F8FAFC] tracking-tight">{businessName}</h2>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#707A8C] pt-1">
+                <span>{t('business.sector', 'Sector')}: <strong className="text-[#A7B0C0] font-semibold">{profile.sector || 'General Business'}</strong></span>
                 <span>•</span>
-                <span>{t('business.location', 'Location')}: <strong className="text-slate-200">{profile.location || 'India'}</strong></span>
+                <span>{t('business.location', 'Location')}: <strong className="text-[#A7B0C0] font-semibold">{profile.location || 'India'}</strong></span>
                 <span>•</span>
-                <span>{t('business.vintage', 'Vintage')}: <strong className="text-slate-200">{vintageYears ? `${vintageYears} ${t('common.years', 'Years')}` : 'Not provided'}</strong></span>
+                <span>{t('business.vintage', 'Vintage')}: <strong className="text-[#A7B0C0] font-semibold">{vintageYears ? `${vintageYears} ${t('common.years', 'Years')}` : 'Not provided'}</strong></span>
                 <span>•</span>
-                <span>GSTIN: <strong className="text-slate-200">{profile.gstin || (language === 'ta' ? 'வழங்கப்படவில்லை' : 'Not registered')}</strong></span>
+                <span>GSTIN: <strong className="text-[#A7B0C0] font-semibold">{profile.gstin || (language === 'ta' ? 'வழங்கப்படவில்லை' : 'Not registered')}</strong></span>
               </div>
             </div>
 
             {/* Stamp / Verification Badge */}
-            <div className="p-3 rounded-xl bg-slate-950/70 border border-purple-500/40 text-center min-w-[140px]">
-              <QrCode className="w-10 h-10 text-purple-400 mx-auto mb-1 opacity-80" />
-              <div className="text-[9px] font-black uppercase tracking-wider text-purple-300">
+            <div className="p-3 rounded-xl bg-[#161C27] border border-[#303848] text-center min-w-[140px] shadow-sm">
+              <QrCode className="w-10 h-10 text-[#8B5CF6] mx-auto mb-1 opacity-90" />
+              <div className="text-[9px] font-black uppercase tracking-wider text-[#A78BFA]">
                 {t('passport.indicativeStamp', 'Indicative Profile')}
               </div>
-              <div className="text-[9px] text-slate-500">
+              <div className="text-[9px] text-[#707A8C]">
                 Verified: {new Date().toISOString().split('T')[0]}
               </div>
             </div>
           </div>
 
           {/* Underwriting Disclaimer Banner */}
-          <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800 flex items-start gap-2.5 text-xs text-slate-400">
-            <Info className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+          <div className="p-3 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 flex items-start gap-2.5 text-xs text-[#A7B0C0]">
+            <Info className="w-4 h-4 text-[#8B5CF6] shrink-0 mt-0.5" />
             <p className="leading-relaxed">
-              <strong className="text-slate-200">{t('passport.disclaimerTitle', 'Institutional Underwriting Notice')}: </strong>
+              <strong className="text-[#F8FAFC]">{t('passport.disclaimerTitle', 'Institutional Underwriting Notice')}: </strong>
               {t('passport.disclaimerBody', 'This Credit Passport is a standardized indicative assessment generated strictly from deterministic financial ratios for planning purposes. It does not represent an official credit bureau score (CIBIL/CRIF) or guaranteed bank loan approval.')}
             </p>
           </div>
 
           {/* Core Institutional Scores Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-            <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 space-y-1">
-              <div className="text-[10px] text-slate-400 font-bold uppercase">{t('passport.indicativeScore', 'Funding Readiness')}</div>
-              <div className="text-2xl font-black text-purple-400">{fundingScore}/100</div>
-              <div className="text-[10px] text-slate-500">{fundingScore >= 75 ? 'Prime Candidate' : fundingScore >= 50 ? 'Moderate Readiness' : 'Needs Preparation'}</div>
+            <div className="p-3.5 rounded-xl bg-[#0F1219] border border-[#222936] space-y-1">
+              <div className="text-[10px] text-[#707A8C] font-bold uppercase">{t('passport.indicativeScore', 'Funding Readiness')}</div>
+              <div className="text-2xl font-black text-[#8B5CF6]">{fundingScore}/100</div>
+              <div className="text-[10px] text-[#707A8C]">{fundingScore >= 75 ? 'Prime Candidate' : fundingScore >= 50 ? 'Moderate Readiness' : 'Needs Preparation'}</div>
             </div>
-            <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 space-y-1">
-              <div className="text-[10px] text-slate-400 font-bold uppercase">{t('passport.solvencyRatio', 'Health Score')}</div>
+            <div className="p-3.5 rounded-xl bg-[#0F1219] border border-[#222936] space-y-1">
+              <div className="text-[10px] text-[#707A8C] font-bold uppercase">{t('passport.solvencyRatio', 'Health Score')}</div>
               <div className="text-2xl font-black text-emerald-400">{healthScore}/100</div>
-              <div className="text-[10px] text-slate-500">{healthScore >= 75 ? 'Strong Solvency' : 'Stable'}</div>
+              <div className="text-[10px] text-[#707A8C]">{healthScore >= 75 ? 'Strong Solvency' : 'Stable'}</div>
             </div>
-            <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 space-y-1">
-              <div className="text-[10px] text-slate-400 font-bold uppercase">{t('passport.annualTurnover', 'Annual Turnover')}</div>
-              <div className="text-2xl font-black text-white">{turnover || '—'}</div>
-              <div className="text-[10px] text-slate-500">Self-Reported</div>
+            <div className="p-3.5 rounded-xl bg-[#0F1219] border border-[#222936] space-y-1">
+              <div className="text-[10px] text-[#707A8C] font-bold uppercase">{t('passport.annualTurnover', 'Annual Turnover')}</div>
+              <div className="text-2xl font-black text-[#F8FAFC]">{turnover || '—'}</div>
+              <div className="text-[10px] text-[#707A8C]">Self-Reported</div>
             </div>
-            <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 space-y-1">
-              <div className="text-[10px] text-slate-400 font-bold uppercase">{t('passport.liquidityBuffer', 'Runway')}</div>
-              <div className="text-2xl font-black text-sky-400">{runwayMonths} M</div>
-              <div className="text-[10px] text-sky-400 font-semibold">Reserve Depth</div>
+            <div className="p-3.5 rounded-xl bg-[#0F1219] border border-[#222936] space-y-1">
+              <div className="text-[10px] text-[#707A8C] font-bold uppercase">{t('passport.liquidityBuffer', 'Runway')}</div>
+              <div className="text-2xl font-black text-[#14B8A6]">{runwayMonths} M</div>
+              <div className="text-[10px] text-[#14B8A6] font-semibold">Reserve Depth</div>
             </div>
           </div>
 
           {/* Operational & Solvency Ratios with Explanations */}
-          <div className="p-5 rounded-xl bg-slate-950/80 border border-slate-800 space-y-4">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-              <FileCheck2 className="w-4 h-4 text-purple-400" /> Operational & Solvency Ratios
+          <div className="p-5 rounded-xl bg-[#0F1219] border border-[#222936] shadow-sm space-y-4">
+            <h4 className="text-xs font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-1.5">
+              <FileCheck2 className="w-4 h-4 text-[#8B5CF6]" /> Operational & Solvency Ratios
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80 space-y-1">
+              <div className="p-3 rounded-lg bg-[#121722] border border-[#222936] space-y-1">
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Debt Service Coverage (DSCR)</span>
+                  <span className="text-[#A7B0C0]">Debt Service Coverage (DSCR)</span>
                   <strong className="text-emerald-400">{dscr}</strong>
                 </div>
-                <p className="text-[10px] text-slate-400">
+                <p className="text-[10px] text-[#707A8C]">
                   {t('passport.dscrExplanation', 'Measures how comfortably available cash can cover debt obligations.')}
                 </p>
               </div>
 
-              <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80 space-y-1">
+              <div className="p-3 rounded-lg bg-[#121722] border border-[#222936] space-y-1">
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Current Ratio (Working Capital)</span>
-                  <strong className="text-white">{currentRatio ? `${currentRatio}x` : 'Not available'}</strong>
+                  <span className="text-[#A7B0C0]">Current Ratio (Working Capital)</span>
+                  <strong className="text-[#F8FAFC]">{currentRatio ? `${currentRatio}x` : 'Not available'}</strong>
                 </div>
-                <p className="text-[10px] text-slate-400">
+                <p className="text-[10px] text-[#707A8C]">
                   {t('passport.currentRatioExplanation', 'Measures short-term ability to meet current liabilities.')}
                 </p>
               </div>
 
-              <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80 space-y-1">
+              <div className="p-3 rounded-lg bg-[#121722] border border-[#222936] space-y-1">
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Net Margin</span>
-                  <strong className="text-purple-300">{netMargin !== null && netMargin !== undefined ? `${netMargin}%` : 'Not available'}</strong>
+                  <span className="text-[#A7B0C0]">Net Margin</span>
+                  <strong className="text-[#8B5CF6]">{netMargin !== null && netMargin !== undefined ? `${netMargin}%` : 'Not available'}</strong>
                 </div>
-                <p className="text-[10px] text-slate-400">
+                <p className="text-[10px] text-[#707A8C]">
                   {t('passport.netMarginExplanation', 'Shows how much profit remains from revenue after expenses.')}
                 </p>
               </div>
 
-              <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80 space-y-1">
+              <div className="p-3 rounded-lg bg-[#121722] border border-[#222936] space-y-1">
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Cash Runway</span>
-                  <strong className="text-sky-400">{runwayMonths} Months</strong>
+                  <span className="text-[#A7B0C0]">Cash Runway</span>
+                  <strong className="text-[#14B8A6]">{runwayMonths} Months</strong>
                 </div>
-                <p className="text-[10px] text-slate-400">
+                <p className="text-[10px] text-[#707A8C]">
                   {t('passport.runwayExplanation', 'Estimated number of months the current cash position can support the modeled net cash burn.')}
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs pt-2 border-t border-slate-900">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs pt-2 border-t border-[#222936]">
               <div className="flex justify-between py-1">
-                <span className="text-slate-400">Monthly Operating Revenue</span>
-                <span className="font-bold text-white">
+                <span className="text-[#707A8C]">Monthly Operating Revenue</span>
+                <span className="font-bold text-[#F8FAFC]">
                   {analysis ? `₹${(analysis.financials.monthlyRevenue / 100000).toFixed(2)} ${t('common.lakhs', 'Lakhs')}` : 'Not available'}
                 </span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-slate-400">Total Monthly Outflows</span>
-                <span className="font-bold text-white">
+                <span className="text-[#707A8C]">Total Monthly Outflows</span>
+                <span className="font-bold text-[#F8FAFC]">
                   {analysis ? `₹${(analysis.financials.totalMonthlyExpenses / 100000).toFixed(2)} ${t('common.lakhs', 'Lakhs')}` : 'Not available'}
                 </span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-slate-400">Net Monthly Cash Flow</span>
+                <span className="text-[#707A8C]">Net Monthly Cash Flow</span>
                 <span className="font-bold text-emerald-400">
                   {analysis ? `₹${(analysis.financials.monthlyNetCashFlow / 100000).toFixed(2)} ${t('common.lakhs', 'Lakhs')}` : 'Not available'}
                 </span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-slate-400">Estimated Borrowing Capacity</span>
-                <span className="font-bold text-purple-300">{creditLimit}</span>
+                <span className="text-[#707A8C]">Estimated Borrowing Capacity</span>
+                <span className="font-bold text-[#8B5CF6]">{creditLimit}</span>
               </div>
             </div>
           </div>
 
           {/* Ground-truth Preparation Checklist Summary */}
           {preparationChecklist.length > 0 && (
-            <div className="p-5 rounded-xl bg-slate-950/80 border border-slate-800 space-y-3">
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <FileCheck2 className="w-4 h-4 text-purple-400" />
+            <div className="p-5 rounded-xl bg-[#0F1219] border border-[#222936] shadow-sm space-y-3">
+              <h4 className="text-xs font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-1.5">
+                <FileCheck2 className="w-4 h-4 text-[#8B5CF6]" />
                 {t('funding.checklistTitle', 'Loan Application Preparation Checklist')}
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 text-xs">
                 {preparationChecklist.map((item) => (
                   <div 
                     key={item.id} 
-                    className="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800/80 flex items-start justify-between gap-2"
+                    className="p-2.5 rounded-lg bg-[#121722] border border-[#222936] flex items-start justify-between gap-2"
                   >
                     <div className="space-y-0.5">
-                      <div className="font-medium text-slate-200">{item.title}</div>
-                      <div className="text-[10px] text-slate-400">{item.details}</div>
+                      <div className="font-medium text-[#F8FAFC]">{item.title}</div>
+                      <div className="text-[10px] text-[#707A8C]">{item.details}</div>
                     </div>
                     <span className={`text-[9px] font-bold px-2 py-0.5 rounded shrink-0 ${
                       item.status === 'provided'
-                        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                        ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-500/30'
                         : item.status === 'incomplete'
-                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                        : 'bg-slate-800 text-slate-400 border border-slate-700'
+                        ? 'bg-amber-950/40 text-amber-400 border border-amber-500/30'
+                        : 'bg-[#161C27] text-[#707A8C] border border-[#222936]'
                     }`}>
                       {item.status === 'provided' ? t('funding.provided', 'Provided') :
                        item.status === 'incomplete' ? t('funding.incomplete', 'Incomplete') :
@@ -304,15 +304,15 @@ export const CreditPassportModal: React.FC<CreditPassportModalProps> = ({
           )}
 
           {/* How to Improve Your Profile */}
-          <div className="p-5 rounded-xl bg-slate-950/80 border border-purple-500/30 space-y-3">
-            <h4 className="text-xs font-bold text-purple-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-purple-400" />
+          <div className="p-5 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/25 space-y-3">
+            <h4 className="text-xs font-bold text-[#A78BFA] uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-[#8B5CF6]" />
               {t('passport.howToImprove', 'How to Improve Your Profile')}
             </h4>
             <div className="space-y-2 text-xs">
               {improvementActions.map((act, i) => (
-                <div key={i} className="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800 flex items-start gap-2 text-slate-200">
-                  <span className="text-purple-400 font-bold">•</span>
+                <div key={i} className="p-2.5 rounded-lg bg-[#121722] border border-[#8B5CF6]/20 shadow-sm flex items-start gap-2 text-[#F8FAFC]">
+                  <span className="text-[#8B5CF6] font-bold">•</span>
                   <span>{act}</span>
                 </div>
               ))}
@@ -320,8 +320,8 @@ export const CreditPassportModal: React.FC<CreditPassportModalProps> = ({
           </div>
 
           {/* Quick Connected Actions */}
-          <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-slate-800">
-            <span className="text-[11px] text-slate-400">
+          <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-[#222936]">
+            <span className="text-[11px] text-[#707A8C]">
               {language === 'ta' ? 'அடுத்த மூலோபாய நடவடிக்கைகள்:' : 'Next strategic actions:'}
             </span>
             <div className="flex flex-wrap items-center gap-2 text-xs">
@@ -332,9 +332,9 @@ export const CreditPassportModal: React.FC<CreditPassportModalProps> = ({
                       onClose();
                       onNavigate('decision-lab');
                     }}
-                    className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold flex items-center gap-1 border border-slate-700 transition-all"
+                    className="px-3 py-1.5 rounded-lg bg-[#161C27] hover:bg-[#171D29] text-[#F8FAFC] font-semibold flex items-center gap-1 border border-[#222936] transition-all"
                   >
-                    <FlaskConical className="w-3.5 h-3.5 text-purple-400" />
+                    <FlaskConical className="w-3.5 h-3.5 text-[#8B5CF6]" />
                     {t('passport.testLoanImpact', 'Test Loan Impact in Decision Lab')}
                   </button>
                   <button
@@ -342,9 +342,9 @@ export const CreditPassportModal: React.FC<CreditPassportModalProps> = ({
                       onClose();
                       onNavigate('ai-assistant');
                     }}
-                    className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold flex items-center gap-1 border border-slate-700 transition-all"
+                    className="px-3 py-1.5 rounded-lg bg-[#161C27] hover:bg-[#171D29] text-[#F8FAFC] font-semibold flex items-center gap-1 border border-[#222936] transition-all"
                   >
-                    <Bot className="w-3.5 h-3.5 text-purple-400" />
+                    <Bot className="w-3.5 h-3.5 text-[#14B8A6]" />
                     {t('passport.askAiAdvisor', 'Consult AI Advisor')}
                   </button>
                 </>
@@ -353,10 +353,10 @@ export const CreditPassportModal: React.FC<CreditPassportModalProps> = ({
           </div>
 
           {/* Institutional Regulatory Disclaimer */}
-          <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex items-start gap-2.5 text-xs text-slate-400">
-            <Info className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+          <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936] flex items-start gap-2.5 text-xs text-[#707A8C]">
+            <Info className="w-4 h-4 text-[#14B8A6] shrink-0 mt-0.5" />
             <p className="leading-relaxed text-[11px]">
-              <strong className="text-slate-300 font-semibold">{language === 'ta' ? 'அறிவிப்பு: ' : 'Disclaimer: '}</strong>
+              <strong className="text-[#A7B0C0] font-semibold">{language === 'ta' ? 'அறிவிப்பு: ' : 'Disclaimer: '}</strong>
               {language === 'ta' 
                 ? 'இது ஒரு சுட்டிக்காட்டும் வணிக நுண்ணறிவு மதிப்பீடு மட்டுமே, அதிகாரப்பூர்வ கடன் பணியக அறிக்கை அல்லது கடன் வழங்கும் முடிவு அல்ல.'
                 : 'This is an indicative business intelligence assessment, not an official credit bureau report or lender decision.'}
@@ -366,13 +366,13 @@ export const CreditPassportModal: React.FC<CreditPassportModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-4 bg-slate-950/90 border-t border-slate-800 flex items-center justify-between text-xs">
-          <span className="text-slate-500 text-[11px]">
+        <div className="px-6 py-4 bg-[#0F1219] border-t border-[#222936] flex items-center justify-between text-xs">
+          <span className="text-[#707A8C] text-[11px]">
             {t('passport.confidential', 'CONFIDENTIAL • Generated by BizPilot AI Financial Intelligence')}
           </span>
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition-all"
+            className="px-4 py-2 rounded-lg bg-[#161C27] hover:bg-[#171D29] text-[#F8FAFC] border border-[#222936] font-semibold transition-all"
           >
             {t('common.close', 'Close')}
           </button>

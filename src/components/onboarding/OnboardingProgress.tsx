@@ -21,14 +21,14 @@ export const OnboardingProgress: React.FC<OnboardingProgressProps> = ({ currentS
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-[11px] font-bold text-purple-300 uppercase tracking-widest">
+          <div className="text-[11px] font-bold text-violet-400 uppercase tracking-widest">
             {t('onboarding.title', 'Business Setup')}
           </div>
-          <h1 className="text-xl sm:text-2xl font-black text-white mt-0.5">
+          <h1 className="text-xl sm:text-2xl font-black text-[#F8FAFC] mt-0.5">
             {t('common.step', 'Step')} {currentStep} / 4
           </h1>
         </div>
-        <span className="hidden sm:block text-xs text-slate-400 font-medium">
+        <span className="hidden sm:block text-xs text-[#707A8C] font-medium">
           {stepLabels.join(' → ')}
         </span>
       </div>
@@ -45,9 +45,9 @@ export const OnboardingProgress: React.FC<OnboardingProgressProps> = ({ currentS
                 <div
                   className={cn(
                     'w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold border transition-all',
-                    isComplete && 'bg-purple-600 border-purple-500 text-white',
-                    isActive && !isComplete && 'bg-purple-950/60 border-purple-500 text-purple-200 ring-2 ring-purple-500/30',
-                    !isActive && !isComplete && 'bg-slate-900 border-slate-700 text-slate-500'
+                    isComplete && 'bg-violet-600 border-violet-600 text-white shadow-sm',
+                    isActive && !isComplete && 'bg-[#161C27] border-violet-500 text-violet-400 ring-2 ring-violet-500/20',
+                    !isActive && !isComplete && 'bg-[#0D1118] border-[#222936] text-[#707A8C]'
                   )}
                 >
                   {isComplete ? <Check className="w-3.5 h-3.5" /> : stepNumber}
@@ -55,7 +55,7 @@ export const OnboardingProgress: React.FC<OnboardingProgressProps> = ({ currentS
                 <span
                   className={cn(
                     'text-[11px] font-semibold hidden md:inline',
-                    isActive ? 'text-white' : isComplete ? 'text-purple-300' : 'text-slate-500'
+                    isActive ? 'text-[#F8FAFC]' : isComplete ? 'text-violet-400' : 'text-[#707A8C]'
                   )}
                 >
                   {label}
@@ -65,7 +65,7 @@ export const OnboardingProgress: React.FC<OnboardingProgressProps> = ({ currentS
                 <div
                   className={cn(
                     'flex-1 h-0.5 rounded-full transition-all',
-                    isComplete ? 'bg-purple-600' : 'bg-slate-800'
+                    isComplete ? 'bg-violet-600' : 'bg-[#222936]'
                   )}
                 />
               )}

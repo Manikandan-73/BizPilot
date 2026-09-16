@@ -17,7 +17,7 @@ export const Step4Goals: React.FC<Step4GoalsProps> = ({ data, errors, onToggleGo
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 text-purple-300">
+      <div className="flex items-center gap-2 text-violet-400">
         <Target className="w-4 h-4" />
         <h2 className="text-sm font-bold uppercase tracking-wider">{t('onboarding.step4', 'Business Goals')}</h2>
       </div>

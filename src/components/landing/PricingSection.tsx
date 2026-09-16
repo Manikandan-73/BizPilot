@@ -48,35 +48,35 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPlan }) 
   ];
 
   return (
-    <section className="py-24 relative bg-[#090B10] border-y border-[#222936] overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section className="py-12 sm:py-20 lg:py-24 relative bg-[#090B10] border-y border-[#222936] overflow-hidden min-w-0">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 relative z-10 min-w-0">
         
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-3 min-w-0">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#121722] border border-[#222936] text-violet-400 text-xs font-semibold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5 text-violet-400" /> Simple, Transparent Pricing
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#F8FAFC] tracking-tight">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-[#F8FAFC] tracking-tight">
             {t('landing.pricingTitle', 'Flexible Plans for Every MSME Stage')}
           </h2>
-          <p className="text-[#A7B0C0] text-sm sm:text-base leading-relaxed">
+          <p className="text-[#A7B0C0] text-xs sm:text-base leading-relaxed">
             {t('landing.pricingSubtitle', 'Tailored for Indian Micro, Small, and Medium Enterprises, Startups, and Manufacturers. No hidden fees. Cancel anytime.')}
           </p>
         </div>
 
         {/* Exactly 2 Pricing Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto min-w-0">
           {plans.map((p) => (
             <div
               key={p.id}
-              className={`rounded-2xl p-6 sm:p-8 flex flex-col justify-between transition-all relative ${
+              className={`rounded-2xl p-4 sm:p-8 flex flex-col justify-between transition-all relative min-w-0 ${
                 p.highlighted
                   ? 'bg-[#161C27] border-2 border-violet-500 shadow-2xl shadow-violet-500/10 hover:-translate-y-0.5 z-10'
                   : 'bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] hover:-translate-y-0.5'
               }`}
             >
               {p.highlighted && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-violet-600 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-sm">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-violet-600 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-sm whitespace-nowrap">
                   {p.badge}
                 </div>
               )}

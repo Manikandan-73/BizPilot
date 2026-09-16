@@ -232,19 +232,19 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
         'Professional allows you to test pricing changes, hiring, new loans, and cost cuts before making them. Compare multiple scenarios and see exact financial impacts.'
       )}
     >
-      <div className="space-y-8 pb-16 font-sans">
+      <div className="space-y-6 sm:space-y-8 pb-16 font-sans">
         
         {/* Header Banner */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
+        <div className="p-4 sm:p-6 lg:p-8 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
           <div>
-            <div className="flex items-center gap-2 text-xs font-bold text-[#A78BFA]">
+            <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-[#A78BFA]">
               <FlaskConical className="w-4 h-4 text-[#8B5CF6]" />
               <span>{t('decisionLab.tagline', 'FLAGSHIP FINANCIAL SIMULATION')}</span>
               <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-[#8B5CF6]/15 text-[#A78BFA] border border-[#8B5CF6]/30">
                 PRO EXCLUSIVE
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-[#F8FAFC] mt-1.5 tracking-tight">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-[#F8FAFC] mt-1.5 tracking-tight">
               {t('decisionLab.headerTitle', 'Decision Lab')}
             </h1>
             <p className="text-xs sm:text-sm text-[#A7B0C0] mt-1 max-w-2xl">
@@ -252,10 +252,10 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full md:w-auto">
             <button
               onClick={() => onNavigate('ai-advisor')}
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-[#161C27] hover:bg-[#1E2536] text-[#F8FAFC] border border-[#303848] hover:border-[#8B5CF6]/50 transition-all flex items-center gap-1.5 shadow-sm"
+              className="w-full md:w-auto px-4 py-2 rounded-xl text-xs font-bold bg-[#161C27] hover:bg-[#1E2536] text-[#F8FAFC] border border-[#303848] hover:border-[#8B5CF6]/50 transition-all flex items-center justify-center gap-1.5 shadow-sm"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#A78BFA]" />
               <span>{t('decisionLab.consultAi', 'Consult AI Advisor')}</span>
@@ -264,45 +264,45 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
         </div>
 
         {/* Current Business Baseline Card */}
-        <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#222936]">
+        <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 space-y-4 min-w-0">
+          <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#222936]">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
               <h2 className="text-sm font-bold text-[#F8FAFC] uppercase tracking-wider">
                 {t('decisionLab.baselineTitle', 'Current Business Baseline')}
               </h2>
             </div>
-            <span className="text-[11px] text-[#707A8C] font-mono">
+            <span className="text-[11px] text-[#707A8C] font-mono truncate">
               {effectiveAnalysis.organizationName}
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-xs">
-            <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2.5 sm:gap-3 text-xs">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Monthly Revenue</span>
               <div className="font-bold text-[#F8FAFC] text-sm mt-0.5">₹{fmtLakh(effectiveAnalysis.financials.monthlyRevenue)}L</div>
             </div>
-            <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Total Expenses</span>
               <div className="font-bold text-[#A7B0C0] text-sm mt-0.5">₹{fmtLakh(effectiveAnalysis.financials.totalMonthlyExpenses)}L</div>
             </div>
-            <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Monthly EBITDA</span>
               <div className="font-bold text-[#A78BFA] text-sm mt-0.5">₹{fmtLakh(effectiveAnalysis.financials.monthlyEbitda)}L</div>
             </div>
-            <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] uppercase font-semibold">EBITDA Margin</span>
               <div className="font-bold text-[#F8FAFC] text-sm mt-0.5">{effectiveAnalysis.financials.operatingMarginPercent ?? 0}%</div>
             </div>
-            <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Net Cash Flow</span>
               <div className="font-bold text-emerald-400 text-sm mt-0.5">₹{fmtLakh(effectiveAnalysis.financials.monthlyNetCashFlow)}L</div>
             </div>
-            <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] uppercase font-semibold">DSCR Coverage</span>
               <div className="font-bold text-[#F8FAFC] text-sm mt-0.5">{effectiveAnalysis.financials.dscr ? `${effectiveAnalysis.financials.dscr}x` : 'Debt-Free'}</div>
             </div>
-            <div className="p-3 rounded-xl bg-[#0F1219] border border-[#222936]">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-[#0F1219] border border-[#222936] col-span-2 sm:col-span-1">
               <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Cash Runway</span>
               <div className="font-bold text-amber-400 text-sm mt-0.5">{effectiveAnalysis.financials.runwayMonths ?? 0}m</div>
             </div>
@@ -310,15 +310,15 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
         </div>
 
         {/* Scenario Builder Presets */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
+        <div className="space-y-3 sm:space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-1.5">
             <h2 className="text-base font-bold text-[#F8FAFC] tracking-tight">
               {t('decisionLab.chooseScenario', '1. Select Decision to Simulate')}
             </h2>
-            <span className="text-xs text-[#707A8C]">8 Standard Presets + Combined Multi-Variable</span>
+            <span className="text-xs text-[#707A8C]">8 Presets + Combined Multi-Variable</span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-2.5">
             {presetButtons.map((btn) => {
               const Icon = btn.icon;
               const isSelected = selectedType === btn.type;
@@ -326,7 +326,7 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                 <button
                   key={btn.type}
                   onClick={() => setSelectedType(btn.type as ScenarioType)}
-                  className={`p-3 rounded-xl border text-left transition-all flex items-center gap-2.5 text-xs font-semibold ${
+                  className={`p-2.5 sm:p-3 rounded-xl border text-left transition-all flex items-center gap-2.5 text-xs font-semibold ${
                     isSelected
                       ? 'bg-[#8B5CF6]/15 text-[#A78BFA] border-[#8B5CF6]/40 shadow-sm ring-1 ring-[#8B5CF6]/40'
                       : 'bg-[#0F1219] text-[#A7B0C0] border-[#222936] hover:border-[#303848] hover:bg-[#161C27] hover:text-[#F8FAFC]'
@@ -341,7 +341,7 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
         </div>
 
         {/* Dynamic Scenario Parameter Inputs */}
-        <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-6 shadow-lg shadow-black/20">
+        <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-6 shadow-lg shadow-black/20 min-w-0">
           <div className="flex items-center justify-between pb-3 border-b border-[#222936]">
             <h3 className="text-sm font-bold text-[#F8FAFC]">
               {t('decisionLab.adjustVariables', '2. Set Scenario Assumptions')}
@@ -631,13 +631,13 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
 
         {/* SIMULATION OUTPUT & VERDICT */}
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <h2 className="text-base font-bold text-[#F8FAFC] tracking-tight">
               {t('decisionLab.simulationOutput', '3. Simulation Analysis & Decision Verdict')}
             </h2>
             <button
               onClick={handleSaveScenario}
-              className="px-4 py-2 rounded-xl bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-xs font-bold transition-all shadow-md shadow-[#8B5CF6]/20 flex items-center gap-1.5"
+              className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-xs font-bold transition-all shadow-md shadow-[#8B5CF6]/20 flex items-center justify-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>{t('decisionLab.saveToCompare', 'Save to Comparison')}</span>
@@ -645,15 +645,15 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
           </div>
 
           {/* Verdict and Score Hero Card */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
             
             {/* BizPilot Scenario Score */}
-            <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col justify-between shadow-lg shadow-black/20">
+            <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col justify-between shadow-lg shadow-black/20">
               <div>
                 <span className="text-xs font-bold uppercase tracking-widest text-[#707A8C]">
                   Scenario Resilience
                 </span>
-                <div className="text-xl font-bold text-[#F8FAFC] mt-1">BizPilot Scenario Score</div>
+                <div className="text-lg sm:text-xl font-bold text-[#F8FAFC] mt-1">BizPilot Scenario Score</div>
                 <p className="text-[11px] text-[#A7B0C0] mt-1">
                   Transparent composite rating derived from margin, net cash flow, DSCR, and runway resilience.
                 </p>
@@ -661,7 +661,7 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
 
               <div className="pt-6">
                 <div className="flex items-baseline justify-between mb-2">
-                  <span className="text-4xl font-black text-[#F8FAFC]">{currentResult.simulated.score}</span>
+                  <span className="text-3xl sm:text-4xl font-black text-[#F8FAFC]">{currentResult.simulated.score}</span>
                   <span className="text-xs text-[#707A8C] font-bold">/ 100</span>
                 </div>
                 <div className="w-full bg-[#161C27] h-2.5 rounded-full overflow-hidden border border-[#222936]">
@@ -680,9 +680,9 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
             </div>
 
             {/* Decision Verdict */}
-            <div className="md:col-span-2 p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col justify-between shadow-lg shadow-black/20">
+            <div className="md:col-span-2 p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col justify-between shadow-lg shadow-black/20">
               <div>
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                   <span className="text-xs font-bold uppercase tracking-widest text-[#707A8C]">
                     Decision Verdict
                   </span>
@@ -707,7 +707,7 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                   )}
                 </div>
 
-                <h3 className="text-xl font-bold text-[#F8FAFC]">
+                <h3 className="text-lg sm:text-xl font-bold text-[#F8FAFC]">
                   {currentResult.simulated.verdict === 'Recommended'
                     ? 'Viable Strategic Decision'
                     : currentResult.simulated.verdict === 'Caution'
@@ -727,7 +727,7 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
                 <ul className="space-y-1">
                   {currentResult.simulated.assumptions.map((ass, i) => (
                     <li key={i} className="text-[11px] text-[#A7B0C0] flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]"></span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] shrink-0"></span>
                       <span>{ass}</span>
                     </li>
                   ))}
@@ -738,8 +738,8 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
           </div>
 
           {/* Baseline vs Scenario Side-by-Side Comparison Table */}
-          <div className="rounded-2xl border border-[#222936] bg-[#121722] overflow-hidden shadow-lg shadow-black/20">
-            <div className="p-4 bg-[#0F1219] border-b border-[#222936] flex items-center justify-between">
+          <div className="rounded-2xl border border-[#222936] bg-[#121722] overflow-hidden shadow-lg shadow-black/20 min-w-0">
+            <div className="p-3.5 sm:p-4 bg-[#0F1219] border-b border-[#222936] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <h3 className="text-xs font-bold text-[#F8FAFC] uppercase tracking-wider">
                 Baseline vs. Scenario Comparison Matrix
               </h3>
@@ -748,8 +748,8 @@ export const DecisionLabView: React.FC<DecisionLabViewProps> = ({
               </span>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
+            <div className="overflow-x-auto w-full">
+              <table className="w-full min-w-[540px] text-left border-collapse text-xs">
                 <thead>
                   <tr className="border-b border-[#222936] bg-[#0F1219]/80 text-[#707A8C] text-[10px] uppercase font-bold tracking-wider">
                     <th className="py-3 px-4">Financial Metric</th>

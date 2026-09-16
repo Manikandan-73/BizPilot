@@ -71,47 +71,47 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-      <div className="relative w-full max-w-lg rounded-2xl bg-[#121722] border border-[#222936] shadow-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto text-[#F8FAFC]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
+      <div className="relative w-full max-w-lg rounded-2xl bg-[#121722] border border-[#222936] shadow-2xl p-4 sm:p-6 lg:p-8 max-h-[calc(100vh-2rem)] overflow-y-auto text-[#F8FAFC] my-auto min-w-0">
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-[#707A8C] hover:text-[#F8FAFC] hover:bg-[#161C27] transition-colors"
+          className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 p-1.5 rounded-lg text-[#707A8C] hover:text-[#F8FAFC] hover:bg-[#161C27] transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-violet-950/40 border border-violet-800/40 flex items-center justify-center text-violet-400 shadow-sm">
+        <div className="flex items-center gap-3 mb-5 sm:mb-6 pr-8 min-w-0">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-violet-950/40 border border-violet-800/40 flex items-center justify-center text-violet-400 shadow-sm shrink-0">
             <ShieldCheck className="w-5 h-5" />
           </div>
-          <div>
-            <h3 className="text-lg font-bold text-[#F8FAFC]">
+          <div className="min-w-0">
+            <h3 className="text-base sm:text-lg font-bold text-[#F8FAFC] truncate">
               {t('admin.editSubscription', 'Edit Subscription')}
             </h3>
-            <p className="text-xs text-[#707A8C]">
+            <p className="text-xs text-[#707A8C] truncate">
               {record.organization.businessProfile.businessName || record.organization.name}
             </p>
           </div>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-xl bg-rose-950/40 border border-rose-800/40 text-rose-300 text-xs flex items-center gap-2">
+          <div className="mb-4 p-3 rounded-xl bg-rose-950/40 border border-rose-800/40 text-rose-300 text-xs flex items-center gap-2 min-w-0">
             <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
-            <span>{error}</span>
+            <span className="break-words">{error}</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           
           {/* Plan Selection */}
-          <div>
+          <div className="min-w-0">
             <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
               {t('admin.plan', 'Subscription Plan')}
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 min-w-0">
               {[
                 { key: 'starter' as const, label: `Starter (₹${PLAN_CONFIGS.starter.priceINR})` },
                 { key: 'professional' as const, label: `Professional (₹${PLAN_CONFIGS.professional.priceINR})` },
@@ -133,11 +133,11 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
           </div>
 
           {/* Status Selection */}
-          <div>
+          <div className="min-w-0">
             <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
               {t('admin.status', 'Subscription Status')}
             </label>
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 min-w-0">
               {[
                 { key: 'active' as const, label: t('admin.active', 'Active'), activeColor: 'bg-emerald-950/50 text-emerald-300 border-emerald-700/60 ring-1 ring-emerald-500' },
                 { key: 'trial' as const, label: t('admin.trial', 'Trial'), activeColor: 'bg-teal-950/50 text-teal-300 border-teal-700/60 ring-1 ring-teal-500' },
@@ -161,7 +161,7 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
           </div>
 
           {/* Expiry Date */}
-          <div>
+          <div className="min-w-0">
             <label className="block text-xs font-semibold text-[#A7B0C0] mb-1.5">
               {t('admin.expiryDate', 'Expiry Date')}
             </label>
@@ -171,12 +171,12 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
                 value={expiryDate}
                 onChange={(e) => setExpiryDate(e.target.value)}
                 required
-                className="flex-1 px-3 py-2 rounded-xl bg-[#0D1118] border border-[#222936] text-[#F8FAFC] text-xs focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/20"
+                className="w-full px-3 py-2 rounded-xl bg-[#0D1118] border border-[#222936] text-[#F8FAFC] text-xs focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/20"
               />
             </div>
 
             {/* Quick Extension Presets */}
-            <div className="flex items-center gap-1.5">
+            <div className="flex flex-wrap items-center gap-1.5 min-w-0">
               <span className="text-[10px] text-[#707A8C] flex items-center gap-1 mr-1">
                 <Clock className="w-3 h-3 text-violet-400" /> Presets:
               </span>
@@ -248,18 +248,18 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#222936]">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-4 border-t border-[#222936] min-w-0">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-xs font-medium text-[#707A8C] hover:text-[#F8FAFC] hover:bg-[#161C27] transition-colors"
+              className="w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-medium text-[#707A8C] hover:text-[#F8FAFC] hover:bg-[#161C27] transition-colors text-center"
             >
               {t('common.cancel', 'Cancel')}
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-5 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold shadow-sm transition-all disabled:opacity-50"
+              className="w-full sm:w-auto px-5 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold shadow-sm transition-all disabled:opacity-50 text-center"
             >
               {loading ? t('common.saving', 'Saving...') : t('admin.saveChanges', 'Save Changes')}
             </button>

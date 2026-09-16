@@ -99,7 +99,7 @@ export const CashFlowForecastView: React.FC<CashFlowForecastViewProps> = ({
     <div className="space-y-6 pb-12">
       
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
+      <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
         <div>
           <div className="flex items-center gap-2 text-xs font-bold text-[#A78BFA]">
             <TrendingUp className="w-4 h-4 text-[#8B5CF6]" />
@@ -133,63 +133,63 @@ export const CashFlowForecastView: React.FC<CashFlowForecastViewProps> = ({
       )}
 
       {/* 3 Forecast Projection Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
         
         {/* Card 1: Next Month Projection */}
-        <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] hover:border-[#8B5CF6]/40 hover:bg-[#171D29] hover:shadow-lg hover:shadow-black/20 space-y-2 transition-all">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#121722] border border-[#222936] hover:border-[#8B5CF6]/40 hover:bg-[#171D29] hover:shadow-lg hover:shadow-black/20 space-y-2 transition-all min-w-0">
           <div className="flex items-center justify-between text-xs text-[#707A8C]">
-            <span className="font-semibold uppercase tracking-wider">
+            <span className="font-semibold uppercase tracking-wider truncate">
               {t('cashFlow.nextMonth', 'Next Month Projection (M+1)')}
             </span>
-            <Calendar className="w-4 h-4 text-[#8B5CF6]" />
+            <Calendar className="w-4 h-4 text-[#8B5CF6] shrink-0" />
           </div>
           <div className="flex items-baseline justify-between">
-            <div className="text-2xl font-bold text-[#F8FAFC]">₹{nextMonthNet} L</div>
+            <div className="text-xl sm:text-2xl font-bold text-[#F8FAFC]">₹{nextMonthNet} L</div>
             <span className="text-xs text-[#10B981] font-semibold flex items-center gap-0.5">
               <ArrowUpRight className="w-3.5 h-3.5" /> {t('cashFlow.projectedNet', 'Projected Net')}
             </span>
           </div>
-          <div className="text-[11px] text-[#707A8C]">
+          <div className="text-[11px] text-[#707A8C] truncate">
             {t('cashFlow.inflow', 'Inflow')}: <strong className="text-[#F8FAFC]">₹{nextMonthInflow} L</strong> • {t('cashFlow.outflow', 'Outflow')}: <strong className="text-[#F8FAFC]">₹{nextMonthOutflow} L</strong>
           </div>
         </div>
 
         {/* Card 2: Cash Runway Duration */}
-        <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] hover:border-[#14B8A6]/40 hover:bg-[#171D29] hover:shadow-lg hover:shadow-black/20 space-y-2 transition-all">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#121722] border border-[#222936] hover:border-[#14B8A6]/40 hover:bg-[#171D29] hover:shadow-lg hover:shadow-black/20 space-y-2 transition-all min-w-0">
           <div className="flex items-center justify-between text-xs text-[#707A8C]">
-            <span className="font-semibold uppercase tracking-wider">
+            <span className="font-semibold uppercase tracking-wider truncate">
               {t('cashFlow.projectedRunway', 'Projected Cash Runway')}
             </span>
-            <ShieldAlert className="w-4 h-4 text-[#14B8A6]" />
+            <ShieldAlert className="w-4 h-4 text-[#14B8A6] shrink-0" />
           </div>
           <div className="flex items-baseline justify-between">
-            <div className="text-2xl font-bold text-[#F8FAFC]">{runwayMonths} {t('common.months', 'Months')}</div>
+            <div className="text-xl sm:text-2xl font-bold text-[#F8FAFC]">{runwayMonths} {t('common.months', 'Months')}</div>
             <span className="text-xs text-[#14B8A6] font-semibold">
               {t('cashFlow.burnRate', 'Current Burn Rate')}
             </span>
           </div>
-          <div className="text-[11px] text-[#707A8C]">
+          <div className="text-[11px] text-[#707A8C] truncate">
             {t('cashFlow.currentCash', 'Current Cash')}: <strong className="text-[#F8FAFC]">₹{analysis ? (analysis.normalized.currentCashBalance / 100000).toFixed(1) : '52.0'} L</strong>
           </div>
         </div>
 
         {/* Card 3: 90-Day Liquidity Buffer */}
-        <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] hover:border-[#10B981]/40 hover:bg-[#171D29] hover:shadow-lg hover:shadow-black/20 space-y-2 transition-all">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#121722] border border-[#222936] hover:border-[#10B981]/40 hover:bg-[#171D29] hover:shadow-lg hover:shadow-black/20 space-y-2 transition-all min-w-0">
           <div className="flex items-center justify-between text-xs text-[#707A8C]">
-            <span className="font-semibold uppercase tracking-wider">
+            <span className="font-semibold uppercase tracking-wider truncate">
               {t('cashFlow.liquidityHealth90D', '90-Day Liquidity Health')}
             </span>
-            <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
+            <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0" />
           </div>
           <div className="flex items-baseline justify-between">
-            <div className={`text-2xl font-bold ${bufferStatus === 'Safe' ? 'text-[#10B981]' : bufferStatus === 'Adequate' ? 'text-[#14B8A6]' : 'text-[#F59E0B]'}`}>
+            <div className={`text-xl sm:text-2xl font-bold ${bufferStatus === 'Safe' ? 'text-[#10B981]' : bufferStatus === 'Adequate' ? 'text-[#14B8A6]' : 'text-[#F59E0B]'}`}>
               {bufferStatus}
             </div>
             <span className="text-xs text-[#707A8C]">
               {t('cashFlow.reserveStatus', 'Reserve Status')}
             </span>
           </div>
-          <div className="text-[11px] text-[#707A8C]">
+          <div className="text-[11px] text-[#707A8C] truncate">
             {t('cashFlow.receivables', 'Receivables')}: <strong className="text-[#F8FAFC]">{analysis ? `₹${(analysis.normalized.accountsReceivable / 100000).toFixed(1)} L` : '—'}</strong>
           </div>
         </div>
@@ -197,13 +197,13 @@ export const CashFlowForecastView: React.FC<CashFlowForecastViewProps> = ({
       </div>
 
       {/* Forecast Disclaimer Banner */}
-      <div className="p-3 px-4 rounded-xl bg-[#0F1219] border border-[#222936] text-xs flex items-center gap-2">
-        <span className="font-bold text-[#A78BFA] uppercase tracking-wider text-[10px] bg-[#8B5CF6]/15 px-2 py-0.5 rounded border border-[#8B5CF6]/30">Forecast Notice</span>
+      <div className="p-3 px-4 rounded-xl bg-[#0F1219] border border-[#222936] text-xs flex flex-col sm:flex-row sm:items-center gap-2">
+        <span className="font-bold text-[#A78BFA] uppercase tracking-wider text-[10px] bg-[#8B5CF6]/15 px-2 py-0.5 rounded border border-[#8B5CF6]/30 shrink-0 self-start sm:self-auto">Forecast Notice</span>
         <span className="text-[#707A8C]">Projected: Forecast based on current operational assumptions. Forward figures (M+1 to M+6) are deterministic scenario models, not guaranteed cash flows.</span>
       </div>
 
       {/* Main Forecast Chart Box */}
-      <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20">
+      <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20 min-w-0">
         
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-[#222936]">
           <div>
@@ -269,7 +269,7 @@ export const CashFlowForecastView: React.FC<CashFlowForecastViewProps> = ({
         </div>
 
         {/* Chart View */}
-        <div className="h-80 w-full pt-2">
+        <div className="h-72 sm:h-80 w-full pt-2 min-w-0">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={displayData} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#222936" vertical={false} />
@@ -296,19 +296,19 @@ export const CashFlowForecastView: React.FC<CashFlowForecastViewProps> = ({
           </ResponsiveContainer>
         </div>
 
-        <div className="pt-3 flex flex-wrap items-center justify-between text-xs text-[#707A8C] border-t border-[#222936]">
+        <div className="pt-3 flex flex-wrap items-center justify-between gap-2.5 text-xs text-[#707A8C] border-t border-[#222936]">
           <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#14B8A6]"></span>
+            <span className="w-2 h-2 rounded-full bg-[#14B8A6] shrink-0"></span>
             {language === 'ta' ? 'அடிப்படை வரவு: ' : 'Monthly Inflow Base: '}
             <strong className="text-[#F8FAFC]">{analysis ? `₹${(analysis.normalized.monthlyRevenue / 100000).toFixed(1)} ${t('common.lakhs', 'Lakhs')}` : 'Not provided'}</strong>
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#F43F5E]"></span>
+            <span className="w-2 h-2 rounded-full bg-[#F43F5E] shrink-0"></span>
             {language === 'ta' ? 'அடிப்படை செலவு: ' : 'Monthly Outflow Base: '}
             <strong className="text-[#F8FAFC]">{analysis ? `₹${(analysis.financials.totalMonthlyExpenses / 100000).toFixed(1)} ${t('common.lakhs', 'Lakhs')}` : 'Not provided'}</strong>
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#8B5CF6]"></span>
+            <span className="w-2 h-2 rounded-full bg-[#8B5CF6] shrink-0"></span>
             {language === 'ta' ? 'மாதாந்திர தவணை EMI: ' : 'Monthly EMI Outflow: '}
             <strong className="text-[#F8FAFC]">{analysis ? (analysis.normalized.hasLoans ? `₹${(analysis.normalized.monthlyEMI / 1000).toFixed(0)}k/mo` : '₹0 (Debt-Free)') : 'Not provided'}</strong>
           </span>

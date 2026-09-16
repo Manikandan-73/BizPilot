@@ -175,33 +175,33 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
       
       {/* Admin Header */}
       <header className="sticky top-0 z-40 w-full border-b border-[#222936] bg-[#0B0E14]/90 backdrop-blur-xl shadow-2xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 min-h-16 py-2 sm:py-0 flex items-center justify-between gap-2 sm:gap-4">
           
           {/* Brand & Admin Badge */}
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center text-white shadow-sm">
-              <Sparkles className="w-5 h-5" />
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-violet-600 flex items-center justify-center text-white shadow-sm shrink-0">
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <div>
-              <div className="text-base font-extrabold text-[#F8FAFC] flex items-center gap-2">
+            <div className="min-w-0">
+              <div className="text-sm sm:text-base font-extrabold text-[#F8FAFC] flex items-center gap-1.5 sm:gap-2 truncate">
                 BizPilot <span className="text-violet-400">AI</span>
-                <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-md bg-violet-950/60 text-violet-300 border border-violet-800/50">
+                <span className="text-[9px] sm:text-[10px] uppercase font-black px-1.5 sm:px-2 py-0.5 rounded-md bg-violet-950/60 text-violet-300 border border-violet-800/50 shrink-0">
                   {t('admin.adminBadge', 'SUPER ADMIN')}
                 </span>
               </div>
-              <p className="text-[10px] text-[#707A8C] -mt-0.5">
+              <p className="text-[9px] sm:text-[10px] text-[#707A8C] -mt-0.5 truncate hidden xs:block">
                 {t('admin.adminPortal', 'Platform Management Console')}
               </p>
             </div>
           </div>
 
           {/* Right Controls */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             
             {/* Language Selector */}
             <button
               onClick={() => setLanguage(language === 'en' ? 'ta' : 'en')}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#121722] hover:bg-[#161C27] text-[#F8FAFC] border border-[#222936] transition-all shadow-sm"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#121722] hover:bg-[#161C27] text-[#F8FAFC] border border-[#222936] transition-all shadow-sm"
               title={t('header.changeLanguage', 'Change Language')}
             >
               <Languages className="w-3.5 h-3.5 text-violet-400" />
@@ -212,7 +212,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
             {onSwitchToUserWorkspace && (
               <button
                 onClick={onSwitchToUserWorkspace}
-                className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#121722] hover:bg-[#161C27] border border-[#222936] text-xs font-semibold text-violet-300 shadow-sm transition-all"
+                className="hidden md:flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#121722] hover:bg-[#161C27] border border-[#222936] text-xs font-semibold text-violet-300 shadow-sm transition-all"
               >
                 <Building className="w-3.5 h-3.5" />
                 <span>{t('admin.switchToUserView', 'Preview MSME Workspace')}</span>
@@ -221,13 +221,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
 
             {/* Admin User Pill & Logout */}
             <div className="flex items-center gap-2 pl-2 border-l border-[#222936]">
-              <div className="text-right hidden md:block">
+              <div className="text-right hidden lg:block">
                 <div className="text-xs font-semibold text-[#F8FAFC]">{user?.displayName || 'Administrator'}</div>
                 <div className="text-[10px] text-[#707A8C]">{user?.email}</div>
               </div>
               <button
                 onClick={logout}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#121722] hover:bg-rose-950/40 hover:text-rose-300 hover:border-rose-800/40 border border-[#222936] text-xs font-semibold text-[#A7B0C0] shadow-sm transition-all"
+                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#121722] hover:bg-rose-950/40 hover:text-rose-300 hover:border-rose-800/40 border border-[#222936] text-xs font-semibold text-[#A7B0C0] shadow-sm transition-all"
                 title={t('auth.logout', 'Log Out')}
               >
                 <LogOut className="w-3.5 h-3.5 text-[#707A8C]" />
@@ -241,12 +241,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
       </header>
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-3.5 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 min-w-0">
         
         {/* Page Title & Refresh */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-black text-[#F8FAFC] tracking-tight">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 min-w-0">
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-[#F8FAFC] tracking-tight">
               {t('admin.manageMsmes', 'Manage MSMEs & Subscriptions')}
             </h1>
             <p className="text-xs sm:text-sm text-[#A7B0C0] mt-1">
@@ -257,7 +257,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
           <button
             onClick={fetchRecords}
             disabled={loading}
-            className="self-start sm:self-auto flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#121722] hover:bg-[#161C27] text-[#F8FAFC] border border-[#222936] text-xs font-semibold shadow-sm transition-all hover:border-violet-500/50 disabled:opacity-50"
+            className="self-stretch sm:self-auto flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-[#121722] hover:bg-[#161C27] text-[#F8FAFC] border border-[#222936] text-xs font-semibold shadow-sm transition-all hover:border-violet-500/50 disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-violet-400' : 'text-[#707A8C]'}`} />
             <span>Refresh</span>
@@ -265,70 +265,70 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
         </div>
 
         {/* Top KPI Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 min-w-0">
           
-          <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all">
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all min-w-0">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-[#A7B0C0]">{t('admin.totalMsmes', 'Total MSMEs')}</span>
-              <div className="p-2 rounded-lg bg-violet-950/40 text-violet-400 border border-violet-800/40">
+              <div className="p-2 rounded-lg bg-violet-950/40 text-violet-400 border border-violet-800/40 shrink-0">
                 <Users className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-3xl font-black text-[#F8FAFC] mt-3">{stats.total}</div>
+            <div className="text-2xl sm:text-3xl font-black text-[#F8FAFC] mt-2 sm:mt-3">{stats.total}</div>
             <div className="text-[11px] text-[#707A8C] mt-1">Platform Accounts</div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all">
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all min-w-0">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-[#A7B0C0]">{t('admin.activeSubscriptions', 'Active Subscriptions')}</span>
-              <div className="p-2 rounded-lg bg-emerald-950/40 text-emerald-400 border border-emerald-800/40">
+              <div className="p-2 rounded-lg bg-emerald-950/40 text-emerald-400 border border-emerald-800/40 shrink-0">
                 <CheckCircle2 className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-3xl font-black text-emerald-400 mt-3">{stats.active}</div>
+            <div className="text-2xl sm:text-3xl font-black text-emerald-400 mt-2 sm:mt-3">{stats.active}</div>
             <div className="text-[11px] text-[#707A8C] mt-1">Trial &amp; Paid Plans</div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all">
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all min-w-0">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-[#A7B0C0]">{t('admin.pendingPayment', 'Pending Payment')}</span>
-              <div className="p-2 rounded-lg bg-amber-950/40 text-amber-400 border border-amber-800/40">
+              <div className="p-2 rounded-lg bg-amber-950/40 text-amber-400 border border-amber-800/40 shrink-0">
                 <Clock className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-3xl font-black text-amber-400 mt-3">{stats.pendingPayment}</div>
+            <div className="text-2xl sm:text-3xl font-black text-amber-400 mt-2 sm:mt-3">{stats.pendingPayment}</div>
             <div className="text-[11px] text-[#707A8C] mt-1">Awaiting Checkout</div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all">
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all min-w-0">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-[#A7B0C0]">{t('admin.expiringSoon', 'Expiring Soon (30d)')}</span>
-              <div className="p-2 rounded-lg bg-amber-950/40 text-amber-400 border border-amber-800/40">
+              <div className="p-2 rounded-lg bg-amber-950/40 text-amber-400 border border-amber-800/40 shrink-0">
                 <Clock className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-3xl font-black text-amber-400 mt-3">{stats.expiringSoon}</div>
+            <div className="text-2xl sm:text-3xl font-black text-amber-400 mt-2 sm:mt-3">{stats.expiringSoon}</div>
             <div className="text-[11px] text-[#707A8C] mt-1">Needs Extension or Renewal</div>
           </div>
 
-          <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all">
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] transition-all min-w-0">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-[#A7B0C0]">{t('admin.suspendedAccounts', 'Suspended Accounts')}</span>
-              <div className="p-2 rounded-lg bg-rose-950/40 text-rose-400 border border-rose-800/40">
+              <div className="p-2 rounded-lg bg-rose-950/40 text-rose-400 border border-rose-800/40 shrink-0">
                 <XCircle className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-3xl font-black text-rose-400 mt-3">{stats.suspended}</div>
+            <div className="text-2xl sm:text-3xl font-black text-rose-400 mt-2 sm:mt-3">{stats.suspended}</div>
             <div className="text-[11px] text-[#707A8C] mt-1">Access Restricted</div>
           </div>
 
         </div>
 
         {/* Search & Filters */}
-        <div className="p-4 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 min-w-0">
           
           {/* Search Input */}
-          <div className="relative flex-1">
+          <div className="relative flex-1 min-w-0">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#707A8C]" />
             <input
               type="text"
@@ -340,8 +340,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
           </div>
 
           {/* Filter dropdowns */}
-          <div className="flex items-center gap-2.5">
-            <div className="flex items-center gap-1.5 text-xs text-[#707A8C] font-medium">
+          <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap sm:flex-nowrap min-w-0">
+            <div className="hidden xs:flex items-center gap-1.5 text-xs text-[#707A8C] font-medium">
               <Filter className="w-3.5 h-3.5" />
             </div>
 
@@ -349,7 +349,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
             <select
               value={filterPlan}
               onChange={(e) => setFilterPlan(e.target.value)}
-              className="px-3 py-2 rounded-xl bg-[#0D1118] border border-[#222936] text-[#F8FAFC] text-xs focus:outline-none focus:border-violet-500"
+              className="flex-1 sm:flex-none px-3 py-2 rounded-xl bg-[#0D1118] border border-[#222936] text-[#F8FAFC] text-xs focus:outline-none focus:border-violet-500"
             >
               <option value="all" className="bg-[#0D1118] text-[#F8FAFC]">{t('admin.allPlans', 'All Plans')}</option>
               <option value="starter" className="bg-[#0D1118] text-[#F8FAFC]">Starter (₹1)</option>
@@ -360,7 +360,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-3 py-2 rounded-xl bg-[#0D1118] border border-[#222936] text-[#F8FAFC] text-xs focus:outline-none focus:border-violet-500"
+              className="flex-1 sm:flex-none px-3 py-2 rounded-xl bg-[#0D1118] border border-[#222936] text-[#F8FAFC] text-xs focus:outline-none focus:border-violet-500"
             >
               <option value="all" className="bg-[#0D1118] text-[#F8FAFC]">{t('admin.allStatuses', 'All Statuses')}</option>
               <option value="active" className="bg-[#0D1118] text-[#F8FAFC]">{t('admin.active', 'Active')}</option>
@@ -374,10 +374,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
         </div>
 
         {/* MSME Table */}
-        <div className="rounded-2xl border border-[#222936] bg-[#121722] shadow-sm overflow-hidden">
+        <div className="rounded-2xl border border-[#222936] bg-[#121722] shadow-sm overflow-hidden min-w-0">
           
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs">
+          <div className="overflow-x-auto w-full">
+            <table className="w-full min-w-[640px] text-left border-collapse text-xs">
               <thead>
                 <tr className="border-b border-[#222936] bg-[#0F1219] text-[#707A8C] uppercase text-[10px] font-bold tracking-wider">
                   <th className="py-3.5 px-4">{t('admin.businessName', 'Business Name')}</th>

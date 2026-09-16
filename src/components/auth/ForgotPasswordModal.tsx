@@ -50,27 +50,27 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-      <div className="relative w-full max-w-md rounded-2xl bg-[#121722] border border-[#222936] shadow-2xl p-6 sm:p-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3.5 sm:p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
+      <div className="relative w-full max-w-md rounded-2xl bg-[#121722] border border-[#222936] shadow-2xl p-4 sm:p-6 lg:p-8 my-auto min-w-0">
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-[#707A8C] hover:text-[#F8FAFC] hover:bg-[#161C27] transition-colors"
+          className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 p-1.5 rounded-lg text-[#707A8C] hover:text-[#F8FAFC] hover:bg-[#161C27] transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Header */}
-        <div className="flex items-center gap-2.5 mb-4">
-          <div className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center text-white shadow-md shadow-violet-600/20">
+        <div className="flex items-center gap-2.5 mb-4 pr-6 min-w-0">
+          <div className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center text-white shadow-md shadow-violet-600/20 shrink-0">
             <Sparkles className="w-5 h-5" />
           </div>
-          <div>
-            <h3 className="text-lg font-bold text-[#F8FAFC]">
+          <div className="min-w-0">
+            <h3 className="text-base sm:text-lg font-bold text-[#F8FAFC] truncate">
               {t('auth.forgotPasswordTitle', 'Reset Password')}
             </h3>
-            <p className="text-xs text-[#A7B0C0]">
+            <p className="text-xs text-[#A7B0C0] line-clamp-2">
               {t('auth.forgotPasswordSubtitle', 'Enter your registered email and we will send you a reset link.')}
             </p>
           </div>
@@ -78,29 +78,29 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
 
         {/* Content */}
         {success ? (
-          <div className="my-6 p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/40 text-emerald-300 text-xs flex items-start gap-3">
+          <div className="my-5 sm:my-6 p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/40 text-emerald-300 text-xs flex items-start gap-3 min-w-0">
             <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-            <div className="space-y-1">
+            <div className="space-y-1 min-w-0">
               <div className="font-semibold text-emerald-200">
                 {t('auth.resetLinkSent', 'Password reset link sent! Check your inbox.')}
               </div>
-              <p className="text-emerald-400/80">
+              <p className="text-emerald-400/80 truncate">
                 {email}
               </p>
               <button
                 onClick={onClose}
-                className="mt-3 px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition-colors"
+                className="mt-3 w-full sm:w-auto px-4 py-2 sm:py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition-colors text-center"
               >
                 {t('common.continue', 'Continue')}
               </button>
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4 mt-5">
+          <form onSubmit={handleSubmit} className="space-y-4 mt-5 min-w-0">
             {error && (
-              <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-800/40 text-rose-300 text-xs flex items-center gap-2">
+              <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-800/40 text-rose-300 text-xs flex items-center gap-2 min-w-0">
                 <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
-                <span>{error}</span>
+                <span className="break-words">{error}</span>
               </div>
             )}
 
@@ -123,18 +123,18 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-2">
+            <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-2 min-w-0">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 rounded-xl text-xs font-medium text-[#A7B0C0] hover:text-[#F8FAFC] hover:bg-[#161C27] transition-colors"
+                className="w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-medium text-[#A7B0C0] hover:text-[#F8FAFC] hover:bg-[#161C27] transition-colors text-center"
               >
                 {t('common.cancel', 'Cancel')}
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-5 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold shadow-lg shadow-violet-600/20 transition-all disabled:opacity-50"
+                className="w-full sm:w-auto px-5 py-2.5 sm:py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold shadow-lg shadow-violet-600/20 transition-all disabled:opacity-50 text-center"
               >
                 {loading ? t('common.saving', 'Sending...') : t('auth.sendResetLink', 'Send Reset Link')}
               </button>

@@ -466,16 +466,16 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
       <div className="space-y-6 pb-16 font-sans">
         
         {/* Top Header Banner */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
+        <div className="p-4 sm:p-6 lg:p-8 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
           <div>
-            <div className="flex items-center gap-2 text-xs font-bold text-[#A78BFA]">
+            <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-[#A78BFA]">
               <Bot className="w-4 h-4 text-[#8B5CF6]" />
               <span>{t('advisor.tagline', 'EXECUTIVE DECISION INTELLIGENCE')}</span>
               <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-[#8B5CF6]/15 text-[#A78BFA] border border-[#8B5CF6]/30">
                 PRO EXCLUSIVE
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-[#F8FAFC] mt-1.5 tracking-tight">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-[#F8FAFC] mt-1.5 tracking-tight">
               {t('advisor.headerTitle', 'AI Business Advisor')}
             </h1>
             <p className="text-xs sm:text-sm text-[#A7B0C0] mt-1 max-w-2xl">
@@ -483,10 +483,10 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full md:w-auto">
             <button
               onClick={() => onNavigate('decision-lab')}
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-[#8B5CF6] hover:bg-[#7C3AED] text-white transition-all flex items-center gap-1.5 shadow-md shadow-[#8B5CF6]/20"
+              className="w-full md:w-auto px-4 py-2 rounded-xl text-xs font-bold bg-[#8B5CF6] hover:bg-[#7C3AED] text-white transition-all flex items-center justify-center gap-1.5 shadow-md shadow-[#8B5CF6]/20"
             >
               <span>{t('advisor.openDecisionLab', 'Open Decision Lab')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -495,37 +495,37 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
         </div>
 
         {/* Compact Business Snapshot Bar */}
-        <div className="p-4 rounded-2xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20">
-          <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#222936] text-xs">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 min-w-0">
+          <div className="flex flex-wrap items-center justify-between gap-1.5 pb-2.5 mb-2.5 border-b border-[#222936] text-xs">
             <span className="font-bold text-[#F8FAFC] flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               Live Financial Telemetry Snapshot
             </span>
-            <span className="text-[11px] font-medium text-[#707A8C]">{busName}</span>
+            <span className="text-[11px] font-medium text-[#707A8C] truncate">{busName}</span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
-            <div className="p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 text-xs">
+            <div className="p-2 sm:p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Monthly Revenue</span>
               <div className="font-bold text-[#F8FAFC] text-sm mt-0.5">₹{revL}L</div>
             </div>
-            <div className="p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+            <div className="p-2 sm:p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Operating Margin</span>
               <div className="font-bold text-[#A78BFA] text-sm mt-0.5">{fin.operatingMarginPercent ?? 0}%</div>
             </div>
-            <div className="p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+            <div className="p-2 sm:p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Cash Runway</span>
               <div className="font-bold text-amber-400 text-sm mt-0.5">{fin.runwayMonths ?? 0} months</div>
             </div>
-            <div className="p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+            <div className="p-2 sm:p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] uppercase font-semibold">DSCR Coverage</span>
               <div className="font-bold text-[#F8FAFC] text-sm mt-0.5">{dscrText}</div>
             </div>
-            <div className="p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+            <div className="p-2 sm:p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Funding Readiness</span>
               <div className="font-bold text-emerald-400 text-sm mt-0.5">{effectiveAnalysis.funding.overallScore}/100</div>
             </div>
-            <div className="p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
+            <div className="p-2 sm:p-2.5 rounded-xl bg-[#0F1219] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] uppercase font-semibold">Financial Health</span>
               <div className="font-bold text-[#A78BFA] text-sm mt-0.5">{effectiveAnalysis.health.overallScore}/100</div>
             </div>
@@ -551,17 +551,17 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
         </div>
 
         {/* Advisor Structured Chat Stream */}
-        <div className="rounded-2xl border border-[#222936] bg-[#121722] shadow-lg shadow-black/20 overflow-hidden flex flex-col h-[580px]">
+        <div className="rounded-2xl border border-[#222936] bg-[#121722] shadow-lg shadow-black/20 overflow-hidden flex flex-col h-[calc(100vh-16rem)] min-h-[440px] max-h-[700px]">
           
           {/* Messages Scroll Area */}
-          <div className="flex-1 p-5 sm:p-6 overflow-y-auto space-y-6 bg-[#090B10]">
+          <div className="flex-1 p-3.5 sm:p-6 overflow-y-auto space-y-6 bg-[#090B10]">
             {messages.map((msg) => {
               const isUser = msg.sender === 'user';
 
               if (isUser) {
                 return (
                   <div key={msg.id} className="flex justify-end">
-                    <div className="max-w-xl p-4 rounded-2xl bg-[#8B5CF6] text-white text-xs font-medium shadow-md shadow-[#8B5CF6]/20">
+                    <div className="max-w-xl p-3.5 sm:p-4 rounded-2xl bg-[#8B5CF6] text-white text-xs font-medium shadow-md shadow-[#8B5CF6]/20">
                       <div>{msg.rawText}</div>
                       <div className="text-[10px] text-violet-200 mt-1 text-right">{msg.timestamp}</div>
                     </div>
@@ -572,12 +572,12 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
               const isCalcExpanded = !!expandedCalcs[msg.id];
 
               return (
-                <div key={msg.id} className="flex gap-3 max-w-3xl">
+                <div key={msg.id} className="flex gap-2.5 sm:gap-3 max-w-3xl">
                   <div className="w-8 h-8 rounded-xl bg-[#8B5CF6] flex items-center justify-center text-white shrink-0 mt-1 shadow-sm">
                     <Bot className="w-4 h-4" />
                   </div>
 
-                  <div className="flex-1 p-5 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 text-xs shadow-lg shadow-black/20">
+                  <div className="flex-1 p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 text-xs shadow-lg shadow-black/20">
                     
                     {/* Diagnosis */}
                     {msg.diagnosis && (

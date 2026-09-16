@@ -265,9 +265,9 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#090B10] text-[#F8FAFC] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative">
+    <div className="min-h-screen bg-[#090B10] text-[#F8FAFC] flex flex-col justify-center py-12 px-3.5 sm:px-6 lg:px-8 relative">
       {/* Top Header Bar */}
-      <div className="absolute top-6 left-6 right-6 flex items-center justify-between z-10 max-w-5xl mx-auto w-full">
+      <div className="absolute top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-6 flex items-center justify-between z-10 max-w-5xl mx-auto">
         <button
           onClick={onGoHome}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#A7B0C0] hover:text-[#F8FAFC] bg-[#121722] border border-[#222936] hover:bg-[#161C27] transition-all shadow-sm"
@@ -285,9 +285,9 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
         </button>
       </div>
 
-      <div className="max-w-3xl mx-auto w-full relative z-10 mt-8 sm:mt-2">
+      <div className="max-w-3xl mx-auto w-full relative z-10 mt-10 sm:mt-2 min-w-0">
         {/* Step Indicator */}
-        <div className="mb-6 flex items-center justify-center gap-2 text-xs">
+        <div className="mb-6 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-xs">
           {[
             { id: 'business', label: '1. Business' },
             { id: 'account', label: '2. Credentials' },
@@ -299,7 +299,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
               <span
                 key={s.id}
                 className={
-                  'px-3 py-1 rounded-full text-[11px] font-bold border transition-all ' +
+                  'px-2.5 sm:px-3 py-1 rounded-full text-[11px] font-bold border transition-all ' +
                   (isCurrent
                     ? 'bg-[#161C27] text-violet-400 border-violet-500 shadow-sm'
                     : 'bg-[#121722] text-[#707A8C] border-[#222936]')
@@ -313,7 +313,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
 
         {/* STEP 1: BUSINESS DETAILS */}
         {step === 'business' && (
-          <div className="bg-[#121722] rounded-2xl p-6 sm:p-8 border border-[#222936] shadow-xl space-y-6">
+          <div className="bg-[#121722] rounded-2xl p-4 sm:p-6 lg:p-8 border border-[#222936] shadow-xl space-y-6 min-w-0">
             <div className="text-center space-y-1">
               <h2 className="text-2xl font-black text-[#F8FAFC] tracking-tight">
                 {t('auth.step1Title', 'Business Information')}
@@ -388,7 +388,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                 </FormField>
               </div>
 
-              <div className="pt-4 flex items-center justify-between border-t border-[#222936]">
+              <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#222936]">
                 <button
                   type="button"
                   onClick={onSwitchToLogin}
@@ -399,7 +399,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
 
                 <button
                   type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-lg shadow-violet-600/20"
+                  className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-violet-600/20"
                 >
                   <span>{t('common.next', 'Next: Login Credentials')}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -411,7 +411,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
 
         {/* STEP 2: ACCOUNT / CREDENTIALS */}
         {step === 'account' && (
-          <div className="bg-[#121722] rounded-2xl p-6 sm:p-8 border border-[#222936] shadow-xl space-y-6">
+          <div className="bg-[#121722] rounded-2xl p-4 sm:p-6 lg:p-8 border border-[#222936] shadow-xl space-y-6 min-w-0">
             <div className="text-center space-y-1">
               <h2 className="text-2xl font-black text-[#F8FAFC] tracking-tight">
                 {t('auth.accountStepTitle', 'Create Sign-in Credentials')}
@@ -499,11 +499,11 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                 </div>
               </div>
 
-              <div className="pt-4 flex items-center justify-between border-t border-[#222936]">
+              <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#222936]">
                 <button
                   type="button"
                   onClick={() => setStep('business')}
-                  className="text-xs text-[#A7B0C0] hover:text-[#F8FAFC] flex items-center gap-1 font-semibold"
+                  className="w-full sm:w-auto text-xs text-[#A7B0C0] hover:text-[#F8FAFC] flex items-center justify-center gap-1 font-semibold py-2 sm:py-0"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>{t('common.back', 'Back')}</span>
@@ -512,7 +512,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                 <button
                   type="submit"
                   disabled={paymentLoading}
-                  className="px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-lg shadow-violet-600/20 disabled:opacity-50"
+                  className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-violet-600/20 disabled:opacity-50"
                 >
                   {paymentLoading ? (
                     <>
@@ -569,7 +569,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
               <div
                 onClick={() => setSelectedPlanId('starter')}
                 className={
-                  'rounded-2xl p-6 border cursor-pointer transition-all flex flex-col justify-between ' +
+                  'rounded-2xl p-4 sm:p-6 border cursor-pointer transition-all flex flex-col justify-between min-w-0 ' +
                   (selectedPlanId === 'starter'
                     ? 'bg-[#161C27] border-violet-500 ring-2 ring-violet-500/20 shadow-xl'
                     : 'bg-[#121722] border-[#222936] hover:border-[#303848] shadow-sm')
@@ -584,7 +584,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                   <div>
                     <h3 className="text-xl font-bold text-[#F8FAFC]">Starter</h3>
                     <div className="flex items-baseline gap-1 mt-1">
-                      <span className="text-3xl font-black text-[#F8FAFC]">₹{PLAN_CONFIGS.starter.priceINR}</span>
+                      <span className="text-2xl sm:text-3xl font-black text-[#F8FAFC]">₹{PLAN_CONFIGS.starter.priceINR}</span>
                       <span className="text-xs text-[#707A8C]">/ 30 days</span>
                     </div>
                   </div>
@@ -619,7 +619,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
               <div
                 onClick={() => setSelectedPlanId('professional')}
                 className={
-                  'rounded-2xl p-6 border-2 cursor-pointer transition-all flex flex-col justify-between relative ' +
+                  'rounded-2xl p-4 sm:p-6 border-2 cursor-pointer transition-all flex flex-col justify-between relative min-w-0 ' +
                   (selectedPlanId === 'professional'
                     ? 'bg-[#161C27] border-violet-500 ring-2 ring-violet-500/20 shadow-2xl shadow-violet-500/10'
                     : 'bg-[#121722] border-violet-500/50 hover:border-violet-500 shadow-sm')
@@ -643,7 +643,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                       <Zap className="w-4 h-4 text-violet-400 fill-violet-400" />
                     </h3>
                     <div className="flex items-baseline gap-1 mt-1">
-                      <span className="text-3xl font-black text-[#F8FAFC]">₹{PLAN_CONFIGS.professional.priceINR}</span>
+                      <span className="text-2xl sm:text-3xl font-black text-[#F8FAFC]">₹{PLAN_CONFIGS.professional.priceINR}</span>
                       <span className="text-xs text-[#707A8C]">/ 30 days</span>
                     </div>
                   </div>
@@ -687,7 +687,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
 
         {/* STEP 4: VERIFIED ACCOUNT ACTIVATED SUCCESS */}
         {step === 'success' && (
-          <div className="bg-[#121722] rounded-2xl p-8 border border-emerald-500/40 shadow-2xl text-center space-y-6">
+          <div className="bg-[#121722] rounded-2xl p-5 sm:p-8 border border-emerald-500/40 shadow-2xl text-center space-y-6 min-w-0">
             <div className="w-16 h-16 rounded-3xl bg-emerald-950/40 border border-emerald-800/40 flex items-center justify-center text-emerald-400 mx-auto shadow-sm">
               <CheckCircle2 className="w-8 h-8" />
             </div>
@@ -736,7 +736,7 @@ export const MSMERegistrationFlow: React.FC<MSMERegistrationFlowProps> = ({
                     onRegistrationComplete(createdOrg);
                   }
                 }}
-                className="px-8 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm shadow-lg shadow-emerald-600/25 transition-all hover:scale-105 inline-flex items-center gap-2"
+                className="w-full sm:w-auto px-8 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm shadow-lg shadow-emerald-600/25 transition-all hover:scale-105 inline-flex items-center justify-center gap-2"
               >
                 <span>{t('subscription.enterPlatform', 'Enter BizPilot Platform')}</span>
                 <ArrowRight className="w-4 h-4" />

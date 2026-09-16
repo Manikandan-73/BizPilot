@@ -36,35 +36,35 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         
         {/* Top announcement pill */}
         <div className="flex justify-center mb-6">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#121722] border border-[#222936] shadow-sm text-xs text-[#A7B0C0]">
-            <span className="flex h-2 w-2 relative">
+          <div className="inline-flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#121722] border border-[#222936] shadow-sm text-xs text-[#A7B0C0] max-w-full text-center">
+            <span className="flex h-2 w-2 relative shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-violet-500"></span>
             </span>
             <span className="font-semibold text-[#F8FAFC]">BizPilot AI 2.0</span>
-            <span className="text-[#303848]">•</span>
-            <span>{t('landing.badge', 'Empowering India\'s 63M+ MSMEs for Institutional Funding')}</span>
-            <ArrowRight className="w-3.5 h-3.5 text-violet-400" />
+            <span className="text-[#303848] hidden sm:inline">•</span>
+            <span className="truncate max-w-[200px] sm:max-w-none">{t('landing.badge', 'Empowering India\'s 63M+ MSMEs for Institutional Funding')}</span>
+            <ArrowRight className="w-3.5 h-3.5 text-violet-400 shrink-0" />
           </div>
         </div>
 
         {/* Hero Headline & Subtitle */}
-        <div className="text-center max-w-4xl mx-auto space-y-5">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#F8FAFC] leading-[1.12]">
+        <div className="text-center max-w-4xl mx-auto space-y-4 sm:space-y-5">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#F8FAFC] leading-[1.15] sm:leading-[1.12]">
             {t('landing.heroTitlePrefix', 'Your AI Business Copilot for')}{' '}
             <span className="text-violet-400">{t('landing.heroFundingGrowth', 'Funding, Growth')}</span> &{' '}
             <span className="text-teal-400">{t('landing.heroIntelligence', 'Financial Intelligence')}</span>
           </h1>
           
-          <p className="text-lg sm:text-xl text-[#A7B0C0] max-w-2xl mx-auto font-normal leading-relaxed">
+          <p className="text-sm sm:text-lg lg:text-xl text-[#A7B0C0] max-w-2xl mx-auto font-normal leading-relaxed">
             {t('landing.heroSubtitle', 'Helping MSMEs become funding-ready through AI-powered financial analysis, cash-flow forecasting, and growth intelligence.')}
           </p>
 
           {/* Action CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-4">
             <button
               onClick={onLaunchDemo}
-              className="w-full sm:w-auto px-8 py-4 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-sm shadow-lg shadow-violet-600/20 hover:shadow-violet-600/30 flex items-center justify-center gap-2 group transition-all"
+              className="w-full sm:w-auto px-8 py-3.5 sm:py-4 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-sm shadow-lg shadow-violet-600/20 hover:shadow-violet-600/30 flex items-center justify-center gap-2 group transition-all"
             >
               <Sparkles className="w-4 h-4 text-violet-200 group-hover:rotate-12 transition-transform" />
               {t('landing.launchDemo', 'Try Demo Platform')}
@@ -73,7 +73,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
             <button
               onClick={onOpenCreditPassport}
-              className="w-full sm:w-auto px-7 py-4 rounded-xl bg-[#121722] hover:bg-[#171D29] text-[#F8FAFC] border border-[#222936] hover:border-[#303848] font-semibold text-sm flex items-center justify-center gap-2 shadow-sm transition-all"
+              className="w-full sm:w-auto px-7 py-3.5 sm:py-4 rounded-xl bg-[#121722] hover:bg-[#171D29] text-[#F8FAFC] border border-[#222936] hover:border-[#303848] font-semibold text-sm flex items-center justify-center gap-2 shadow-sm transition-all"
             >
               <FileText className="w-4 h-4 text-violet-400" />
               {t('landing.explorePassport', 'View Investor Report & Passport')}
@@ -81,46 +81,46 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
 
           {/* Social Proof Badges */}
-          <div className="pt-6 flex flex-wrap items-center justify-center gap-6 text-xs text-[#707A8C]">
+          <div className="pt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-[#707A8C]">
             <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
               <span className="text-[#A7B0C0]">GSTR &amp; Bank Statement AI Parser</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
               <span className="text-[#A7B0C0]">PSB59 &amp; CGTMSE Ready</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
               <span className="text-[#A7B0C0]">Zero Jargon • Explainable AI</span>
             </div>
           </div>
         </div>
 
         {/* Hero Interactive Illustration / Glassmorphism Mockup */}
-        <div className="mt-14 relative max-w-5xl mx-auto">
+        <div className="mt-10 sm:mt-14 relative max-w-5xl mx-auto min-w-0">
           {/* Outer glow frame */}
-          <div className="p-2 sm:p-3 rounded-2xl bg-[#0F1219] border border-[#222936] shadow-2xl">
+          <div className="p-2 sm:p-3 rounded-2xl bg-[#0F1219] border border-[#222936] shadow-2xl min-w-0">
             
             {/* Top header bar */}
-            <div className="bg-[#0B0E14] rounded-xl p-4 border border-[#222936]/80 shadow-sm">
+            <div className="bg-[#0B0E14] rounded-xl p-3 sm:p-4 border border-[#222936]/80 shadow-sm min-w-0">
               
               {/* Window Controls & Live Status */}
-              <div className="flex items-center justify-between pb-4 border-b border-[#222936]">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-rose-500/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
-                  <span className="text-xs font-mono text-[#707A8C] ml-2">bizpilot.ai/live-intelligence</span>
+              <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-[#222936] gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-3 h-3 rounded-full bg-rose-500/80 shrink-0"></div>
+                  <div className="w-3 h-3 rounded-full bg-amber-500/80 shrink-0"></div>
+                  <div className="w-3 h-3 rounded-full bg-emerald-500/80 shrink-0"></div>
+                  <span className="text-xs font-mono text-[#707A8C] ml-2 hidden sm:inline truncate">bizpilot.ai/live-intelligence</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs">
+                <div className="flex items-center gap-2 text-xs shrink-0">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span className="text-emerald-400 font-semibold">Live Enterprise Engine</span>
+                  <span className="text-emerald-400 font-semibold text-[11px] sm:text-xs">Live Enterprise Engine</span>
                 </div>
               </div>
 
               {/* Grid of Interactive Preview Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mt-4">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 mt-4">
                 
                 {/* Score Gauges Block */}
                 <div className="md:col-span-4 p-4 rounded-xl bg-[#121722] border border-[#222936] flex flex-col justify-between space-y-4 shadow-sm">

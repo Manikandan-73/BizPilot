@@ -84,7 +84,7 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
     <div className="space-y-6 pb-12 font-sans">
       
       {/* 1. Page Header */}
-      <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20 relative overflow-hidden">
+      <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20 relative overflow-hidden">
         <div className="space-y-1.5">
           <div className="flex flex-wrap items-center gap-2 text-xs font-bold">
             <span className="px-2.5 py-0.5 rounded-full bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 text-[#A78BFA] uppercase tracking-wider text-[10px]">
@@ -97,7 +97,7 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
               {t('funding.notApproval', 'Not a loan approval')}
             </span>
           </div>
-          <h2 className="text-2xl font-black text-[#F8FAFC]">
+          <h2 className="text-xl sm:text-2xl font-black text-[#F8FAFC]">
             {t('funding.headerTitle', 'Funding Readiness')}
           </h2>
           <p className="text-xs text-[#A7B0C0] max-w-2xl leading-relaxed">
@@ -105,17 +105,17 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 w-full md:w-auto">
           <button
             onClick={() => setShowExplainModal(true)}
-            className="px-3.5 py-2 rounded-xl bg-[#161C27] hover:bg-[#1C2433] text-[#F8FAFC] font-semibold text-xs flex items-center gap-1.5 border border-[#222936] hover:border-[#303848] transition-all shadow-sm"
+            className="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-[#161C27] hover:bg-[#1C2433] text-[#F8FAFC] font-semibold text-xs flex items-center justify-center gap-1.5 border border-[#222936] hover:border-[#303848] transition-all shadow-sm"
           >
             <HelpCircle className="w-3.5 h-3.5 text-[#8B5CF6]" />
             {t('funding.explainScoreBtn', 'Explain my score')}
           </button>
           <button
             onClick={onOpenPassport}
-            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-[#8B5CF6]/20 transition-all hover:-translate-y-0.5"
+            className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-[#8B5CF6]/20 transition-all hover:-translate-y-0.5"
           >
             <FileCheck2 className="w-4 h-4" />
             {t('funding.generatePassport', 'Generate Credit Passport')}
@@ -124,10 +124,10 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
       </div>
 
       {/* 2. Top Split: Score Gauge & Estimated Borrowing Capacity */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         
         {/* Left 5 Cols: Score Card & Explain CTA */}
-        <div className="lg:col-span-5 p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col items-center justify-between text-center space-y-4 shadow-lg shadow-black/20">
+        <div className="lg:col-span-5 p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col items-center justify-between text-center space-y-4 shadow-lg shadow-black/20 min-w-0">
           <div className="w-full flex items-center justify-between text-xs text-[#707A8C]">
             <span className="font-bold text-[#A78BFA] uppercase tracking-wider text-[10px]">
               {t('funding.fundingScoreLabel', 'Funding Score')}
@@ -174,7 +174,7 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
         </div>
 
         {/* Right 7 Cols: Transparent Score Breakdown Grid */}
-        <div className="lg:col-span-7 p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20 flex flex-col justify-between">
+        <div className="lg:col-span-7 p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20 flex flex-col justify-between min-w-0">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-2">
@@ -246,13 +246,13 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
       </div>
 
       {/* 3. Strengths & Gaps (Data-Driven, Max 5 Items Each) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         
         {/* What's Helping Your Funding Readiness */}
-        <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] space-y-3 shadow-lg shadow-black/20">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#121722] border border-[#222936] space-y-3 shadow-lg shadow-black/20 min-w-0">
           <div className="flex items-center gap-2 text-[#10B981] font-bold text-sm border-b border-[#222936] pb-3">
-            <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
-            <span>{t('funding.whatsHelping', "What's Helping Your Funding Readiness")}</span>
+            <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0" />
+            <span className="truncate">{t('funding.whatsHelping', "What's Helping Your Funding Readiness")}</span>
           </div>
           <div className="space-y-2 text-xs">
             {strengths.length > 0 ? (
@@ -271,10 +271,10 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
         </div>
 
         {/* What Is Holding You Back */}
-        <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] space-y-3 shadow-lg shadow-black/20">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#121722] border border-[#222936] space-y-3 shadow-lg shadow-black/20 min-w-0">
           <div className="flex items-center gap-2 text-[#F59E0B] font-bold text-sm border-b border-[#222936] pb-3">
-            <AlertTriangle className="w-4 h-4 text-[#F59E0B]" />
-            <span>{t('funding.whatsHoldingBack', 'What Is Holding You Back')}</span>
+            <AlertTriangle className="w-4 h-4 text-[#F59E0B] shrink-0" />
+            <span className="truncate">{t('funding.whatsHoldingBack', 'What Is Holding You Back')}</span>
           </div>
           <div className="space-y-2 text-xs">
             {gaps.length > 0 ? (
@@ -286,7 +286,7 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
               ))
             ) : (
               <div className="p-3 rounded-xl bg-[#10B981]/10 border border-[#10B981]/20 text-[#10B981] text-xs flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
+                <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0" />
                 <span>{language === 'ta' ? 'முக்கிய நிதி இடைவெளிகள் எதுவும் கண்டறியப்படவில்லை.' : 'No critical funding gaps detected. Profile meets baseline underwriting criteria.'}</span>
               </div>
             )}
@@ -296,11 +296,11 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
       </div>
 
       {/* 4. Action Plan: Gap Resolution */}
-      <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20">
+      <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20 min-w-0">
         <div className="flex items-center justify-between border-b border-[#222936] pb-3">
           <div>
             <h3 className="text-sm font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#8B5CF6]" />
+              <Sparkles className="w-4 h-4 text-[#8B5CF6] shrink-0" />
               {t('funding.actionPlanTitle', 'Funding Gap Resolution Action Plan')}
             </h3>
             <p className="text-xs text-[#707A8C] mt-0.5">
@@ -313,11 +313,11 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
           {actionPlan.map((item, idx) => (
             <div 
               key={idx}
-              className="p-4 rounded-xl bg-[#0F1219] border border-[#222936] space-y-2.5 hover:border-[#8B5CF6]/30 transition-all"
+              className="p-3.5 sm:p-4 rounded-xl bg-[#0F1219] border border-[#222936] space-y-2.5 hover:border-[#8B5CF6]/30 transition-all min-w-0"
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 <span className="font-bold text-[#F8FAFC] text-xs">{item.issue}</span>
-                <span className={`text-[9px] font-bold px-2 py-0.5 rounded uppercase ${
+                <span className={`text-[9px] font-bold px-2 py-0.5 rounded uppercase shrink-0 ${
                   item.priority === 'HIGH' ? 'bg-[#F43F5E]/15 text-[#F43F5E] border border-[#F43F5E]/30' :
                   item.priority === 'MEDIUM' ? 'bg-[#F59E0B]/15 text-[#F59E0B] border border-[#F59E0B]/30' :
                   'bg-[#222936] text-[#A7B0C0] border border-[#303848]'
@@ -347,7 +347,7 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
       </div>
 
       {/* 5. Funding Preparation Checklist (9 Items, Data-Grounded Statuses) */}
-      <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20">
+      <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20 min-w-0">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#222936] pb-3">
           <div>
             <h3 className="text-sm font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-2">
@@ -403,14 +403,14 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
       </div>
 
       {/* 6. Debt Capacity Assessment & Estimated Funding Capacity */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         
         {/* Left 7 Cols: Debt Capacity Assessment */}
-        <div className="lg:col-span-7 p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20 flex flex-col justify-between">
+        <div className="lg:col-span-7 p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20 flex flex-col justify-between min-w-0">
           <div className="space-y-1 border-b border-[#222936] pb-3">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-2">
-                <Landmark className="w-4 h-4 text-[#8B5CF6]" />
+                <Landmark className="w-4 h-4 text-[#8B5CF6] shrink-0" />
                 {t('funding.debtCapacityTitle', 'Debt Capacity Assessment')}
               </h3>
               <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
@@ -426,38 +426,38 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs py-1">
-            <div className="p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3 text-xs py-1">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] block uppercase font-semibold">{t('funding.currentEmi', 'Current Monthly EMI')}</span>
               <strong className="text-[#F8FAFC] text-sm">
                 {analysis?.normalized.hasLoans ? `₹${((debtAssessment?.currentEmi ?? 0) / 1000).toFixed(0)}k/mo` : '₹0 (Debt-Free)'}
               </strong>
             </div>
-            <div className="p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] block uppercase font-semibold">{t('funding.annualDebtService', 'Annual Debt Service')}</span>
               <strong className="text-[#F8FAFC] text-sm">
                 {analysis?.normalized.hasLoans ? `₹${((debtAssessment?.annualDebtService ?? 0) / 100000).toFixed(1)}L` : '₹0'}
               </strong>
             </div>
-            <div className="p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] block uppercase font-semibold">{t('funding.dscr', 'Debt Service Coverage (DSCR)')}</span>
               <strong className="text-[#10B981] text-sm">
                 {debtAssessment?.dscr ? `${debtAssessment.dscr}x` : t('executive.debtFree', 'Debt-Free')}
               </strong>
             </div>
-            <div className="p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] block uppercase font-semibold">{t('funding.debtToRevenue', 'Debt-to-Revenue Ratio')}</span>
               <strong className="text-[#A7B0C0] text-sm">
                 {debtAssessment?.debtToRevenue ? `${(debtAssessment.debtToRevenue * 100).toFixed(1)}%` : '0%'}
               </strong>
             </div>
-            <div className="p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] block uppercase font-semibold">{t('funding.emiBurden', 'Monthly EMI Burden')}</span>
               <strong className="text-[#A7B0C0] text-sm">
                 {debtAssessment?.emiBurdenPercent !== null && debtAssessment?.emiBurdenPercent !== undefined ? `${debtAssessment.emiBurdenPercent}%` : '0%'}
               </strong>
             </div>
-            <div className="p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
               <span className="text-[10px] text-[#707A8C] block uppercase font-semibold">{language === 'ta' ? 'வணிக வயது' : 'Business Vintage'}</span>
               <strong className="text-[#A78BFA] text-sm">
                 {analysis?.vintageYears ? `${analysis.vintageYears} ${t('common.years', 'Years')}` : 'Not enough information'}
@@ -471,12 +471,12 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
         </div>
 
         {/* Right 5 Cols: Estimated Funding Capacity & Disclaimers */}
-        <div className="lg:col-span-5 p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20 flex flex-col justify-between">
+        <div className="lg:col-span-5 p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20 flex flex-col justify-between min-w-0">
           <div className="space-y-2">
             <span className="text-xs font-bold uppercase tracking-wider text-[#A78BFA] block">
               {t('funding.fundingCapacityTitle', 'Estimated Funding Capacity')}
             </span>
-            <div className="text-3xl font-black text-[#F8FAFC]">
+            <div className="text-2xl sm:text-3xl font-black text-[#F8FAFC]">
               {creditLimit}
             </div>
             <p className="text-xs text-[#A7B0C0] leading-relaxed">
@@ -526,7 +526,7 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
           ? 'உங்கள் வணிகம் இப்போது கடன் பெற விண்ணப்பிக்கலாமா அல்லது நிதி சுயவிவரத்தை முதலில் மேம்படுத்த வேண்டுமா என்பதை அறிய தொழில்முறை திட்டத்திற்கு மாறவும்.' 
           : 'Unlock strategic timing guidance on whether to apply for funding now or improve operational margins first, with tailored AI gap resolutions.'}
       >
-        <div className="p-6 rounded-2xl bg-[#121722] border border-[#8B5CF6]/40 space-y-4 shadow-lg shadow-black/20">
+        <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#8B5CF6]/40 space-y-4 shadow-lg shadow-black/20 min-w-0">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#222936] pb-3">
             <div>
               <div className="flex items-center gap-2">
@@ -626,14 +626,14 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
           {bankMatches.map((match, idx) => (
             <div 
               key={idx}
-              className="p-5 rounded-xl bg-[#121722] border border-[#222936] hover:border-[#8B5CF6]/40 hover:bg-[#171D29] transition-all space-y-3 shadow-lg shadow-black/20"
+              className="p-4 sm:p-5 rounded-xl bg-[#121722] border border-[#222936] hover:border-[#8B5CF6]/40 hover:bg-[#171D29] transition-all space-y-3 shadow-lg shadow-black/20 min-w-0"
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="text-sm font-bold text-[#F8FAFC]">{match.bank}</h4>
-                  <div className="text-xs text-[#A78BFA] font-semibold">{match.product}</div>
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <h4 className="text-sm font-bold text-[#F8FAFC] truncate">{match.bank}</h4>
+                  <div className="text-xs text-[#A78BFA] font-semibold truncate">{match.product}</div>
                 </div>
-                <span className="text-xs font-black text-[#10B981] bg-[#10B981]/15 px-2 py-0.5 rounded border border-[#10B981]/30">
+                <span className="text-xs font-black text-[#10B981] bg-[#10B981]/15 px-2 py-0.5 rounded border border-[#10B981]/30 shrink-0">
                   {match.match}
                 </span>
               </div>
@@ -651,10 +651,10 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
 
               <p className="text-[11px] text-[#A7B0C0] leading-relaxed">{match.reason}</p>
 
-              <div className="flex items-center justify-between pt-1">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-1">
                 {match.fastTrack ? (
                   <span className="text-[10px] text-[#A78BFA] font-semibold flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-[#8B5CF6]" /> {language === 'ta' ? 'டிஜிட்டல் கடன் ஆய்வு' : 'Digital Assessment'}
+                    <Sparkles className="w-3 h-3 text-[#8B5CF6] shrink-0" /> {language === 'ta' ? 'டிஜிட்டல் கடன் ஆய்வு' : 'Digital Assessment'}
                   </span>
                 ) : (
                   <span className="text-[10px] text-[#707A8C]">
@@ -662,16 +662,16 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
                   </span>
                 )}
 
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
                   <button
                     onClick={() => onNavigate('decision-lab')}
-                    className="px-2.5 py-1.5 rounded-lg bg-[#161C27] hover:bg-[#1C2433] text-[#F8FAFC] text-[11px] font-semibold flex items-center gap-1 border border-[#222936] transition-all"
+                    className="flex-1 sm:flex-initial px-2.5 py-1.5 rounded-lg bg-[#161C27] hover:bg-[#1C2433] text-[#F8FAFC] text-[11px] font-semibold flex items-center justify-center gap-1 border border-[#222936] transition-all"
                   >
                     {language === 'ta' ? 'சோதிக்க' : 'Test Scenario'}
                   </button>
                   <button
                     onClick={onOpenPassport}
-                    className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white text-[11px] font-semibold flex items-center gap-1 transition-all shadow-md shadow-[#8B5CF6]/20"
+                    className="flex-1 sm:flex-initial px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white text-[11px] font-semibold flex items-center justify-center gap-1 transition-all shadow-md shadow-[#8B5CF6]/20"
                   >
                     {language === 'ta' ? 'பாஸ்போர்ட்டுடன் பார்க்க' : 'View with Passport'}
                     <ArrowRight className="w-3 h-3" />
@@ -685,12 +685,12 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
 
       {/* 10. "Why is my score X?" Explainability Modal */}
       {showExplainModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md overflow-y-auto">
-          <div className="relative w-full max-w-2xl bg-[#121722] border border-[#303848] rounded-2xl shadow-2xl p-6 sm:p-8 space-y-6 my-8">
-            <div className="flex items-center justify-between border-b border-[#222936] pb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-md overflow-y-auto">
+          <div className="relative w-full max-w-2xl bg-[#121722] border border-[#303848] rounded-2xl shadow-2xl p-4 sm:p-6 lg:p-8 space-y-5 my-auto max-h-[calc(100vh-2rem)] flex flex-col justify-between">
+            <div className="flex items-center justify-between border-b border-[#222936] pb-3 sm:pb-4">
               <div>
-                <h3 className="text-lg font-bold text-[#F8FAFC] flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-[#8B5CF6]" />
+                <h3 className="text-base sm:text-lg font-bold text-[#F8FAFC] flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-[#8B5CF6] shrink-0" />
                   {language === 'ta' ? `எனது மதிப்பெண் ${fundingScore} ஆனது ஏன்?` : `Why is my score ${fundingScore}?`}
                 </h3>
                 <p className="text-xs text-[#707A8C] mt-0.5">
@@ -699,27 +699,27 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
               </div>
               <button
                 onClick={() => setShowExplainModal(false)}
-                className="p-1.5 rounded-lg text-[#707A8C] hover:text-[#F8FAFC] hover:bg-[#161C27] transition-all"
+                className="p-1.5 rounded-lg text-[#707A8C] hover:text-[#F8FAFC] hover:bg-[#161C27] transition-all shrink-0"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
+            <div className="space-y-3 sm:space-y-4 max-h-[55vh] overflow-y-auto pr-1">
               {dimensions.map((dim, i) => (
-                <div key={i} className="p-4 rounded-xl bg-[#0F1219] border border-[#222936] space-y-2">
-                  <div className="flex items-center justify-between">
+                <div key={i} className="p-3.5 sm:p-4 rounded-xl bg-[#0F1219] border border-[#222936] space-y-2">
+                  <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-[#F8FAFC] text-xs">{dim.factor}</span>
                       <span className="text-[10px] text-[#707A8C]">({dim.weight}% max)</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded shrink-0 ${
                         dim.contribution === 'positive' ? 'bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30' : 'bg-[#F59E0B]/15 text-[#F59E0B] border border-[#F59E0B]/30'
                       }`}>
-                        {dim.contribution === 'positive' ? '✓ Positive Contribution' : '⚠ Negative Contribution'}
+                        {dim.contribution === 'positive' ? '✓ Positive' : '⚠ Negative'}
                       </span>
-                      <span className="font-bold text-[#F8FAFC] text-xs">{dim.rawScore} / {dim.weight} pts</span>
+                      <span className="font-bold text-[#F8FAFC] text-xs shrink-0">{dim.rawScore} / {dim.weight} pts</span>
                     </div>
                   </div>
 
@@ -730,13 +730,13 @@ export const FundingReadinessView: React.FC<FundingReadinessViewProps> = ({
               ))}
             </div>
 
-            <div className="pt-4 border-t border-[#222936] flex items-center justify-between text-xs">
-              <span className="text-[#707A8C] italic">
+            <div className="pt-3 sm:pt-4 border-t border-[#222936] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+              <span className="text-[#707A8C] italic text-[11px]">
                 {language === 'ta' ? 'உண்மையான நிறுவனத் தரவுகளிலிருந்து கணக்கிடப்பட்டது.' : 'Evaluated strictly from your actual organizational financial profile.'}
               </span>
               <button
                 onClick={() => setShowExplainModal(false)}
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white font-semibold text-xs transition-all shadow-md shadow-[#8B5CF6]/20"
+                className="w-full sm:w-auto px-4 py-2 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white font-semibold text-xs transition-all shadow-md shadow-[#8B5CF6]/20"
               >
                 {t('common.close', 'Close')}
               </button>

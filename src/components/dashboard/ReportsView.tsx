@@ -225,9 +225,9 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
       `}} />
 
       {/* Screen-Only Header Banner */}
-      <div className="no-print p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-bold text-[#A78BFA] uppercase tracking-wider">
+      <div className="no-print p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20 min-w-0">
+        <div className="min-w-0 w-full md:w-auto">
+          <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-[#A78BFA] uppercase tracking-wider">
             <Sparkles className="w-4 h-4 text-[#8B5CF6]" />
             <span>{t('reports.businessIntelligenceReport', 'Business Intelligence Report')}</span>
             <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
@@ -236,24 +236,24 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
               {report.metadata.planName.toUpperCase()}
             </span>
           </div>
-          <h1 className="text-2xl font-black text-[#F8FAFC] mt-1">
+          <h1 className="text-xl sm:text-2xl font-black text-[#F8FAFC] mt-1 truncate">
             {report.metadata.organizationName}
           </h1>
           <p className="text-xs text-[#A7B0C0] mt-0.5 max-w-2xl">
             {t('reports.reportSubtitle', 'AI-powered financial analysis and actionable business insights.')}
           </p>
           
-          <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-[#707A8C]">
+          <div className="mt-3 flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-[#707A8C]">
             <span className="flex items-center gap-1">
               <Calendar className="w-3.5 h-3.5 text-[#8B5CF6]" />
               <strong>{t('reports.generatedDate', 'Generated')}:</strong> <span className="text-[#F8FAFC]">{report.metadata.generatedDate}</span>
             </span>
-            <span className="text-[#303848]">•</span>
+            <span className="hidden sm:inline text-[#303848]">•</span>
             <span className="flex items-center gap-1">
               <Clock className="w-3.5 h-3.5 text-[#14B8A6]" />
               <strong>{t('reports.reportPeriod', 'Period')}:</strong> <span className="text-[#F8FAFC]">{report.metadata.reportPeriod}</span>
             </span>
-            <span className="text-[#303848]">•</span>
+            <span className="hidden sm:inline text-[#303848]">•</span>
             <span className="flex items-center gap-1">
               <Award className="w-3.5 h-3.5 text-emerald-400" />
               <strong>{t('reports.plan', 'Plan')}:</strong> <span className="text-[#F8FAFC]">{report.metadata.planName}</span>
@@ -266,7 +266,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
           <button
             onClick={handleRegenerate}
             disabled={isGenerating}
-            className="flex-1 md:flex-none px-3.5 py-2 rounded-xl bg-[#161C27] hover:bg-[#1E2536] text-[#F8FAFC] text-xs font-semibold flex items-center justify-center gap-1.5 border border-[#303848] transition-all shadow-sm"
+            className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-[#161C27] hover:bg-[#1E2536] text-[#F8FAFC] text-xs font-semibold flex items-center justify-center gap-1.5 border border-[#303848] transition-all shadow-sm"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin text-[#8B5CF6]' : ''}`} />
             <span>{isGenerating ? t('reports.generating', 'Generating...') : t('reports.generateReport', 'Generate Report')}</span>
@@ -274,7 +274,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
 
           <button
             onClick={handleExportPDF}
-            className="flex-1 md:flex-none px-4 py-2 rounded-xl bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-md shadow-[#8B5CF6]/20 transition-all"
+            className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-md shadow-[#8B5CF6]/20 transition-all"
           >
             <Printer className="w-3.5 h-3.5" />
             <span>{t('reports.exportPdf', 'Export PDF')}</span>
@@ -283,7 +283,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
 
           <button
             onClick={handleShare}
-            className="flex-1 md:flex-none px-3.5 py-2 rounded-xl bg-[#161C27] hover:bg-[#1E2536] text-[#F8FAFC] text-xs font-semibold flex items-center justify-center gap-1.5 border border-[#303848] transition-all shadow-sm"
+            className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-[#161C27] hover:bg-[#1E2536] text-[#F8FAFC] text-xs font-semibold flex items-center justify-center gap-1.5 border border-[#303848] transition-all shadow-sm"
           >
             <Share2 className="w-3.5 h-3.5 text-[#707A8C]" />
             <span>{t('reports.share', 'Share')}</span>
@@ -293,7 +293,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
           {onOpenPassport && (
             <button
               onClick={onOpenPassport}
-              className="flex-1 md:flex-none px-3.5 py-2 rounded-xl bg-[#0F1219] hover:bg-[#161C27] text-[#14B8A6] text-xs font-semibold flex items-center justify-center gap-1.5 border border-[#14B8A6]/40 transition-all shadow-sm"
+              className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-[#0F1219] hover:bg-[#161C27] text-[#14B8A6] text-xs font-semibold flex items-center justify-center gap-1.5 border border-[#14B8A6]/40 transition-all shadow-sm"
             >
               <FileCheck2 className="w-3.5 h-3.5 text-[#14B8A6]" />
               <span>{t('reports.creditPassportBtn', 'MSME Credit Passport')}</span>
@@ -311,7 +311,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
       )}
 
       {/* Plan Notice Strip */}
-      <div className="no-print p-3 rounded-xl bg-[#0F1219] border border-[#222936] text-xs text-[#A7B0C0] flex items-center justify-between shadow-sm">
+      <div className="no-print p-3 rounded-xl bg-[#0F1219] border border-[#222936] text-xs text-[#A7B0C0] flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-sm">
         <span className="flex items-center gap-2">
           <span className={`w-2 h-2 rounded-full ${isPro ? 'bg-[#8B5CF6]' : 'bg-[#14B8A6]'}`}></span>
           {isPro 
@@ -321,7 +321,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
         {!isPro && onNavigate && (
           <button
             onClick={() => onNavigate('billing')}
-            className="text-xs text-[#A78BFA] hover:text-white font-bold flex items-center gap-1 transition-colors"
+            className="text-xs text-[#A78BFA] hover:text-white font-bold flex items-center gap-1 transition-colors self-start sm:self-auto"
           >
             <span>{t('reports.upgradeToPro', 'Upgrade to Professional')}</span>
             <ArrowRight className="w-3 h-3" />
@@ -332,7 +332,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
       {/* ========================================================================= */}
       {/* THE OFFICIAL BUSINESS INTELLIGENCE DOSSIER (Rendered & Print Ready)       */}
       {/* ========================================================================= */}
-      <div className="report-sheet bg-[#121722] border border-[#222936] rounded-2xl p-6 sm:p-8 space-y-8 shadow-lg shadow-black/20 text-[#F8FAFC] print:border-none print:p-0">
+      <div className="report-sheet bg-[#121722] border border-[#222936] rounded-2xl p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8 shadow-lg shadow-black/20 text-[#F8FAFC] print:border-none print:p-0 min-w-0">
         
         {/* Dedicated Print-Only Branding Header */}
         <div className="print-only border-b-2 border-slate-800 pb-4 mb-6">

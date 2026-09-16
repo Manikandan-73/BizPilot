@@ -107,13 +107,13 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
     <div className="space-y-6 pb-12 font-sans">
       
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
+      <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20 min-w-0">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-[#A78BFA]">
-            <SlidersHorizontal className="w-4 h-4 text-[#8B5CF6]" />
+            <SlidersHorizontal className="w-4 h-4 text-[#8B5CF6] shrink-0" />
             <span>{t('whatIf.bannerTag', 'INTERACTIVE SCENARIO MODELING')}</span>
           </div>
-          <h2 className="text-2xl font-black text-[#F8FAFC] mt-1">
+          <h2 className="text-xl sm:text-2xl font-black text-[#F8FAFC] mt-1">
             {t('whatIf.title', 'What-If Business & Capital Simulator')}
           </h2>
           <p className="text-xs text-[#A7B0C0] mt-0.5">
@@ -125,7 +125,7 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
 
         <button
           onClick={resetDefaults}
-          className="px-3.5 py-2 rounded-xl bg-[#161C27] hover:bg-[#1E2536] text-[#F8FAFC] text-xs font-semibold flex items-center gap-1.5 border border-[#303848] transition-all shadow-sm"
+          className="w-full md:w-auto px-3.5 py-2 rounded-xl bg-[#161C27] hover:bg-[#1E2536] text-[#F8FAFC] text-xs font-semibold flex items-center justify-center gap-1.5 border border-[#303848] transition-all shadow-sm"
         >
           <RotateCcw className="w-3.5 h-3.5 text-[#A78BFA]" />
           {t('whatIf.resetBaseline', 'Reset Baseline')}
@@ -133,15 +133,15 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
       </div>
 
       {/* Main Simulator Grid */}
-      <div className="p-3 px-4 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 text-xs text-[#A78BFA]">
-        <span className="font-bold text-[#F8FAFC] uppercase tracking-wider text-[10px] bg-[#8B5CF6]/20 px-2 py-0.5 rounded border border-[#8B5CF6]/30 mr-2">Simulation Notice</span>
+      <div className="p-3 px-4 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 text-xs text-[#A78BFA] flex flex-col sm:flex-row sm:items-center gap-1.5">
+        <span className="font-bold text-[#F8FAFC] uppercase tracking-wider text-[10px] bg-[#8B5CF6]/20 px-2 py-0.5 rounded border border-[#8B5CF6]/30 shrink-0 self-start sm:self-auto">Simulation Notice</span>
         <span>Scenario Simulation Disclaimer: Projections are mathematical sensitivity models based on user-adjusted parameters and your organization's actual financial baseline. They do not constitute guaranteed financial outcomes.</span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 min-w-0">
         
         {/* Left 5 Cols: Sliders Control Station */}
-        <div className="lg:col-span-5 p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-5 shadow-lg shadow-black/20">
+        <div className="lg:col-span-5 p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-5 shadow-lg shadow-black/20 min-w-0">
           <div className="flex items-center justify-between border-b border-[#222936] pb-3">
             <h3 className="text-xs font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-1.5">
               <Zap className="w-4 h-4 text-[#8B5CF6]" /> 
@@ -285,45 +285,45 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
         </div>
 
         {/* Right 7 Cols: Projected Impact & Comparison Visuals */}
-        <div className="lg:col-span-7 space-y-5">
+        <div className="lg:col-span-7 space-y-4 sm:space-y-5 min-w-0">
           
           {/* 3 Simulation Result Scorecards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             
-            <div className="p-4 rounded-xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 space-y-1">
-              <div className="text-[10px] text-[#707A8C] uppercase font-bold">
+            <div className="p-4 rounded-xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 space-y-1 min-w-0">
+              <div className="text-[10px] text-[#707A8C] uppercase font-bold truncate">
                 {t('whatIf.simProfit', 'Simulated Net Profit')}
               </div>
-              <div className="text-2xl font-black text-[#F8FAFC]">₹{simProfit.toFixed(1)} L</div>
+              <div className="text-xl sm:text-2xl font-black text-[#F8FAFC]">₹{simProfit.toFixed(1)} L</div>
               <div className="flex items-center text-xs">
                 {profitDelta >= 0 ? (
-                  <span className="text-emerald-400 font-semibold flex items-center">
-                    <TrendingUp className="w-3.5 h-3.5 mr-0.5" /> +₹{profitDelta.toFixed(1)} L/mo
+                  <span className="text-emerald-400 font-semibold flex items-center truncate">
+                    <TrendingUp className="w-3.5 h-3.5 mr-0.5 shrink-0" /> +₹{profitDelta.toFixed(1)} L/mo
                   </span>
                 ) : (
-                  <span className="text-rose-400 font-semibold flex items-center">
-                    <TrendingDown className="w-3.5 h-3.5 mr-0.5" /> -₹{Math.abs(profitDelta).toFixed(1)} L/mo
+                  <span className="text-rose-400 font-semibold flex items-center truncate">
+                    <TrendingDown className="w-3.5 h-3.5 mr-0.5 shrink-0" /> -₹{Math.abs(profitDelta).toFixed(1)} L/mo
                   </span>
                 )}
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-[#121722] border border-[#8B5CF6]/30 shadow-lg shadow-black/20 space-y-1">
-              <div className="text-[10px] text-[#A78BFA] uppercase font-bold">
+            <div className="p-4 rounded-xl bg-[#121722] border border-[#8B5CF6]/30 shadow-lg shadow-black/20 space-y-1 min-w-0">
+              <div className="text-[10px] text-[#A78BFA] uppercase font-bold truncate">
                 {t('whatIf.simHealth', 'Simulated Health Score')}
               </div>
-              <div className="text-2xl font-black text-[#A78BFA]">{simulatedHealthScore}<span className="text-xs text-[#707A8C]">/100</span></div>
-              <div className="text-xs font-semibold text-[#A7B0C0]">
+              <div className="text-xl sm:text-2xl font-black text-[#A78BFA]">{simulatedHealthScore}<span className="text-xs text-[#707A8C]">/100</span></div>
+              <div className="text-xs font-semibold text-[#A7B0C0] truncate">
                 Shift: {scoreShift >= 0 ? `+${scoreShift}` : scoreShift} pts
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 space-y-1">
-              <div className="text-[10px] text-[#707A8C] uppercase font-bold">
+            <div className="p-4 rounded-xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 space-y-1 min-w-0">
+              <div className="text-[10px] text-[#707A8C] uppercase font-bold truncate">
                 {t('whatIf.simRunway', 'Simulated Runway')}
               </div>
-              <div className="text-2xl font-black text-sky-400">{simRunway} Mo</div>
-              <div className="text-xs text-[#A7B0C0]">
+              <div className="text-xl sm:text-2xl font-black text-sky-400">{simRunway} Mo</div>
+              <div className="text-xs text-[#A7B0C0] truncate">
                 DSCR: <strong className="text-[#F8FAFC]">{simDscr ? `${simDscr}x` : t('executive.debtFree', 'Debt-Free')}</strong>
               </div>
             </div>
@@ -331,12 +331,12 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           </div>
 
           {/* Side-by-Side Comparison Chart */}
-          <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] space-y-3 shadow-lg shadow-black/20">
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#121722] border border-[#222936] space-y-3 shadow-lg shadow-black/20 min-w-0">
             <h4 className="text-xs font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-[#8B5CF6]" /> 
+              <Sparkles className="w-4 h-4 text-[#8B5CF6] shrink-0" /> 
               {t('whatIf.chartTitle', 'Baseline vs Simulated Projection (in ₹ Lakhs)')}
             </h4>
-            <div className="h-60 w-full pt-2">
+            <div className="h-60 w-full pt-2 min-w-0">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={comparisonData} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#222936" vertical={false} />
@@ -362,9 +362,9 @@ export const WhatIfSimulatorView: React.FC<WhatIfSimulatorViewProps> = ({
           </div>
 
           {/* AI Simulation Commentary Banner */}
-          <div className="p-4 rounded-xl bg-[#0F1219] border border-[#222936] text-xs space-y-2 shadow-sm">
+          <div className="p-3.5 sm:p-4 rounded-xl bg-[#0F1219] border border-[#222936] text-xs space-y-2 shadow-sm min-w-0">
             <div className="font-bold text-[#F8FAFC] flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> 
               {t('whatIf.diagnosticSummary', 'Simulator Diagnostic Summary')}
             </div>
             <p className="text-[#A7B0C0] leading-relaxed">

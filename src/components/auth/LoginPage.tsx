@@ -52,9 +52,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#090B10] text-[#F8FAFC] flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
+    <div className="min-h-screen bg-[#090B10] text-[#F8FAFC] flex flex-col justify-center py-8 sm:py-12 px-3.5 sm:px-6 lg:px-8 relative">
       {/* Top Bar navigation */}
-      <div className="absolute top-6 left-6 right-6 flex items-center justify-between z-10 max-w-5xl mx-auto w-full">
+      <div className="absolute top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-6 flex items-center justify-between z-10 max-w-5xl mx-auto w-auto">
         <button
           onClick={onGoHome}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#A7B0C0] hover:text-[#F8FAFC] bg-[#121722] border border-[#222936] hover:bg-[#161C27] transition-all shadow-sm"
@@ -73,7 +73,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         </button>
       </div>
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 mt-8 sm:mt-0">
+      <div className="w-full sm:mx-auto sm:max-w-md relative z-10 mt-14 sm:mt-0 min-w-0">
         <div className="flex justify-center mb-3">
           <div className="w-12 h-12 rounded-2xl bg-violet-600 flex items-center justify-center text-white shadow-md shadow-violet-600/20">
             <Sparkles className="w-6 h-6" />
@@ -87,8 +87,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <div className="bg-[#121722] rounded-2xl p-6 sm:p-8 border border-[#222936] shadow-xl">
+      <div className="mt-6 sm:mt-8 w-full sm:mx-auto sm:max-w-md relative z-10 min-w-0">
+        <div className="bg-[#121722] rounded-2xl p-4 sm:p-8 border border-[#222936] shadow-xl min-w-0">
           
           {error && (
             <div className="mb-5 p-3 rounded-xl bg-rose-950/40 border border-rose-800/40 text-rose-300 text-xs flex items-center gap-2">

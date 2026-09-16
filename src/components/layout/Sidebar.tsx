@@ -15,19 +15,25 @@ import {
   FlaskConical,
   Bot,
   Zap,
-  CreditCard
+  CreditCard,
+  X,
+  Sparkles
 } from 'lucide-react';
 
 interface SidebarProps {
   activeTab: NavigationTab;
   onSelectTab: (tab: NavigationTab) => void;
   fundingScore: number;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   activeTab,
   onSelectTab,
-  fundingScore
+  fundingScore,
+  isOpen = false,
+  onClose,
 }) => {
   const { t, language } = useLanguage();
 
@@ -47,12 +53,39 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'settings', label: t('nav.settings', 'Settings & Integrations'), icon: Settings2 }
   ];
 
-  return (
-    <aside className="w-64 bg-[#0B0E14] border-r border-[#222936] p-3 flex flex-col justify-between shrink-0 h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto">
+  const handleItemClick = (tabId: NavigationTab) => {
+    onSelectTab(tabId);
+    if (onClose) {
+      onClose();
+    }
+  };
+
+  const renderContent = (isMobileDrawer = false) => (
+    <>
       <div className="space-y-1">
-        <div className="px-3 py-2 text-[10px] font-bold text-[#707A8C] uppercase tracking-widest">
-          {t('nav.platformNavigation', 'Platform Navigation')}
-        </div>
+        {isMobileDrawer ? (
+          <div className="flex items-center justify-between px-2 pb-3 mb-2 border-b border-[#222936]">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#8B5CF6] to-[#7C3AED] flex items-center justify-center text-white font-bold shadow-sm">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <span className="font-extrabold text-sm text-[#F8FAFC]">
+                BizPilot <span className="text-[#8B5CF6]">AI</span>
+              </span>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-lg bg-[#161C27] hover:bg-[#1E2536] text-[#A7B0C0] hover:text-[#F8FAFC] border border-[#222936] transition-all"
+              aria-label="Close navigation"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          <div className="px-3 py-2 text-[10px] font-bold text-[#707A8C] uppercase tracking-widest">
+            {t('nav.platformNavigation', 'Platform Navigation')}
+          </div>
+        )}
         
         {menuItems.map((item) => {
           const Icon = item.icon;
@@ -62,7 +95,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           return (
             <button
               key={item.id}
-              onClick={() => onSelectTab(item.id)}
+              onClick={() => handleItemClick(item.id)}
               className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all duration-150 group ${
                 isActive
                   ? 'bg-[#8B5CF6]/10 text-[#F8FAFC] font-semibold border-l-2 border-[#8B5CF6] border-y border-r border-[#8B5CF6]/20 shadow-[0_0_12px_rgba(139,92,246,0.15)]'
@@ -97,7 +130,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Bottom Integration / Stream Status Card */}
-      <div className="p-3.5 rounded-2xl bg-[#121722] border border-[#222936] text-left relative overflow-hidden shadow-sm">
+      <div className="p-3.5 rounded-2xl bg-[#121722] border border-[#222936] text-left relative overflow-hidden shadow-sm mt-4">
         <div className="flex items-center gap-2 text-[#A78BFA] text-xs font-bold mb-1">
           <Zap className="w-4 h-4 text-[#8B5CF6] fill-[#8B5CF6]" />
           <span>{language === 'ta' ? 'ஜிஎஸ்டி & வங்கி நேரலை இணைப்பு' : 'Automated GST & Bank Sync'}</span>
@@ -115,6 +148,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <span className="text-[#707A8C] font-medium">99.8% Sync</span>
         </div>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop Sticky Sidebar */}
+      <aside className="hidden lg:flex w-64 bg-[#0B0E14] border-r border-[#222936] p-3 flex-col justify-between shrink-0 h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto">
+        {renderContent(false)}
+      </aside>
+
+      {/* Mobile Off-Canvas Drawer Backdrop & Drawer */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
+            onClick={onClose}
+            aria-hidden="true"
+          />
+          {/* Drawer Panel */}
+          <aside className="fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-[#0B0E14] border-r border-[#222936] p-4 flex flex-col justify-between shadow-2xl overflow-y-auto z-10 animate-in slide-in-from-left duration-200">
+            {renderContent(true)}
+          </aside>
+        </div>
+      )}
+    </>
   );
 };

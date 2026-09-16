@@ -44,7 +44,7 @@ export const SubscriptionPage: React.FC<SubscriptionPageProps> = ({
   });
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8 pb-12">
+    <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8 pb-12 min-w-0">
       
       {/* Notifications / Alerts */}
       {checkoutError && (

@@ -94,19 +94,19 @@ export const Footer: React.FC = () => {
 
       </div>
 
-      <div className="max-w-7xl mx-auto pt-6 border-t border-[#222936] flex flex-col sm:flex-row items-center justify-between text-xs text-[#707A8C] gap-4">
+      <div className="max-w-7xl mx-auto pt-6 border-t border-[#222936] flex flex-col sm:flex-row items-center justify-between text-xs text-[#707A8C] gap-4 text-center sm:text-left">
         <div>
           © {new Date().getFullYear()} BizPilot AI Technologies Pvt Ltd. {language === 'ta' ? 'அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.' : 'All rights reserved.'}
         </div>
-        <div className="flex items-center gap-4 text-[11px]">
+        <div className="flex flex-wrap items-center justify-center sm:justify-end gap-3 sm:gap-4 text-[11px]">
           <span className="hover:text-[#A78BFA] cursor-pointer transition-colors">
             {language === 'ta' ? 'தனியுரிமைக் கொள்கை' : 'Privacy Policy'}
           </span>
-          <span>•</span>
+          <span className="hidden sm:inline">•</span>
           <span className="hover:text-[#A78BFA] cursor-pointer transition-colors">
             {language === 'ta' ? 'விதிமுறைகள்' : 'Terms of Service'}
           </span>
-          <span>•</span>
+          <span className="hidden sm:inline">•</span>
           <span className="hover:text-[#A78BFA] cursor-pointer transition-colors">
             {language === 'ta' ? 'பாதுகாப்பு & குறியாக்கம்' : 'Security & Encryption'}
           </span>

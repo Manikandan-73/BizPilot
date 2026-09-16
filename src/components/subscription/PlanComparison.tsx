@@ -35,10 +35,10 @@ export const PlanComparison: React.FC<PlanComparisonProps> = ({
       </div>
 
       {/* 2-Column Plan Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto min-w-0">
         
         {/* Starter Plan */}
-        <div className="relative rounded-2xl bg-[#121722] border border-[#222936] p-6 sm:p-8 flex flex-col justify-between hover:border-[#303848] transition-all shadow-sm">
+        <div className="relative rounded-2xl bg-[#121722] border border-[#222936] p-4 sm:p-6 lg:p-8 flex flex-col justify-between hover:border-[#303848] transition-all shadow-sm min-w-0">
           <div className="space-y-5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-widest text-[#707A8C]">
@@ -98,7 +98,7 @@ export const PlanComparison: React.FC<PlanComparisonProps> = ({
         </div>
 
         {/* Professional Plan */}
-        <div className="relative rounded-2xl bg-[#161C27] border-2 border-violet-500 p-6 sm:p-8 flex flex-col justify-between shadow-2xl shadow-violet-500/10">
+        <div className="relative rounded-2xl bg-[#161C27] border-2 border-violet-500 p-4 sm:p-6 lg:p-8 flex flex-col justify-between shadow-2xl shadow-violet-500/10 min-w-0">
           <div className="absolute -top-3 right-6">
             <span className="px-3 py-1 rounded-full bg-violet-600 text-white text-[10px] font-black uppercase tracking-wider shadow-sm">
               {t('subscription.recommended', 'MOST POPULAR')}

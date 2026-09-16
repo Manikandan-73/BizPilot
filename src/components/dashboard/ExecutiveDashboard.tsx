@@ -96,17 +96,17 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
     <div className="space-y-6 pb-12">
       
       {/* Top Welcome Banner */}
-      <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
+      <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
+        <div className="space-y-1 min-w-0 w-full md:w-auto">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#8B5CF6]/10 text-[#A78BFA] border border-[#8B5CF6]/20">
               {t('executive.activePortfolio', 'Active Business Portfolio')}
             </span>
-            <span className="text-xs text-[#707A8C] font-mono">
+            <span className="text-xs text-[#707A8C] font-mono truncate">
               UDYAM: {profile.udyamNumber || (language === 'ta' ? 'வழங்கப்படவில்லை' : 'Not provided')}
             </span>
           </div>
-          <h1 className="text-2xl font-black text-[#F8FAFC] tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-black text-[#F8FAFC] tracking-tight truncate">
             {analysis?.organizationName || profile.name}
           </h1>
           <p className="text-xs text-[#A7B0C0] font-medium">
@@ -115,27 +115,27 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full md:w-auto">
           <button
             onClick={() => onNavigate('what-if-simulator')}
-            className="px-3.5 py-2 rounded-xl bg-[#161C27] hover:bg-[#1A2230] text-[#F8FAFC] text-xs font-semibold flex items-center gap-1.5 border border-[#222936] hover:border-[#303848] transition-all"
+            className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-[#161C27] hover:bg-[#1A2230] text-[#F8FAFC] text-xs font-semibold flex items-center justify-center gap-1.5 border border-[#222936] hover:border-[#303848] transition-all"
           >
             <Zap className="w-3.5 h-3.5 text-[#8B5CF6]" />
-            {t('executive.simulateDecision', 'Simulate Decision')}
+            <span>{t('executive.simulateDecision', 'Simulate Decision')}</span>
           </button>
 
           <button
             onClick={onOpenPassport}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white text-xs font-bold flex items-center gap-1.5 shadow-lg shadow-[#8B5CF6]/20 transition-all hover:-translate-y-0.5"
+            className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-lg shadow-[#8B5CF6]/20 transition-all hover:-translate-y-0.5"
           >
             <FileText className="w-3.5 h-3.5" />
-            {t('executive.downloadPassport', 'Download Passport')}
+            <span>{t('executive.downloadPassport', 'Download Passport')}</span>
           </button>
         </div>
       </div>
 
       {/* 5 Main KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
         
         {/* KPI 1: Business Health Score */}
         <div 
@@ -328,7 +328,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Left 8 Cols: Revenue, Expense, & Cash Flow Multi-Graph */}
-        <div className="lg:col-span-8 p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20">
+        <div className="lg:col-span-8 p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20 min-w-0">
           
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#222936]">
             <div>
@@ -350,7 +350,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-xs">
+            <div className="flex flex-wrap items-center gap-2 text-xs">
               <div className="p-1 bg-[#0D1118] rounded-xl border border-[#222936] flex">
                 <button
                   onClick={() => setChartView('area')}
@@ -392,7 +392,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
           </div>
 
           {/* Graph Display */}
-          <div className="h-72 w-full pt-2">
+          <div className="h-72 w-full pt-2 min-w-0">
             <ResponsiveContainer width="100%" height="100%">
               {chartView === 'area' ? (
                 <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
@@ -472,9 +472,9 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
         </div>
 
         {/* Right 4 Cols: AI Executive Insights Panel */}
-        <div className="lg:col-span-4 space-y-4">
+        <div className="lg:col-span-4 space-y-4 min-w-0">
           
-          <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20">
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4 text-[#14B8A6]" /> {t('executive.aiBriefTitle', 'AI Executive Brief')}

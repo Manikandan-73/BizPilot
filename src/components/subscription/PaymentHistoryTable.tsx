@@ -15,11 +15,11 @@ export const PaymentHistoryTable: React.FC<PaymentHistoryTableProps> = ({
   const { t } = useLanguage();
 
   return (
-    <div className="rounded-2xl bg-[#121722] border border-[#222936] p-6 shadow-sm space-y-4">
-      <div className="flex items-center justify-between pb-3 border-b border-[#222936]">
-        <div className="flex items-center gap-2">
-          <Receipt className="w-4 h-4 text-violet-400" />
-          <h4 className="text-sm font-bold text-[#F8FAFC] uppercase tracking-wider">
+    <div className="rounded-2xl bg-[#121722] border border-[#222936] p-4 sm:p-6 shadow-sm space-y-4 min-w-0">
+      <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#222936] min-w-0">
+        <div className="flex items-center gap-2 min-w-0">
+          <Receipt className="w-4 h-4 text-violet-400 shrink-0" />
+          <h4 className="text-xs sm:text-sm font-bold text-[#F8FAFC] uppercase tracking-wider truncate">
             {t('subscription.paymentHistory', 'Payment History & Receipts')}
           </h4>
         </div>
@@ -38,8 +38,8 @@ export const PaymentHistoryTable: React.FC<PaymentHistoryTableProps> = ({
           {t('subscription.noPaymentsYet', 'No payment transactions recorded yet.')}
         </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full min-w-[500px] text-left text-xs">
             <thead>
               <tr className="border-b border-[#222936] text-[10px] font-bold text-[#707A8C] uppercase tracking-wider">
                 <th className="py-2.5 px-3">Date</th>

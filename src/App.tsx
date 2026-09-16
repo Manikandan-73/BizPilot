@@ -54,6 +54,7 @@ export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
   const [isPassportModalOpen, setIsPassportModalOpen] = useState<boolean>(false);
   const [showOnboarding, setShowOnboarding] = useState<boolean>(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   // Authenticated MSME organizations state (supports multiple startups per account)
   const [userOrgs, setUserOrgs] = useState<Organization[]>([]);
@@ -717,6 +718,7 @@ export const App: React.FC = () => {
         isAppMode={isAppMode}
         onToggleAppMode={(appMode) => {
           setIsAppMode(appMode);
+          setIsMobileMenuOpen(false);
         }}
         onOpenCreditPassport={() => setIsPassportModalOpen(true)}
         onStartOnboarding={() => setShowOnboarding(true)}
@@ -728,6 +730,8 @@ export const App: React.FC = () => {
         onOpenRegister={() => setAuthView('register')}
         isAdmin={isAdmin}
         onOpenAdminPortal={() => setAdminWorkspacePreview(false)}
+        isMobileMenuOpen={isMobileMenuOpen}
+        onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       />
 
       {dataError && (
@@ -754,7 +758,7 @@ export const App: React.FC = () => {
 
       {/* Main Content */}
       {!isAppMode ? (
-        <main className="flex-1">
+        <main className="flex-1 w-full min-w-0">
           <LandingPage
             onLaunchDemo={() => {
               if (user && userOrgs.length > 0) {
@@ -766,6 +770,7 @@ export const App: React.FC = () => {
                 setIsAppMode(true);
               }
               setActiveTab('dashboard');
+              setIsMobileMenuOpen(false);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             onOpenCreditPassport={() => setIsPassportModalOpen(true)}
@@ -776,23 +781,26 @@ export const App: React.FC = () => {
         // Phase 8 Subscription Gate: If user is authenticated MSME but has no active paid subscription,
         // render full-screen subscription payment gateway without sidebar access.
         user && !isAdmin && !canAccessPlatform(user, activeOrg?.subscription, isAdmin) ? (
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto max-w-5xl mx-auto w-full">
+          <main className="flex-1 p-3.5 sm:p-6 lg:p-8 overflow-y-auto max-w-5xl mx-auto w-full min-w-0">
             {renderActiveDashboardView()}
           </main>
         ) : (
-          <div className="flex-1 flex overflow-hidden">
-            {/* Sidebar */}
+          <div className="flex-1 flex overflow-hidden w-full relative">
+            {/* Sidebar (Desktop Sticky + Mobile Drawer) */}
             <Sidebar
               activeTab={activeTab}
               onSelectTab={(tab) => {
                 setActiveTab(tab);
+                setIsMobileMenuOpen(false);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               fundingScore={analysis.funding.overallScore}
+              isOpen={isMobileMenuOpen}
+              onClose={() => setIsMobileMenuOpen(false)}
             />
 
             {/* Dashboard Viewport */}
-            <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
+            <main className="flex-1 p-3.5 sm:p-6 lg:p-8 overflow-y-auto max-w-7xl mx-auto w-full min-w-0">
               {renderActiveDashboardView()}
             </main>
           </div>

@@ -167,13 +167,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
     <div className="space-y-6 pb-12 max-w-5xl mx-auto font-sans">
       
       {/* Header Banner */}
-      <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] flex items-center justify-between shadow-lg shadow-black/20">
+      <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg shadow-black/20 min-w-0">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-[#A78BFA]">
-            <Settings2 className="w-4 h-4 text-[#8B5CF6]" />
+            <Settings2 className="w-4 h-4 text-[#8B5CF6] shrink-0" />
             <span>{t('settings.bannerTag', 'ORGANIZATION SETTINGS & PERSISTENCE')}</span>
           </div>
-          <h2 className="text-2xl font-black text-[#F8FAFC] mt-1">
+          <h2 className="text-xl sm:text-2xl font-black text-[#F8FAFC] mt-1">
             {t('settings.title', 'Business Profile & Financial Ledger')}
           </h2>
           <p className="text-xs text-[#A7B0C0] mt-0.5">
@@ -184,13 +184,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
       {/* Subscription & Account Status Card */}
       {organization?.subscription && (
-        <div className="p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 space-y-3">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 space-y-3 min-w-0">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#222936]">
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#A78BFA]">
                 Current Subscription
               </span>
-              <div className="text-lg font-black text-[#F8FAFC] flex items-center gap-2 mt-0.5">
+              <div className="text-base sm:text-lg font-black text-[#F8FAFC] flex flex-wrap items-center gap-2 mt-0.5">
                 <span>{organization.subscription.plan.replace('_', ' ').toUpperCase()}</span>
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
                   organization.accountStatus === 'suspended'
@@ -211,7 +211,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               <div className="text-xs font-mono font-bold text-[#F8FAFC] mt-0.5">
                 {new Date(organization.subscription.expiryDate).toLocaleDateString()}
               </div>
-              <span className="text-[10px] text-[#A78BFA] font-medium">
+              <span className="text-[10px] text-[#A78BFA] font-medium block">
                 Billing: {(organization.subscription.billingCycle || '30 days').toUpperCase()}
               </span>
             </div>
@@ -234,9 +234,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       )}
 
       {/* Global Application Preferences (Language) */}
-      <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-5 shadow-lg shadow-black/20">
+      <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-5 shadow-lg shadow-black/20 min-w-0">
         <h3 className="text-sm font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-2 border-b border-[#222936] pb-3">
-          <Globe className="w-4 h-4 text-[#8B5CF6]" /> 
+          <Globe className="w-4 h-4 text-[#8B5CF6] shrink-0" /> 
           {t('settings.preferencesTitle', 'Application Preferences (Global)')}
         </h3>
 
@@ -286,13 +286,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       <form onSubmit={handleSave} className="space-y-6">
         
         {/* Section 1: Business Identity */}
-        <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20">
+        <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20 min-w-0">
           <h3 className="text-sm font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-2 border-b border-[#222936] pb-3">
-            <Building2 className="w-4 h-4 text-[#8B5CF6]" /> 
+            <Building2 className="w-4 h-4 text-[#8B5CF6] shrink-0" /> 
             {t('settings.identityTitle', 'Business Identity & Structure')}
           </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-xs">
             <div>
               <label className="block text-[#A7B0C0] font-semibold mb-1">
                 {t('settings.legalName', 'Business Legal Name')}
@@ -374,13 +374,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </div>
 
         {/* Section 2: Operating Financials */}
-        <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20">
+        <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20 min-w-0">
           <h3 className="text-sm font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-2 border-b border-[#222936] pb-3">
-            <Coins className="w-4 h-4 text-emerald-400" /> 
+            <Coins className="w-4 h-4 text-emerald-400 shrink-0" /> 
             {t('settings.financialsTitle', 'Operational Financials (Monthly INR ₹)')}
           </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 text-xs">
             <div>
               <label className="block text-[#A7B0C0] font-semibold mb-1">
                 {t('settings.monthlyRev', 'Gross Monthly Revenue')}
@@ -462,13 +462,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </div>
 
         {/* Section 3: Debt & Compliance */}
-        <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20">
+        <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-4 shadow-lg shadow-black/20 min-w-0">
           <h3 className="text-sm font-bold text-[#F8FAFC] uppercase tracking-wider flex items-center gap-2 border-b border-[#222936] pb-3">
-            <FileCheck2 className="w-4 h-4 text-[#14B8A6]" /> 
+            <FileCheck2 className="w-4 h-4 text-[#14B8A6] shrink-0" /> 
             {t('settings.debtTitle', 'Debt Facilities & Statutory Compliance')}
           </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-xs">
             <div>
               <label className="block text-[#A7B0C0] font-semibold mb-1">
                 {t('settings.outstandingLoans', 'Total Outstanding Loans (₹)')}
@@ -496,39 +496,39 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs">
-            <label className="flex items-center gap-2 p-3 rounded-xl bg-[#0F1219] border border-[#222936] cursor-pointer hover:border-[#8B5CF6]/50 transition-colors">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-2 text-xs">
+            <label className="flex items-center gap-2 p-3 rounded-xl bg-[#0F1219] border border-[#222936] cursor-pointer hover:border-[#8B5CF6]/50 transition-colors min-w-0">
               <input
                 type="checkbox"
                 checked={gstRegistered}
                 onChange={(e) => setGstRegistered(e.target.checked)}
-                className="accent-[#8B5CF6] rounded"
+                className="accent-[#8B5CF6] rounded shrink-0"
               />
-              <span className="text-[#F8FAFC] font-medium">
+              <span className="text-[#F8FAFC] font-medium truncate">
                 {t('settings.gstEntity', 'GST Registered Entity')}
               </span>
             </label>
 
-            <label className="flex items-center gap-2 p-3 rounded-xl bg-[#0F1219] border border-[#222936] cursor-pointer hover:border-[#8B5CF6]/50 transition-colors">
+            <label className="flex items-center gap-2 p-3 rounded-xl bg-[#0F1219] border border-[#222936] cursor-pointer hover:border-[#8B5CF6]/50 transition-colors min-w-0">
               <input
                 type="checkbox"
                 checked={itrAvailable}
                 onChange={(e) => setItrAvailable(e.target.checked)}
-                className="accent-[#8B5CF6] rounded"
+                className="accent-[#8B5CF6] rounded shrink-0"
               />
-              <span className="text-[#F8FAFC] font-medium">
+              <span className="text-[#F8FAFC] font-medium truncate">
                 {t('settings.filedItr', 'Filed ITR Available')}
               </span>
             </label>
 
-            <label className="flex items-center gap-2 p-3 rounded-xl bg-[#0F1219] border border-[#222936] cursor-pointer hover:border-[#8B5CF6]/50 transition-colors">
+            <label className="flex items-center gap-2 p-3 rounded-xl bg-[#0F1219] border border-[#222936] cursor-pointer hover:border-[#8B5CF6]/50 transition-colors min-w-0">
               <input
                 type="checkbox"
                 checked={hasBusinessBankAccount}
                 onChange={(e) => setHasBusinessBankAccount(e.target.checked)}
-                className="accent-[#8B5CF6] rounded"
+                className="accent-[#8B5CF6] rounded shrink-0"
               />
-              <span className="text-[#F8FAFC] font-medium">
+              <span className="text-[#F8FAFC] font-medium truncate">
                 {t('settings.activeAccount', 'Active Current Account')}
               </span>
             </label>
@@ -536,7 +536,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </div>
 
         {/* Save Button Bar */}
-        <div className="flex items-center justify-end gap-3 pt-2">
+        <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-2">
           {isSaved && (
             <span className="text-xs font-semibold text-emerald-400 flex items-center gap-1.5">
               <Check className="w-4 h-4" /> {t('settings.savedSuccess', 'Changes saved to Firestore!')}
@@ -546,7 +546,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           <button
             type="submit"
             disabled={isSaving}
-            className="px-6 py-2.5 rounded-xl bg-[#8B5CF6] hover:bg-[#7C3AED] disabled:opacity-50 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-[#8B5CF6]/20 transition-all"
+            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#8B5CF6] hover:bg-[#7C3AED] disabled:opacity-50 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-[#8B5CF6]/20 transition-all"
           >
             <Save className="w-4 h-4" />
             {isSaving ? t('common.saving', 'Saving...') : t('settings.saveAndRecalculate', 'Save & Recalculate')}

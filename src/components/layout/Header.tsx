@@ -14,7 +14,8 @@ import {
   PlusCircle,
   Check,
   LogOut,
-  User as UserIcon
+  User as UserIcon,
+  Menu
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -35,6 +36,8 @@ interface HeaderProps {
   onOpenRegister?: () => void;
   isAdmin?: boolean;
   onOpenAdminPortal?: () => void;
+  isMobileMenuOpen?: boolean;
+  onToggleMobileMenu?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -55,6 +58,8 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenRegister,
   isAdmin = false,
   onOpenAdminPortal,
+  isMobileMenuOpen = false,
+  onToggleMobileMenu,
 }) => {
   const { language, setLanguage, t } = useLanguage();
 
@@ -75,21 +80,33 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-[#222936] bg-[#0B0E14]/90 backdrop-blur-xl shadow-lg shadow-black/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
         
-        {/* Brand Logo & Switcher */}
-        <div className="flex items-center gap-6">
+        {/* Brand Logo & Switcher & Hamburger */}
+        <div className="flex items-center gap-2 sm:gap-4 lg:gap-6 min-w-0">
+          {/* Mobile Hamburger Button */}
+          {isAppMode && onToggleMobileMenu && (
+            <button
+              onClick={onToggleMobileMenu}
+              className="lg:hidden p-2 rounded-xl bg-[#121722] hover:bg-[#161C27] border border-[#222936] text-[#A7B0C0] hover:text-[#F8FAFC] transition-all shrink-0 focus:outline-none"
+              aria-label="Toggle navigation drawer"
+              title="Open Navigation"
+            >
+              <Menu className="w-5 h-5 text-[#8B5CF6]" />
+            </button>
+          )}
+
           <div 
             onClick={() => onToggleAppMode(false)}
-            className="flex items-center gap-2.5 cursor-pointer group"
+            className="flex items-center gap-2 cursor-pointer group shrink-0"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#8B5CF6] to-[#7C3AED] flex items-center justify-center text-white font-black shadow-md shadow-[#8B5CF6]/25 group-hover:scale-105 transition-all">
-              <Sparkles className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-[#8B5CF6] to-[#7C3AED] flex items-center justify-center text-white font-black shadow-md shadow-[#8B5CF6]/25 group-hover:scale-105 transition-all shrink-0">
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
             <div>
-              <div className="text-lg font-extrabold tracking-tight text-[#F8FAFC] flex items-center gap-1.5">
-                BizPilot <span className="text-[#8B5CF6] font-black">AI</span>
-                <span className="text-[10px] uppercase font-semibold px-1.5 py-0.5 rounded bg-[#8B5CF6]/15 text-[#A78BFA] border border-[#8B5CF6]/30">
+              <div className="text-base sm:text-lg font-extrabold tracking-tight text-[#F8FAFC] flex items-center gap-1 sm:gap-1.5">
+                <span>BizPilot</span> <span className="text-[#8B5CF6] font-black">AI</span>
+                <span className="text-[9px] sm:text-[10px] uppercase font-semibold px-1 sm:px-1.5 py-0.5 rounded bg-[#8B5CF6]/15 text-[#A78BFA] border border-[#8B5CF6]/30">
                   MSME
                 </span>
               </div>
@@ -100,7 +117,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Navigation Mode Pill */}
-          <div className="hidden md:flex items-center p-1 bg-[#0D1118] rounded-xl border border-[#222936] text-xs">
+          <div className="hidden md:flex items-center p-1 bg-[#0D1118] rounded-xl border border-[#222936] text-xs shrink-0">
             <button
               onClick={() => onToggleAppMode(false)}
               className={`px-3 py-1 rounded-lg font-medium transition-all ${
@@ -126,7 +143,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Right side controls */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-3 shrink-0">
           
           {/* Active MSME Profile or Authenticated Identity */}
           {isAuthenticated ? (
@@ -351,18 +368,19 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Unauthenticated Auth Buttons */}
           {!isAuthenticated && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <button
                 onClick={onOpenLogin}
-                className="px-3.5 py-1.5 rounded-xl bg-[#121722] hover:bg-[#171D29] border border-[#222936] text-xs font-semibold text-[#F8FAFC] shadow-sm transition-all hover:border-[#303848]"
+                className="px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-[#121722] hover:bg-[#171D29] border border-[#222936] text-xs font-semibold text-[#F8FAFC] shadow-sm transition-all hover:border-[#303848]"
               >
                 {t('auth.signIn', 'Sign In')}
               </button>
               <button
                 onClick={onOpenRegister}
-                className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white text-xs font-bold shadow-md shadow-[#8B5CF6]/25 transition-all"
+                className="px-2.5 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white text-xs font-bold shadow-md shadow-[#8B5CF6]/25 transition-all"
               >
-                {t('auth.registerMsme', 'Register MSME')}
+                <span className="hidden sm:inline">{t('auth.registerMsme', 'Register MSME')}</span>
+                <span className="sm:hidden">Register</span>
               </button>
             </div>
           )}
@@ -370,17 +388,19 @@ export const Header: React.FC<HeaderProps> = ({
           {!isAppMode ? (
             <button
               onClick={() => onToggleAppMode(true)}
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#14B8A6] hover:opacity-95 text-white text-xs font-bold shadow-md shadow-[#8B5CF6]/20 transition-all hover:-translate-y-0.5"
+              className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#14B8A6] hover:opacity-95 text-white text-xs font-bold shadow-md shadow-[#8B5CF6]/20 transition-all hover:-translate-y-0.5 shrink-0"
             >
-              {language === 'ta' ? 'பணியிடத்தை தொடங்கு' : 'Launch App'}
-              <ArrowRight className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{language === 'ta' ? 'பணியிடத்தை தொடங்கு' : 'Launch App'}</span>
+              <span className="sm:hidden">{language === 'ta' ? 'பணியிடம்' : 'App'}</span>
+              <ArrowRight className="w-3.5 h-3.5 shrink-0" />
             </button>
           ) : (
             <button
               onClick={() => onToggleAppMode(false)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#121722] hover:bg-[#171D29] border border-[#222936] text-[#A7B0C0] text-xs font-medium shadow-sm transition-all"
+              className="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl bg-[#121722] hover:bg-[#171D29] border border-[#222936] text-[#A7B0C0] text-xs font-medium shadow-sm transition-all shrink-0"
             >
-              {t('nav.productTour', 'Home Tour')}
+              <span className="hidden sm:inline">{t('nav.productTour', 'Home Tour')}</span>
+              <span className="sm:hidden">{language === 'ta' ? 'முகப்பு' : 'Home'}</span>
             </button>
           )}
         </div>

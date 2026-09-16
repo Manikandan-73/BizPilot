@@ -21,7 +21,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   const handleStart = onStartTrial || onLaunchDemo;
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#090B10] text-[#F8FAFC]">
+    <div className="flex flex-col min-h-screen bg-[#090B10] text-[#F8FAFC] min-w-0 overflow-x-hidden">
       <HeroSection 
         onLaunchDemo={onLaunchDemo} 
         onOpenCreditPassport={onOpenCreditPassport} 

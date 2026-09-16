@@ -177,13 +177,13 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
     <div className="space-y-6 pb-12 font-sans">
       
       {/* Top Banner */}
-      <div className="p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
+      <div className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-lg shadow-black/20">
         <div>
           <div className="flex items-center gap-2 text-xs font-bold text-[#14B8A6]">
             <Bot className="w-4 h-4 text-[#14B8A6]" />
             <span>{t('assistant.bannerTag', 'AI BUSINESS ADVISOR & ASSISTANT')}</span>
           </div>
-          <h2 className="text-2xl font-black text-[#F8FAFC] mt-1 tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-black text-[#F8FAFC] mt-1 tracking-tight">
             {t('assistant.title', 'Multilingual Financial Copilot')}
           </h2>
           <p className="text-xs text-[#A7B0C0] mt-0.5">
@@ -193,7 +193,7 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
           <div className="flex items-center gap-1.5 bg-[#161C27] px-3 py-1.5 rounded-xl border border-[#303848] text-xs">
             <Globe className="w-3.5 h-3.5 text-[#14B8A6]" />
             <select
@@ -221,25 +221,25 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
       </div>
 
       {/* Local Engine Disclosure Pill */}
-      <div className="px-4 py-2.5 rounded-xl bg-[#0F1219] border border-[#222936] flex items-center justify-between text-xs text-[#A7B0C0] shadow-sm">
-        <div className="flex items-center gap-2 truncate pr-2">
+      <div className="px-3.5 sm:px-4 py-2.5 rounded-xl bg-[#0F1219] border border-[#222936] flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs text-[#A7B0C0] shadow-sm">
+        <div className="flex items-center gap-2 min-w-0 pr-2">
           <Info className="w-4 h-4 text-[#14B8A6] shrink-0" />
           <span className="truncate">Active Context: <strong className="text-[#F8FAFC]">{businessName}</strong> • Rev: ₹{revL}L/mo • Outflow: ₹{expL}L/mo • DSCR: {dscrText}</span>
         </div>
-        <span className="text-[10px] text-[#14B8A6] font-semibold bg-[#14B8A6]/15 px-2.5 py-0.5 rounded-full border border-[#14B8A6]/30 shrink-0">
+        <span className="text-[10px] text-[#14B8A6] font-semibold bg-[#14B8A6]/15 px-2.5 py-0.5 rounded-full border border-[#14B8A6]/30 shrink-0 self-start sm:self-auto">
           Gemini 2.5 Flash-Lite
         </span>
       </div>
 
       {/* Chat Conversation Box */}
-      <div className="rounded-2xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 flex flex-col h-[520px] overflow-hidden">
+      <div className="rounded-2xl bg-[#121722] border border-[#222936] shadow-lg shadow-black/20 flex flex-col h-[calc(100vh-16rem)] min-h-[420px] max-h-[650px] overflow-hidden">
         
         {/* Messages Feed */}
-        <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 bg-[#090B10]">
+        <div className="flex-1 p-3.5 sm:p-6 overflow-y-auto space-y-4 bg-[#090B10]">
           {messages.map((msg) => (
             <div
               key={msg.id}
-              className={`flex items-start gap-3 ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
+              className={`flex items-start gap-2.5 sm:gap-3 ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
             >
               <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
                 msg.sender === 'user' 
@@ -249,7 +249,7 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
                 {msg.sender === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
               </div>
 
-              <div className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 text-xs leading-relaxed space-y-2.5 ${
+              <div className={`max-w-[90%] sm:max-w-[75%] rounded-2xl p-3.5 sm:p-4 text-xs leading-relaxed space-y-2.5 ${
                 msg.sender === 'user'
                   ? 'bg-[#8B5CF6] text-white rounded-tr-none shadow-md shadow-[#8B5CF6]/20'
                   : 'bg-[#161C27] border border-[#222936] text-[#F8FAFC] rounded-tl-none shadow-sm'

@@ -76,30 +76,30 @@ export const TechStackSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-24 relative bg-[#0F1219] border-t border-[#222936]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-12 sm:py-20 lg:py-24 relative bg-[#0F1219] border-t border-[#222936] min-w-0">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 min-w-0">
         
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-3 min-w-0">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#121722] border border-[#222936] text-violet-400 text-xs font-semibold uppercase tracking-wider">
             <Layers className="w-3.5 h-3.5 text-violet-400" /> Enterprise-Grade Modern Stack
           </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-[#F8FAFC] tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-black text-[#F8FAFC] tracking-tight">
             Built with State-of-the-Art Technology
           </h2>
-          <p className="text-[#A7B0C0] text-sm sm:text-base leading-relaxed">
+          <p className="text-[#A7B0C0] text-xs sm:text-base leading-relaxed">
             Engineered for security, sub-second latency, explainable machine intelligence, and bank-level compliance.
           </p>
         </div>
 
         {/* 6 Tech Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 min-w-0">
           {stackCategories.map((cat, idx) => {
             const Icon = cat.icon;
             return (
               <div 
                 key={idx}
-                className="p-6 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] hover:-translate-y-0.5 transition-all space-y-4"
+                className="p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] shadow-sm hover:border-[#303848] hover:-translate-y-0.5 transition-all space-y-4 min-w-0"
               >
                 <div className="flex items-center gap-3">
                   <div className={`p-2.5 rounded-xl border ${cat.color}`}>

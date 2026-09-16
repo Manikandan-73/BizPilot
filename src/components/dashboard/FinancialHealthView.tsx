@@ -71,7 +71,7 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Left 4 cols: Large Circular Gauge */}
-        <div className="lg:col-span-4 p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col items-center justify-center text-center space-y-4 shadow-lg shadow-black/20 relative overflow-hidden">
+        <div className="lg:col-span-4 p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] flex flex-col items-center justify-center text-center space-y-4 shadow-lg shadow-black/20 relative overflow-hidden min-w-0">
           <div className="absolute top-0 right-0 p-4 opacity-[0.03] pointer-events-none">
             <HeartPulse className="w-32 h-32 text-[#8B5CF6]" />
           </div>
@@ -80,10 +80,10 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
             {t('health.overallGauge', 'Overall Health Gauge')}
           </span>
 
-          <div className="py-2">
+          <div className="py-2 flex items-center justify-center w-full max-w-[220px] mx-auto">
             <ScoreGauge 
               score={healthScore} 
-              size={200} 
+              size={180} 
               strokeWidth={14} 
               label={language === 'ta' ? 'வணிக ஆரோக்கியம்' : 'Business Health'} 
               sublabel={underwritingGrade} 
@@ -108,9 +108,9 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
         </div>
 
         {/* Right 8 cols: Central AI Diagnosis & Explainability Narrative */}
-        <div className="lg:col-span-8 p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-5 shadow-lg shadow-black/20 flex flex-col justify-between">
+        <div className="lg:col-span-8 p-4 sm:p-6 rounded-2xl bg-[#121722] border border-[#222936] space-y-5 shadow-lg shadow-black/20 flex flex-col justify-between min-w-0">
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-1.5">
               <span className="text-xs font-bold uppercase tracking-wider text-[#A78BFA] flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4 text-[#8B5CF6]" /> 
                 {t('health.diagnosticSummary', 'Explainable Diagnostic Summary')}
@@ -121,10 +121,10 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
             </div>
 
             {/* Central Explainable Callout */}
-            <div className="p-4 rounded-xl bg-[#0F1219] border border-[#222936] text-[#F8FAFC] space-y-2">
-              <div className="text-base font-bold text-[#F8FAFC] flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#8B5CF6]" />
-                {`"${summary}"`}
+            <div className="p-3.5 sm:p-4 rounded-xl bg-[#0F1219] border border-[#222936] text-[#F8FAFC] space-y-2">
+              <div className="text-sm sm:text-base font-bold text-[#F8FAFC] flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-[#8B5CF6] shrink-0" />
+                <span>{`"${summary}"`}</span>
               </div>
               <p className="text-xs text-[#A7B0C0] leading-relaxed">
                 {analysis?.growth.recommendations[0] || 'Optimizing collection cycles and maintaining debt discipline will improve your institutional credit profile.'}
@@ -132,37 +132,37 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
             </div>
 
             {/* Quick 4 Sub-Pillar Status Pills */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-              <div className="p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 pt-2">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
                 <div className="text-[10px] text-[#707A8C] uppercase font-semibold">{t('health.opProfitability', 'Operating Margin')}</div>
-                <div className="text-lg font-black text-[#A78BFA]">{opMargin !== null ? `${opMargin}%` : '—'}</div>
-                <div className="text-[10px] text-[#10B981] font-semibold">{opMargin !== null ? (opMargin >= 12 ? 'Healthy EBITDA' : 'Margin Pressure') : 'Not available'}</div>
+                <div className="text-base sm:text-lg font-black text-[#A78BFA]">{opMargin !== null ? `${opMargin}%` : '—'}</div>
+                <div className="text-[10px] text-[#10B981] font-semibold truncate">{opMargin !== null ? (opMargin >= 12 ? 'Healthy EBITDA' : 'Margin Pressure') : 'Not available'}</div>
               </div>
-              <div className="p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
                 <div className="text-[10px] text-[#707A8C] uppercase font-semibold">{t('health.liquidityRunway', 'Cash Runway')}</div>
-                <div className="text-lg font-black text-[#38BDF8]">{runwayMonths !== null ? `${runwayMonths} Mo` : '—'}</div>
-                <div className="text-[10px] text-[#10B981] font-semibold">{runwayMonths !== null ? (runwayMonths >= 3 ? 'Safe Buffer' : 'Tight Buffer') : 'Not available'}</div>
+                <div className="text-base sm:text-lg font-black text-[#38BDF8]">{runwayMonths !== null ? `${runwayMonths} Mo` : '—'}</div>
+                <div className="text-[10px] text-[#10B981] font-semibold truncate">{runwayMonths !== null ? (runwayMonths >= 3 ? 'Safe Buffer' : 'Tight Buffer') : 'Not available'}</div>
               </div>
-              <div className="p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
                 <div className="text-[10px] text-[#707A8C] uppercase font-semibold">{t('health.debtDscr', 'Debt DSCR')}</div>
-                <div className="text-lg font-black text-[#10B981]">{dscr ? `${dscr}x` : 'N/A'}</div>
-                <div className="text-[10px] text-[#707A8C] font-semibold">{dscr ? (dscr >= 1.3 ? 'Bankable' : 'Strained') : 'Debt-Free'}</div>
+                <div className="text-base sm:text-lg font-black text-[#10B981]">{dscr ? `${dscr}x` : 'N/A'}</div>
+                <div className="text-[10px] text-[#707A8C] font-semibold truncate">{dscr ? (dscr >= 1.3 ? 'Bankable' : 'Strained') : 'Debt-Free'}</div>
               </div>
-              <div className="p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-[#0D1118] border border-[#222936]">
                 <div className="text-[10px] text-[#707A8C] uppercase font-semibold">{t('health.wcHealth', 'Working Capital')}</div>
-                <div className="text-lg font-black text-[#F59E0B]">{analysis?.financials.currentRatio ? `${analysis.financials.currentRatio}x` : '—'}</div>
-                <div className="text-[10px] text-[#F59E0B] font-semibold">{analysis?.financials.workingCapital && analysis.financials.workingCapital > 0 ? 'Positive Working Capital' : 'Working Capital Deficit'}</div>
+                <div className="text-base sm:text-lg font-black text-[#F59E0B]">{analysis?.financials.currentRatio ? `${analysis.financials.currentRatio}x` : '—'}</div>
+                <div className="text-[10px] text-[#F59E0B] font-semibold truncate">{analysis?.financials.workingCapital && analysis.financials.workingCapital > 0 ? 'Positive Capital' : 'Capital Deficit'}</div>
               </div>
             </div>
           </div>
 
-          <div className="pt-3 border-t border-[#222936] flex items-center justify-between text-xs">
+          <div className="pt-3 border-t border-[#222936] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
             <span className="text-[#707A8C]">
               {language === 'ta' ? 'செயலில் உள்ள நிதித் தகவல்களிலிருந்து கணக்கிடப்பட்டது' : 'Diagnostic calculated from active financial inputs'}
             </span>
             <button
               onClick={() => onNavigate('what-if-simulator')}
-              className="text-[#A78BFA] hover:text-[#C4B5FD] font-semibold flex items-center gap-1 transition-colors"
+              className="text-[#A78BFA] hover:text-[#C4B5FD] font-semibold flex items-center gap-1 transition-colors self-start sm:self-auto"
             >
               {t('health.simulateImprovement', 'Simulate Margin Improvement')}
               <ArrowRight className="w-3.5 h-3.5" />
@@ -183,7 +183,7 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
           {metrics.map((metric, idx) => (
             <div 
               key={idx}
-              className="p-5 rounded-xl bg-[#121722] border border-[#222936] hover:border-[#8B5CF6]/40 hover:bg-[#171D29] hover:shadow-lg hover:shadow-black/20 transition-all space-y-3"
+              className="p-4 sm:p-5 rounded-xl bg-[#121722] border border-[#222936] hover:border-[#8B5CF6]/40 hover:bg-[#171D29] hover:shadow-lg hover:shadow-black/20 transition-all space-y-3"
             >
               <div className="flex items-center justify-between">
                 <div>

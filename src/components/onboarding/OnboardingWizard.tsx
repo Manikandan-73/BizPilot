@@ -348,11 +348,11 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
         )}
       </div>
 
-      <div className="mt-8 pt-6 border-t border-[#222936] flex items-center justify-between">
+      <div className="mt-8 pt-6 border-t border-[#222936] flex flex-col sm:flex-row items-center justify-between gap-3">
         <button
           onClick={handleBack}
           disabled={draft.currentStep === 1}
-          className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-[#A7B0C0] hover:text-[#F8FAFC] hover:bg-[#161C27] border border-[#222936] transition-all disabled:opacity-0 disabled:pointer-events-none"
+          className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-[#A7B0C0] hover:text-[#F8FAFC] hover:bg-[#161C27] border border-[#222936] transition-all disabled:opacity-0 disabled:pointer-events-none"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           {t('common.back', 'Back')}
@@ -361,7 +361,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
         <button
           onClick={handleContinue}
           disabled={isSubmitting}
-          className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold shadow-lg shadow-violet-600/20 transition-all disabled:opacity-60 disabled:pointer-events-none"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold shadow-lg shadow-violet-600/20 transition-all disabled:opacity-60 disabled:pointer-events-none"
         >
           {draft.currentStep === 4 ? (
             <>
@@ -389,13 +389,13 @@ const OnboardingShell: React.FC<{ children: React.ReactNode; onExit: () => void;
 
   return (
     <div className="min-h-screen bg-[#090B10] text-[#F8FAFC] flex flex-col">
-      <div className="max-w-3xl mx-auto w-full px-4 sm:px-6 py-8 flex-1 flex flex-col">
-        <div className="flex items-center justify-between mb-8">
+      <div className="max-w-3xl mx-auto w-full px-3.5 sm:px-6 py-4 sm:py-8 flex-1 flex flex-col min-w-0">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-6 sm:mb-8">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-violet-600 flex items-center justify-center shadow-md shadow-violet-600/20">
-              <Sparkles className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-violet-600 flex items-center justify-center shadow-md shadow-violet-600/20 shrink-0">
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            <div className="text-lg font-extrabold tracking-tight text-[#F8FAFC]">
+            <div className="text-base sm:text-lg font-extrabold tracking-tight text-[#F8FAFC]">
               BizPilot <span className="text-violet-400 font-black">AI</span>
             </div>
           </div>
@@ -423,7 +423,7 @@ const OnboardingShell: React.FC<{ children: React.ReactNode; onExit: () => void;
           </div>
         </div>
 
-        <div className="bg-[#121722] rounded-2xl p-6 sm:p-8 border border-[#222936] shadow-xl">
+        <div className="bg-[#121722] rounded-2xl p-4 sm:p-6 lg:p-8 border border-[#222936] shadow-xl min-w-0">
           {children}
         </div>
       </div>

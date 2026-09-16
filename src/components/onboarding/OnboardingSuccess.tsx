@@ -40,7 +40,7 @@ export const OnboardingSuccess: React.FC<OnboardingSuccessProps> = ({ organizati
       <div className="w-full max-w-sm p-4 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center gap-3 text-left">
         <Sparkles className="w-4 h-4 text-purple-400 shrink-0" />
         <p className="text-[11px] text-slate-400">
-          Your profile is saved on this device. The dashboard below is powered by the central financial engine for your business.
+          Your business profile is saved. Please select a plan (Starter ₹1 or Professional ₹2 in Test Mode) to activate your 30-day workspace.
         </p>
       </div>
 
@@ -48,7 +48,7 @@ export const OnboardingSuccess: React.FC<OnboardingSuccessProps> = ({ organizati
         onClick={onGoToDashboard}
         className="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 via-indigo-600 to-sky-500 hover:from-purple-500 hover:to-sky-400 text-white font-bold text-sm shadow-xl shadow-purple-600/30 flex items-center gap-2 transition-all hover:scale-105"
       >
-        {t('onboarding.goToDashboard', 'Go to Dashboard')}
+        {t('onboarding.choosePlanAndActivate', 'Choose Plan & Activate Account')}
         <ArrowRight className="w-4 h-4" />
       </button>
     </div>

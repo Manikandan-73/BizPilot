@@ -107,12 +107,13 @@ export interface Organization {
     hasBusinessBankAccount: boolean;
   };
   goals: GoalsProfile;
+  accessStatus?: 'pending_payment' | 'active' | 'suspended' | 'expired';
   subscription?: {
-    plan: 'starter_free' | 'pro_growth' | 'business_leader';
-    status: 'active' | 'trial' | 'expired' | 'suspended';
+    plan: 'starter' | 'professional';
+    status: 'active' | 'trial' | 'expired' | 'suspended' | 'pending' | 'cancelled';
     startDate: string;
     expiryDate: string;
-    billingCycle: 'monthly' | 'yearly';
+    billingCycle?: 'monthly' | 'yearly';
     notes?: string;
   };
   accountStatus?: 'active' | 'suspended';

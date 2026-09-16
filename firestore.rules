@@ -20,7 +20,7 @@ service cloud.firestore {
     }
 
     // MSME Organization documents
-    // Strict isolation: Users can only read, write, update, and delete their own organization
+    // Strict isolation: Users can only read, write, and update their own organization
     // Admins can read, list, update, and manage all organizations
     match /organizations/{organizationId} {
       // Read allowed if the user is the owner OR an administrator
@@ -30,18 +30,34 @@ service cloud.firestore {
         isAdmin()
       );
 
-      // Create allowed if the newly created document designates the authenticated user as owner OR by admin
+      // Create allowed if:
+      // 1. Authenticated user designates themselves as owner, AND
+      // 2. Normal users cannot initialize with an active subscription (must be pending_payment)
       allow create: if isAuthenticated() && (
-        request.resource.data.ownerId == request.auth.uid ||
-        request.resource.data.organization.ownerId == request.auth.uid ||
-        isAdmin()
+        isAdmin() ||
+        (
+          (request.resource.data.ownerId == request.auth.uid || request.resource.data.organization.ownerId == request.auth.uid) &&
+          (
+            request.resource.data.accessStatus == 'pending_payment' || 
+            request.resource.data.organization.accessStatus == 'pending_payment' ||
+            request.resource.data.subscription.status == 'pending' ||
+            request.resource.data.organization.subscription.status == 'pending'
+          )
+        )
       );
 
-      // Update allowed if ownership matches OR administrator
+      // Update allowed:
+      // Admins have full update rights.
+      // Normal owners can update, but CANNOT modify sensitive fields:
+      // - accountStatus
+      // - ownerId
       allow update: if isAuthenticated() && (
-        ((resource.data.ownerId == request.auth.uid || resource.data.organization.ownerId == request.auth.uid) &&
-         (request.resource.data.ownerId == request.auth.uid || request.resource.data.organization.ownerId == request.auth.uid)) ||
-        isAdmin()
+        isAdmin() ||
+        (
+          (resource.data.ownerId == request.auth.uid || resource.data.organization.ownerId == request.auth.uid) &&
+          request.resource.data.ownerId == resource.data.ownerId &&
+          !request.resource.data.diff(resource.data).affectedKeys().hasAny(['accountStatus', 'ownerId'])
+        )
       );
 
       allow delete: if isAuthenticated() && (

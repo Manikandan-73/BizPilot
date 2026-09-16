@@ -106,12 +106,7 @@ export interface GoalsProfile {
 
 export type UserRole = 'admin' | 'msme';
 
-export type SubscriptionPlan = 
-  | 'starter' 
-  | 'professional' 
-  | 'starter_free' 
-  | 'pro_growth' 
-  | 'business_leader';
+export type SubscriptionPlan = 'starter' | 'professional';
 
 export type SubscriptionStatus = 
   | 'active' 

@@ -23,21 +23,21 @@ export interface MSMEProfile {
   name: string;
   industry: string;
   sector: string;
-  udyamNumber: string;
-  gstin: string;
-  incorporationYear: number;
+  udyamNumber: string | null;
+  gstin: string | null;
+  incorporationYear: number | null;
   location: string;
-  employees: number;
+  employees: number | null;
   turnover: string;
   creditScore: number;
   healthScore: number;
   fundingReadinessScore: number;
-  revenueGrowth: number;
-  cashFlowStability: number;
-  loanEligibility: 'High' | 'Medium' | 'Low';
+  revenueGrowth: number | null;
+  cashFlowStability: number | null;
+  loanEligibility: 'High' | 'Medium' | 'Low' | 'Not Eligible';
   estimatedCreditLimit: string;
-  dscrRatio: number;
-  runwayMonths: number;
+  dscrRatio: number | null;
+  runwayMonths: number | null;
 }
 
 export interface MetricCardData {

@@ -140,8 +140,8 @@ export const FinancialHealthView: React.FC<FinancialHealthViewProps> = ({
               </div>
               <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
                 <div className="text-[10px] text-slate-400">{t('health.liquidityRunway', 'Cash Runway')}</div>
-                <div className="text-lg font-black text-sky-400">{runwayMonths} Mo</div>
-                <div className="text-[10px] text-emerald-400 font-semibold">{runwayMonths >= 3 ? 'Safe Buffer' : 'Tight Buffer'}</div>
+                <div className="text-lg font-black text-sky-400">{runwayMonths !== null ? `${runwayMonths} Mo` : '—'}</div>
+                <div className="text-[10px] text-emerald-400 font-semibold">{runwayMonths !== null ? (runwayMonths >= 3 ? 'Safe Buffer' : 'Tight Buffer') : 'Not available'}</div>
               </div>
               <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800">
                 <div className="text-[10px] text-slate-400">{t('health.debtDscr', 'Debt DSCR')}</div>

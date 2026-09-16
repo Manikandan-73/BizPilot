@@ -352,10 +352,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onSwitchToUserWo
               className="px-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-200 text-xs focus:outline-none focus:border-purple-500"
             >
               <option value="all">{t('admin.allPlans', 'All Plans')}</option>
-              <option value="starter">Starter (₹1 Test)</option>
-              <option value="professional">Professional (₹2 Test)</option>
-              <option value="starter_free">Starter Free</option>
-              <option value="pro_growth">Pro Growth</option>
+              <option value="starter">Starter (₹1)</option>
+              <option value="professional">Professional (₹2)</option>
             </select>
 
             {/* Status Filter */}

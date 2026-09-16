@@ -2,8 +2,8 @@
  * Centralized Subscription Plans & Entitlements Configuration
  * 
  * BizPilot AI Subscription Model:
- * 1. Starter (₹499 / 30 days) — "Financial Visibility"
- * 2. Professional (₹999 / 30 days) — "Financial Decision Intelligence"
+ * 1. Starter (₹1 / 100 paise / 30 days) — "Financial Visibility"
+ * 2. Professional (₹2 / 200 paise / 30 days) — "Financial Decision Intelligence"
  * 
  * All prices and feature entitlements must be derived strictly from this file.
  */

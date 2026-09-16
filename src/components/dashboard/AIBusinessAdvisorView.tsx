@@ -6,6 +6,7 @@ import { useLanguage } from '../../i18n/LanguageContext';
 import { useSubscription } from '../../hooks/useSubscription';
 import { hasFeature } from '../../config/plans';
 import { FeatureGate } from '../subscription/FeatureGate';
+import { askAIAdvisor } from '../../services/aiService';
 import { 
   Bot, 
   Sparkles, 
@@ -359,7 +360,7 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
     };
   };
 
-  const handleSend = (queryText?: string) => {
+  const handleSend = async (queryText?: string) => {
     const text = queryText || inputText;
     if (!text.trim()) return;
 
@@ -374,11 +375,71 @@ export const AIBusinessAdvisorView: React.FC<AIBusinessAdvisorViewProps> = ({
     if (!queryText) setInputText('');
     setIsTyping(true);
 
-    setTimeout(() => {
-      const response = generateGroundedResponse(text);
+    try {
+      const serverAdvice = await askAIAdvisor(text, {
+        organizationId: organization?.id || profile.id,
+        language: language as 'en' | 'ta',
+        context: organization || { organization: { ...profile, financials: fin, normalized: norm } },
+      });
+
+      const response: AdvisorMessage = {
+        id: 'msg_' + Date.now(),
+        sender: 'advisor',
+        timestamp: language === 'ta' ? 'இப்போது' : 'Just now',
+        diagnosis: serverAdvice.diagnosis,
+        why: serverAdvice.why,
+        recommendation: serverAdvice.recommendation,
+        expectedImpact: serverAdvice.expectedImpact,
+        risk: serverAdvice.risk,
+        nextStep: serverAdvice.nextStep,
+        rawText: serverAdvice.rawText,
+      };
+
       setMessages((prev) => [...prev, response]);
+    } catch (err: any) {
+      console.warn('[AI Advisor Server Error]:', err?.message);
+      if (err?.message?.includes('signed in')) {
+        const errorMsg: AdvisorMessage = {
+          id: 'msg_' + Date.now(),
+          sender: 'advisor',
+          timestamp: language === 'ta' ? 'இப்போது' : 'Just now',
+          diagnosis: language === 'ta'
+            ? 'நேரலை Google Gemini AI ஆலோசகரைப் பயன்படுத்த தயவுசெய்து உங்கள் தொழில்முறை (Professional) கணக்கில் உள்நுழையவும்.'
+            : 'Please sign in to your Professional account to consult with the live Google Gemini AI Business Advisor.',
+          recommendation: language === 'ta'
+            ? 'பதிவு செய்து தொடக்க (Starter) அல்லது தொழில்முறை (Professional) திட்டத்தைத் தேர்வு செய்யவும்.'
+            : 'Sign in or create an account, then activate a Professional subscription to unlock executive AI decision intelligence.',
+          nextStep: 'Sign In / Register',
+        };
+        setMessages((prev) => [...prev, errorMsg]);
+      } else if (err.status === 403 || (err.message && err.message.includes('Professional'))) {
+        const errorMsg: AdvisorMessage = {
+          id: 'msg_' + Date.now(),
+          sender: 'advisor',
+          timestamp: language === 'ta' ? 'இப்போது' : 'Just now',
+          diagnosis: err.message,
+          recommendation: language === 'ta'
+            ? 'தயவுசெய்து தொழில்முறை (Professional) திட்டத்திற்கு மேம்படுத்தவும்.'
+            : 'Please upgrade to the Professional plan to unlock AI Business Advisor.',
+          nextStep: 'Upgrade in Billing',
+        };
+        setMessages((prev) => [...prev, errorMsg]);
+      } else {
+        const errorMsg: AdvisorMessage = {
+          id: 'msg_' + Date.now(),
+          sender: 'advisor',
+          timestamp: language === 'ta' ? 'இப்போது' : 'Just now',
+          diagnosis: err?.message || (language === 'ta'
+            ? 'AI ஆலோசகர் சேவை தற்காலிகமாக கிடைக்கவில்லை. தயவுசெய்து மீண்டும் முயற்சிக்கவும்.'
+            : 'AI Business Advisor is temporarily unavailable. Please try again.'),
+          recommendation: 'Please retry your prompt in a few moments.',
+          nextStep: 'Retry',
+        };
+        setMessages((prev) => [...prev, errorMsg]);
+      }
+    } finally {
       setIsTyping(false);
-    }, 600);
+    }
   };
 
   const suggestedPrompts = [

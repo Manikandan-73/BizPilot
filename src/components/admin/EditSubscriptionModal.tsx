@@ -3,6 +3,7 @@ import { X, Calendar, ShieldCheck, CheckCircle2, AlertCircle, Sparkles, Clock } 
 import { OnboardingRecord, SubscriptionDetails, SubscriptionPlan, SubscriptionStatus } from '../../types/business';
 import { updateMSMESubscription } from '../../services/adminService';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { PLAN_CONFIGS } from '../../config/plans';
 
 interface EditSubscriptionModalProps {
   isOpen: boolean;
@@ -19,8 +20,14 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
 }) => {
   const { t } = useLanguage();
   const existingSub = record.organization.subscription;
+  const initialPlan: SubscriptionPlan =
+    existingSub?.plan === 'professional' ||
+    (existingSub?.plan as any) === 'pro_growth' ||
+    (existingSub?.plan as any) === 'business_leader'
+      ? 'professional'
+      : 'starter';
 
-  const [plan, setPlan] = useState<SubscriptionPlan>(existingSub?.plan || 'pro_growth');
+  const [plan, setPlan] = useState<SubscriptionPlan>(initialPlan);
   const [status, setStatus] = useState<SubscriptionStatus>(existingSub?.status || 'active');
   const [expiryDate, setExpiryDate] = useState<string>(
     existingSub?.expiryDate ? existingSub.expiryDate.split('T')[0] : new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0]
@@ -104,12 +111,10 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
             <label className="block text-xs font-semibold text-slate-300 mb-1.5">
               {t('admin.plan', 'Subscription Plan')}
             </label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {[
-                { key: 'starter' as const, label: 'Starter (₹499)', color: 'border-slate-700' },
-                { key: 'professional' as const, label: 'Professional (₹999)', color: 'border-purple-500/50' },
-                { key: 'starter_free' as const, label: t('admin.starterFree', 'Starter Free'), color: 'border-slate-700' },
-                { key: 'pro_growth' as const, label: t('admin.proGrowth', 'Pro Growth'), color: 'border-purple-500/50' },
+                { key: 'starter' as const, label: `Starter (₹${PLAN_CONFIGS.starter.priceINR})`, color: 'border-slate-700' },
+                { key: 'professional' as const, label: `Professional (₹${PLAN_CONFIGS.professional.priceINR})`, color: 'border-purple-500/50' },
               ].map((p) => (
                 <button
                   key={p.key}

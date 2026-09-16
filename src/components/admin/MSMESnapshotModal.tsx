@@ -62,7 +62,7 @@ export const MSMESnapshotModal: React.FC<MSMESnapshotModalProps> = ({
               {org.accountStatus === 'suspended' ? 'Suspended' : 'Active Account'}
             </span>
             <div className="text-[10px] text-slate-400 mt-1">
-              Plan: <span className="text-purple-300 font-semibold">{org.subscription?.plan?.replace('_', ' ').toUpperCase() || 'PRO GROWTH'}</span>
+              Plan: <span className="text-purple-300 font-semibold">{org.subscription?.plan?.replace('_', ' ').toUpperCase() || 'STARTER'}</span>
             </div>
           </div>
         </div>

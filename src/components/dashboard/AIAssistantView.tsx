@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MSMEProfile, LanguageCode, ChatMessage } from '../../types';
-import { BusinessAnalysis } from '../../types/business';
+import { BusinessAnalysis, Organization } from '../../types/business';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { askAIAssistant } from '../../services/aiService';
 import { 
   Bot, 
   Send, 
@@ -16,6 +17,7 @@ import {
 interface AIAssistantViewProps {
   profile: MSMEProfile;
   analysis?: BusinessAnalysis;
+  organization?: Organization | null;
   currentLanguage: LanguageCode;
   onSelectLanguage: (lang: LanguageCode) => void;
   onNavigate: (tab: any) => void;
@@ -24,6 +26,7 @@ interface AIAssistantViewProps {
 export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
   profile,
   analysis,
+  organization,
   currentLanguage: _legacyLang,
   onSelectLanguage,
   onNavigate
@@ -94,7 +97,7 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
     chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  const handleSend = (textToSend?: string) => {
+  const handleSend = async (textToSend?: string) => {
     const text = textToSend || inputText;
     if (!text.trim()) return;
 
@@ -110,53 +113,52 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
     if (!textToSend) setInputText('');
     setIsTyping(true);
 
-    // Context-aware business financial response
-    setTimeout(() => {
-      let reply = '';
-      const lower = text.toLowerCase();
+    try {
+      const aiReply = await askAIAssistant(text, {
+        organizationId: organization?.id || profile.id,
+        language: language as 'en' | 'ta',
+        context: organization || { organization: { ...profile, financials: analysis?.financials, normalized: analysis?.normalized, health: analysis?.health, funding: analysis?.funding } },
+      });
 
-      if (!hasData) {
-        reply = language === 'ta'
-          ? "நான் நம்பகமான நிதிப் பதிலை வழங்க போதுமான வணிக நிதித் தரவுகள் இல்லை. தயவுசெய்து 'அமைப்புகள்' (Settings) பக்கத்தில் உங்கள் நிதி விவரங்களை உள்ளிடவும்."
-          : "I don't have enough financial data to answer that reliably. Please update your financials in Settings to get real-time answers.";
-      } else if (lower.includes('funding') || lower.includes('loan') || lower.includes('borrow') || lower.includes('cgtmse') || lower.includes('கடன்')) {
-        reply = language === 'ta'
-          ? `${businessName}-ன் கடன் தயார்நிலை மதிப்பெண் ${fundingScore}/100 (${analysis?.funding.eligibilityTier || 'Indicative Match'}). உங்கள் மாதாந்திர வருவாய் ₹${revL} இலட்சம் மற்றும் DSCR விகிதம் ${dscrText} ஆகியவற்றின் அடிப்படையில், உங்கள் மதிப்பிடப்பட்ட கடன் திறன் ${creditLimit} ஆகும். இறுதி கடன் அனுமதி வங்கி மதிப்பீட்டிற்கு உட்பட்டது.`
-          : `Based on ${businessName}'s financials, your Funding Readiness Score is ${fundingScore}/100 (${analysis?.funding.eligibilityTier || 'Indicative Match'}). With monthly revenue of ₹${revL}L and DSCR at ${dscrText}, your estimated institutional borrowing capacity is ${creditLimit}. Indicative product matches include CGTMSE schemes and working capital overdrafts subject to formal lender underwriting.`;
-      } else if (lower.includes('cash') || lower.includes('runway') || lower.includes('burn') || lower.includes('பணம்') || lower.includes('ரொக்கம்')) {
-        reply = language === 'ta'
-          ? `உங்களிடம் தற்போது ₹${(analysis!.normalized.currentCashBalance / 100000).toFixed(1)} இலட்சம் ரொக்க இருப்பு உள்ளது. மாதாந்திர செலவுகள் ₹${expL} இலட்சம் (தவணை EMI: ${emiText}) என்ற அளவில், உங்கள் பணப்புழக்க இருப்பு தோராயமாக ${runwayMonths} மாதங்கள் நீடிக்கும். மாதாந்திர நிகர பணப்புழக்கம் ₹${profitL} இலட்சம்.`
-          : `Your verified cash balance is ₹${(analysis!.normalized.currentCashBalance / 100000).toFixed(1)} Lakhs. Against total monthly costs of ₹${expL}L (including EMI of ${emiText}), your cash runway is approximately ${runwayMonths} months. Net cash flow stands at ₹${profitL} Lakhs/month.`;
-      } else if (lower.includes('profit') || lower.includes('revenue') || lower.includes('margin') || lower.includes('வருவாய்') || lower.includes('லாபம்')) {
-        reply = language === 'ta'
-          ? `${businessName} நிதி நிலவரம்: மாதாந்திர வருவாய் ₹${revL} இலட்சம் (வருடாந்திரம்: ₹${(analysis!.financials.annualRevenue / 100000).toFixed(1)} இலட்சம்). மொத்த மாதாந்திர செலவு ₹${expL} இலட்சம். EBITDA லாபம் ₹${(analysis!.financials.monthlyEbitda / 100000).toFixed(1)} இலட்சம் (${analysis!.financials.operatingMarginPercent}%), நிகர லாபம் ₹${profitL} இலட்சம் (${analysis!.financials.netMarginPercent}%).`
-          : `For ${businessName}: Monthly Revenue is ₹${revL}L (Annualized: ₹${(analysis!.financials.annualRevenue / 100000).toFixed(1)}L). Total monthly costs are ₹${expL}L. Operating EBITDA is ₹${(analysis!.financials.monthlyEbitda / 100000).toFixed(1)}L (${analysis!.financials.operatingMarginPercent}% margin), yielding monthly net profit of ₹${profitL}L (${analysis!.financials.netMarginPercent}% net margin).`;
-      } else if (lower.includes('risk') || lower.includes('danger') || lower.includes('warn') || lower.includes('இடர்') || lower.includes('ஆபத்து')) {
-        const risks = analysis?.growth.keyRisks ?? [];
-        reply = language === 'ta'
-          ? (risks.length > 0
-              ? `${businessName}-ன் முக்கிய வணிக இடர்கள்:\n` + risks.map((r, i) => `${i + 1}. ${r}`).join('\n')
-              : `அபாயகரமான நிதி இழப்புகள் கண்டறியப்படவில்லை. ${businessName} சீரான நடைமுறை மூலதனத்தை (₹${(analysis!.financials.workingCapital / 100000).toFixed(1)} இலட்சம்) பராமரிக்கிறது.`)
-          : (risks.length > 0
-              ? `Identified business risks for ${businessName}:\n` + risks.map((r, i) => `${i + 1}. ${r}`).join('\n')
-              : `No critical solvency risks detected. ${businessName} maintains positive working capital (₹${(analysis!.financials.workingCapital / 100000).toFixed(1)}L) and compliant status.`);
+      const assistantMsg: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        sender: 'assistant',
+        timestamp: language === 'ta' ? 'இப்போது' : 'Just now',
+        text: aiReply,
+        language: language
+      };
+
+      setMessages(prev => [...prev, assistantMsg]);
+    } catch (err: any) {
+      console.warn('[AI Assistant Error]:', err?.message);
+      let replyText = '';
+
+      if (err?.message?.includes('signed in')) {
+        replyText = language === 'ta'
+          ? 'நேரலை Google Gemini AI உதவியாளரைப் பயன்படுத்த தயவுசெய்து உள்நுழையவும் அல்லது புதிய கணக்கை உருவாக்கவும்.'
+          : 'Please sign in or create an account to chat with the live Google Gemini AI Assistant.';
+      } else if (err?.message?.includes('subscription') || err?.message?.includes('Access denied')) {
+        replyText = language === 'ta'
+          ? 'நேரலை AI உதவியாளரைப் பயன்படுத்த செயலில் உள்ள தொடக்க (Starter) அல்லது தொழில்முறை (Professional) சந்தா தேவை. அமைப்புகள்/கட்டணப் பக்கத்தில் உங்கள் திட்டத்தைச் செயல்படுத்தவும்.'
+          : (err.message || 'An active subscription is required to access the live Google Gemini AI Assistant. Please select a plan in Billing.');
       } else {
-        reply = language === 'ta'
-          ? `உங்கள் வினவல் ${businessName}-ன் நேரலை எண்களுடன் மதிப்பாய்வு செய்யப்பட்டது:\n• மாதாந்திர வருவாய்: ₹${revL} இலட்சம்\n• மாதாந்திர நிகர லாபம்: ₹${profitL} இலட்சம்\n• நிதி ஆரோக்கியம்: ${healthScore}/100\n• பணப்புழக்க இருப்பு: ${runwayMonths} மாதங்கள்\n• கடன் வரம்பு: ${creditLimit}\nஅடுத்ததாக என்ன செய்ய விரும்புகிறீர்கள்? முடிவுகளை உருவகப்படுத்தலாம் அல்லது கடன் பாஸ்போர்ட்டை பார்க்கலாம்.`
-          : `I have analyzed your query with ${businessName}'s real operational metrics:\n• Monthly Revenue: ₹${revL}L\n• Net Profit: ₹${profitL}L/mo\n• Health Score: ${healthScore}/100 (${analysis?.health.rating || 'Optimal'})\n• Cash Runway: ${runwayMonths} Months\n• Borrowing Capacity: ${creditLimit}\nHow would you like to proceed? You can simulate a financial scenario or view your Credit Passport.`;
+        replyText = err?.message || (language === 'ta'
+          ? 'AI சேவை தற்காலிகமாக கிடைக்கவில்லை. தயவுசெய்து மீண்டும் முயற்சிக்கவும்.'
+          : 'AI service is temporarily unavailable. Please try again.');
       }
 
       const assistantMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         sender: 'assistant',
         timestamp: language === 'ta' ? 'இப்போது' : 'Just now',
-        text: reply,
+        text: replyText,
         language: language
       };
 
       setMessages(prev => [...prev, assistantMsg]);
+    } finally {
       setIsTyping(false);
-    }, 500);
+    }
   };
 
   const handleActionButton = (action: string) => {
@@ -224,8 +226,8 @@ export const AIAssistantView: React.FC<AIAssistantViewProps> = ({
           <Info className="w-4 h-4 text-purple-400 shrink-0" />
           <span>Active Context: <strong className="text-white">{businessName}</strong> • Rev: ₹{revL}L/mo • Outflow: ₹{expL}L/mo • DSCR: {dscrText}</span>
         </div>
-        <span className="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-          {t('assistant.localEngine', 'Local Financial Engine')}
+        <span className="text-[10px] text-indigo-300 font-semibold bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+          Gemini 2.5 Flash-Lite
         </span>
       </div>
 

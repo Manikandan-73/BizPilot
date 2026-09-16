@@ -17,7 +17,7 @@ import {
   setDoc,
   updateDoc,
 } from 'firebase/firestore';
-import { db } from '../lib/firebase';
+import { db, auth } from '../lib/firebase';
 import {
   Organization,
   PaymentRecord,
@@ -66,9 +66,15 @@ export async function createSubscriptionOrder(
   organizationId: string,
   uid: string
 ): Promise<CreateOrderResponse> {
+  const currentUser = auth.currentUser;
+  const idToken = currentUser ? await currentUser.getIdToken() : '';
+
   const response = await fetch('/api/payments/create-order', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Content-Type': 'application/json',
+      ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
+    },
     body: JSON.stringify({ planId, organizationId, uid }),
   });
 
@@ -87,9 +93,15 @@ export async function createSubscriptionOrder(
 export async function verifySubscriptionPayment(
   payload: VerifyPaymentPayload
 ): Promise<VerifyPaymentResponse> {
+  const currentUser = auth.currentUser;
+  const idToken = currentUser ? await currentUser.getIdToken() : '';
+
   const response = await fetch('/api/payments/verify-payment', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Content-Type': 'application/json',
+      ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
+    },
     body: JSON.stringify(payload),
   });
 

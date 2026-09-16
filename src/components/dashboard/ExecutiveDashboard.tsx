@@ -103,7 +103,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
               {t('executive.activePortfolio', 'Active Business Portfolio')}
             </span>
             <span className="text-xs text-slate-400">
-              UDYAM: {profile.udyamNumber || 'UDYAM-REGISTERED'}
+              UDYAM: {profile.udyamNumber || (language === 'ta' ? 'வழங்கப்படவில்லை' : 'Not provided')}
             </span>
           </div>
           <h1 className="text-2xl font-black text-white">
@@ -214,15 +214,23 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({
             <Coins className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl font-black text-white">{runwayMonths}</span>
+            <span className="text-2xl font-black text-white">{runwayMonths !== null ? runwayMonths : '—'}</span>
             <span className="text-xs text-slate-400">{t('common.months', 'Months')}</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-[11px]">
             <span className="text-slate-300 font-medium">
-              Net: ₹{analysis ? (analysis.financials.monthlyNetCashFlow / 100000).toFixed(1) : '10.0'}L/mo
+              Net: ₹{(() => {
+                if (analysis) return (analysis.financials.monthlyNetCashFlow / 100000).toFixed(1);
+                if (organization?.financialProfile) {
+                  const rev = typeof organization.financialProfile.monthlyRevenue === 'number' ? organization.financialProfile.monthlyRevenue : 0;
+                  const exp = typeof organization.financialProfile.monthlyOperatingExpenses === 'number' ? organization.financialProfile.monthlyOperatingExpenses : 0;
+                  return ((rev - exp) / 100000).toFixed(1);
+                }
+                return '0.0';
+              })()}L/mo
             </span>
-            <span className={runwayMonths >= 3 ? 'text-emerald-400 font-semibold' : 'text-amber-400 font-semibold'}>
-              {runwayMonths >= 3 ? t('common.optimal', 'Stable') : t('common.critical', 'Vulnerable')}
+            <span className={(runwayMonths ?? 0) >= 3 ? 'text-emerald-400 font-semibold' : 'text-amber-400 font-semibold'}>
+              {runwayMonths !== null ? (runwayMonths >= 3 ? t('common.optimal', 'Stable') : t('common.critical', 'Vulnerable')) : t('common.notAvailable', 'N/A')}
             </span>
           </div>
         </div>

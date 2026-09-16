@@ -151,7 +151,7 @@ export const MSMECreditPassportView: React.FC<MSMECreditPassportViewProps> = ({
               <span>•</span>
               <span>{t('business.vintage', 'Vintage')}: <strong className="text-slate-200">{vintageYears ? `${vintageYears} ${t('common.years', 'Years')}` : 'Not provided'}</strong></span>
               <span>•</span>
-              <span>GSTIN: <strong className="text-slate-200">{profile.gstin || '29AAAAA0000A1Z5'}</strong></span>
+              <span>GSTIN: <strong className="text-slate-200">{profile.gstin || (language === 'ta' ? 'வழங்கப்படவில்லை' : 'Not registered')}</strong></span>
             </div>
           </div>
 
@@ -349,6 +349,17 @@ export const MSMECreditPassportView: React.FC<MSMECreditPassportViewProps> = ({
             </div>
           </div>
         </FeatureGate>
+
+        {/* Institutional Regulatory Disclaimer */}
+        <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 flex items-start gap-2.5 text-xs text-slate-400">
+          <Info className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+          <p className="leading-relaxed">
+            <strong className="text-slate-300 font-semibold">{language === 'ta' ? 'அறிவிப்பு: ' : 'Disclaimer: '}</strong>
+            {language === 'ta' 
+              ? 'இது ஒரு சுட்டிக்காட்டும் வணிக நுண்ணறிவு மதிப்பீடு மட்டுமே, அதிகாரப்பூர்வ கடன் பணியக அறிக்கை அல்லது கடன் வழங்கும் முடிவு அல்ல.'
+              : 'This is an indicative business intelligence assessment, not an official credit bureau report or lender decision.'}
+          </p>
+        </div>
 
         {/* Action Footer with Connected Navigation */}
         <div className="pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">

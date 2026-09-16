@@ -37,7 +37,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [businessType, setBusinessType] = useState<BusinessType | ''>(organization?.businessProfile.businessType || 'Private Limited');
   const [industry, setIndustry] = useState(organization?.businessProfile.industry || profile.industry);
   const [location, setLocation] = useState(organization?.businessProfile.location || profile.location);
-  const [employees, setEmployees] = useState(organization?.businessProfile.numberOfEmployees ?? profile.employees);
+  const [employees, setEmployees] = useState<number | ''>(organization?.businessProfile.numberOfEmployees ?? (profile.employees ?? ''));
   const [annualTurnover, setAnnualTurnover] = useState<number | ''>(organization?.businessProfile.annualTurnover ?? '');
 
   // Financial Profile Form
@@ -66,7 +66,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       setBusinessType(organization.businessProfile.businessType || 'Private Limited');
       setIndustry(organization.businessProfile.industry || '');
       setLocation(organization.businessProfile.location || '');
-      setEmployees(organization.businessProfile.numberOfEmployees);
+      setEmployees(organization.businessProfile.numberOfEmployees ?? '');
       setAnnualTurnover(organization.businessProfile.annualTurnover);
 
       setMonthlyRevenue(organization.financialProfile.monthlyRevenue);
@@ -87,7 +87,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
     } else {
       setBusinessName(profile.name);
       setLocation(profile.location);
-      setEmployees(profile.employees);
+      setEmployees(profile.employees ?? '');
     }
     setIsSaved(false);
   }, [organization, profile]);

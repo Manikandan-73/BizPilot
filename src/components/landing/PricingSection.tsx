@@ -1,6 +1,7 @@
 import React from 'react';
-import { Check, Zap, ArrowRight } from 'lucide-react';
+import { Check, Zap, ArrowRight, Sparkles } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { PLAN_CONFIGS } from '../../config/plans';
 
 interface PricingSectionProps {
   onSelectPlan: () => void;
@@ -8,78 +9,42 @@ interface PricingSectionProps {
 
 export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPlan }) => {
   const { t } = useLanguage();
+  const starter = PLAN_CONFIGS.starter;
+  const professional = PLAN_CONFIGS.professional;
 
   const plans = [
     {
-      name: 'Starter Free',
-      price: '₹0',
-      period: 'Forever Free',
-      description: 'Ideal for early micro-enterprises looking to check their baseline financial health.',
-      features: [
-        'Single Company Profile',
-        'Basic Financial Health Score (82/100)',
-        '30-Day Cash Flow Projection',
-        'Basic Funding Readiness Score',
-        'Community AI Assistant (English/Hindi)',
-        'Standard Email Support'
-      ],
-      cta: 'Get Started Free',
+      id: starter.id,
+      name: starter.name,
+      price: `₹${starter.priceINR}`,
+      period: '30 days',
+      description: starter.positioning,
+      badge: starter.tagline,
+      features: starter.features
+        .filter((f) => f.included)
+        .slice(0, 6)
+        .map((f) => f.label),
+      cta: `Get Started (₹${starter.priceINR})`,
       highlighted: false,
-      badge: 'Free Tier'
     },
     {
-      name: 'Pro Growth',
-      price: '₹499',
-      period: 'per month',
-      description: 'Perfect for fast-growing small retailers, traders, and D2C brands expanding turnover.',
+      id: professional.id,
+      name: professional.name,
+      price: `₹${professional.priceINR}`,
+      period: '30 days',
+      description: professional.positioning,
+      badge: 'Most Popular for MSMEs',
       features: [
-        'Automated GSTN & Bank Data Sync',
-        '90-Day Predictive Cash Flow & Alert Engine',
-        'Detailed Funding Readiness 5-Pillar Breakdown',
-        'Downloadable MSME Credit Passport (PDF)',
-        'Interactive What-If Business Decision Simulator',
-        'Multilingual AI Assistant',
-        'WhatsApp Alert Summaries'
+        'All Starter Features Included',
+        'Advanced AI Business Advisor',
+        'Advanced Decision Lab & Stress Testing',
+        'Advanced Growth Intelligence',
+        'Detailed Board & Lender Business Report',
+        'Export & Share Reports (PDF / Print)',
       ],
-      cta: 'Start 14-Day Free Trial',
+      cta: `Get Professional (₹${professional.priceINR})`,
       highlighted: true,
-      badge: 'Most Popular for MSMEs'
     },
-    {
-      name: 'Business Leader',
-      price: '₹1,999',
-      period: 'per month',
-      description: 'For established manufacturing, engineering & agro-processing firms targeting institutional debt.',
-      features: [
-        'Everything in Pro Plan',
-        'Direct PSB59 & CGTMSE Loan Matchmaking',
-        'TReDS Bill Discounting Integration',
-        'Full 12-Month Financial Stress Testing',
-        'Growth Intelligence & Pricing Playbooks',
-        'Dedicated CA / Credit Officer Support',
-        'Audit-Ready Bank Dossier Exporter'
-      ],
-      cta: 'Unlock Business Plan',
-      highlighted: false,
-      badge: 'Best for Manufacturers'
-    },
-    {
-      name: 'Enterprise / CA Firm',
-      price: 'Custom',
-      period: 'Billed Annually',
-      description: 'For Chartered Accountants, Incubators, NBFCs, and MSME clusters managing multiple entities.',
-      features: [
-        'Multi-Entity Portfolio Dashboard (50+ MSMEs)',
-        'Automated Batch Credit Assessment API',
-        'Custom Risk Scoring & Underwriting Models',
-        'White-label Credit Passport for Clients',
-        'Dedicated Solutions Architect',
-        '99.9% Uptime SLA & Custom ERP Connectors'
-      ],
-      cta: 'Contact Enterprise Sales',
-      highlighted: false,
-      badge: 'For CAs & Lenders'
-    }
   ];
 
   return (
@@ -89,7 +54,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPlan }) 
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-950/40 border border-purple-500/30 text-purple-300 text-xs font-semibold uppercase tracking-wider">
-            <Zap className="w-3.5 h-3.5" /> Transparent &amp; Accessible Pricing
+            <Sparkles className="w-3.5 h-3.5" /> Simple, Transparent Pricing
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
             {t('landing.pricingTitle', 'Flexible Plans for Every MSME Stage')}
@@ -99,15 +64,15 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPlan }) 
           </p>
         </div>
 
-        {/* 4 Pricing Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {plans.map((p, idx) => (
+        {/* Exactly 2 Pricing Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {plans.map((p) => (
             <div
-              key={idx}
-              className={`rounded-2xl p-6 flex flex-col justify-between transition-all relative ${
+              key={p.id}
+              className={`rounded-2xl p-6 sm:p-8 flex flex-col justify-between transition-all relative ${
                 p.highlighted
-                  ? 'bg-gradient-to-b from-purple-950/80 via-slate-900 to-slate-900 border-2 border-purple-500 shadow-2xl scale-105 z-10'
-                  : 'bg-slate-900/80 border border-slate-800 hover:border-slate-700'
+                  ? 'bg-gradient-to-b from-purple-950/80 via-slate-900 to-slate-900 border-2 border-purple-500 shadow-2xl scale-[1.02] z-10'
+                  : 'bg-slate-900/90 border border-slate-800 hover:border-slate-700 shadow-xl'
               }`}
             >
               {p.highlighted && (
@@ -117,22 +82,33 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPlan }) 
               )}
 
               <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-bold text-white">{p.name}</h3>
-                  <p className="text-xs text-slate-400 mt-1 min-h-[36px]">{p.description}</p>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                    {p.name}
+                    {p.highlighted && <Zap className="w-4 h-4 text-purple-400 fill-purple-400" />}
+                  </h3>
+                  {!p.highlighted && (
+                    <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                      {p.badge}
+                    </span>
+                  )}
                 </div>
 
+                <p className="text-xs text-slate-400 min-h-[36px]">{p.description}</p>
+
                 <div className="pt-2 border-t border-slate-800">
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-black text-white">{p.price}</span>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-4xl font-black text-white">{p.price}</span>
                     <span className="text-xs text-slate-400 font-medium">/{p.period}</span>
                   </div>
                 </div>
 
                 <ul className="space-y-2.5 pt-4 border-t border-slate-800 text-xs">
                   {p.features.map((feat, fIdx) => (
-                    <li key={fIdx} className="flex items-start gap-2 text-slate-300">
-                      <Check className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+                    <li key={fIdx} className="flex items-start gap-2.5 text-slate-300">
+                      <div className="w-4 h-4 rounded-full bg-purple-500/20 text-purple-300 flex items-center justify-center shrink-0 mt-0.5">
+                        <Check className="w-3 h-3" />
+                      </div>
                       <span>{feat}</span>
                     </li>
                   ))}
@@ -142,13 +118,13 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPlan }) 
               <div className="pt-6 mt-6 border-t border-slate-800">
                 <button
                   onClick={onSelectPlan}
-                  className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+                  className={`w-full py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
                     p.highlighted
-                      ? 'bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-600/30'
-                      : 'bg-slate-800 hover:bg-slate-700 text-slate-200'
+                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-600/30 hover:scale-[1.01]'
+                      : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700'
                   }`}
                 >
-                  {p.cta}
+                  <span>{p.cta}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>

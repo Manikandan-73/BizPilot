@@ -20,6 +20,7 @@ import {
   loadOnboardingDraft,
   saveOnboardingDraft,
   saveOrganizationRecord,
+  loadOrganizationsByOwnerId,
 } from '../../lib/onboardingStorage';
 import { OnboardingProgress } from './OnboardingProgress';
 import { Step1Business } from './steps/Step1Business';
@@ -210,15 +211,30 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
     }
 
     // Final step — build and persist the completed organization.
+    if (!user?.uid) {
+      setErrors({ submit: 'You must be authenticated with Firebase to register an organization.' });
+      return;
+    }
+
     setIsSubmitting(true);
     const nowDate = new Date();
     const now = nowDate.toISOString();
-    const expiryDate = new Date(nowDate.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
-    const ownerId = user?.uid || `user-${Date.now()}`;
-    const ownerEmail = user?.email || '';
+    const ownerId = user.uid;
+    const ownerEmail = user.email || '';
+
+    // Check if user already owns an organization to prevent duplicates
+    let existingOrgId = `org-${Date.now()}`;
+    try {
+      const existingRecords = await loadOrganizationsByOwnerId(ownerId);
+      if (existingRecords.length > 0) {
+        existingOrgId = existingRecords[0].organization.id;
+      }
+    } catch (e) {
+      console.warn('Could not check existing organizations:', e);
+    }
 
     const organization: Organization = {
-      id: `org-${Date.now()}`,
+      id: existingOrgId,
       name: draft.businessProfile.businessName,
       ownerId,
       ownerEmail,
@@ -231,13 +247,14 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
         hasBusinessBankAccount: !!draft.debtProfile.hasBusinessBankAccount,
       },
       goals: draft.goals,
+      accessStatus: 'pending_payment',
       subscription: {
-        plan: 'pro_growth',
-        status: 'trial',
+        plan: 'starter',
+        status: 'pending',
         startDate: now,
-        expiryDate,
+        expiryDate: now,
         billingCycle: 'monthly',
-        notes: 'Complimentary 30-day onboarding trial',
+        notes: 'Registration complete. Subscription payment required to activate access.',
       },
       accountStatus: 'active',
       createdAt: now,
@@ -249,7 +266,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
       ownerEmail,
       user: {
         id: ownerId,
-        name: user?.displayName || draft.businessProfile.businessName || 'Business Owner',
+        name: user.displayName || draft.businessProfile.businessName || 'Business Owner',
         email: ownerEmail,
       },
       organization,
@@ -267,6 +284,32 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onGoToDashbo
       setIsSubmitting(false);
     }
   };
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-[#0F172A] text-slate-100 flex flex-col justify-center items-center p-4">
+        <div className="max-w-md w-full glass-panel p-8 rounded-2xl border border-slate-800 shadow-2xl text-center space-y-4 bg-slate-900/90 backdrop-blur-xl">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-white mx-auto shadow-lg shadow-purple-600/30">
+            <Sparkles className="w-6 h-6" />
+          </div>
+          <h2 className="text-xl font-black text-white">
+            {t('auth.pleaseSignInFirst', 'Please sign in first to set up your business.')}
+          </h2>
+          <p className="text-xs text-slate-400">
+            An authenticated Firebase user account is required before starting the MSME onboarding process.
+          </p>
+          <div className="pt-2 flex justify-center">
+            <button
+              onClick={onExit}
+              className="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg transition-all"
+            >
+              {t('auth.signIn', 'Sign In')} / {t('auth.register', 'Register')}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (completedOrganization) {
     return (

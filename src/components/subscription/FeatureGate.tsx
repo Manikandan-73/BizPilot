@@ -1,6 +1,6 @@
 import React from 'react';
 import { Lock, Sparkles, ArrowRight } from 'lucide-react';
-import { FeatureKey } from '../../config/plans';
+import { FeatureKey, PLAN_CONFIGS } from '../../config/plans';
 import { useLanguage } from '../../i18n/LanguageContext';
 
 interface FeatureGateProps {
@@ -55,7 +55,7 @@ export const FeatureGate: React.FC<FeatureGateProps> = ({
             onClick={onUpgrade}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold shadow-lg shadow-purple-600/30 transition-all hover:scale-105"
           >
-            <span>{t('subscription.upgradeToPro', 'Upgrade to Professional (₹999)')}</span>
+            <span>{t('subscription.upgradeToPro', `Upgrade to Professional (₹${PLAN_CONFIGS.professional.priceINR})`)}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>

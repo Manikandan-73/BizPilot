@@ -190,30 +190,35 @@ export const App: React.FC = () => {
       ? activeOrg.businessProfile.annualTurnover
       : analysis.financials.annualRevenue;
 
+    // Grounded MSME Profile: No fabricated GSTIN, Udyam, growth, DSCR or runway fallbacks
+    const hasUdyam = Boolean((activeOrg.businessProfile as any)?.udyamNumber || (activeOrg.complianceProfile as any)?.udyamRegistration);
+    const udyamVal = hasUdyam ? ((activeOrg.businessProfile as any)?.udyamNumber || 'Registered') : null;
+    const gstinVal = (activeOrg.businessProfile as any)?.gstin || (activeOrg.complianceProfile as any)?.gstin || (activeOrg.complianceProfile?.gstRegistered ? 'GST-Registered' : null);
+
     return {
       id: activeOrg.id,
       name: activeOrg.businessProfile.businessName || activeOrg.name,
       industry: activeOrg.businessProfile.industry || 'Enterprise',
       sector: activeOrg.businessProfile.businessType || 'MSME',
-      udyamNumber: 'UDYAM-REGISTERED',
-      gstin: activeOrg.complianceProfile.gstRegistered ? '27AABCS1429B1ZX' : 'NOT-REGISTERED',
+      udyamNumber: udyamVal,
+      gstin: gstinVal,
       incorporationYear: typeof activeOrg.businessProfile.yearEstablished === 'number' 
         ? activeOrg.businessProfile.yearEstablished 
-        : 2020,
+        : (activeOrg.businessProfile.yearEstablished ? Number(activeOrg.businessProfile.yearEstablished) : null),
       location: activeOrg.businessProfile.location || 'India',
       employees: typeof activeOrg.businessProfile.numberOfEmployees === 'number' 
         ? activeOrg.businessProfile.numberOfEmployees 
-        : 10,
+        : (activeOrg.businessProfile.numberOfEmployees ? Number(activeOrg.businessProfile.numberOfEmployees) : null),
       turnover: formatINR(turnoverNum),
       creditScore: Math.round(550 + (analysis.health.overallScore * 2.5)),
       healthScore: analysis.health.overallScore,
       fundingReadinessScore: analysis.funding.overallScore,
-      revenueGrowth: analysis.financials.operatingMarginPercent ? Math.min(25, Math.max(5, analysis.financials.operatingMarginPercent)) : 12.4,
-      cashFlowStability: Math.min(99, Math.max(60, analysis.health.overallScore + 5)),
-      loanEligibility: analysis.funding.eligibilityTier === 'High' ? 'High' : analysis.funding.eligibilityTier === 'Medium' ? 'Medium' : 'Low',
+      revenueGrowth: null, // Deterministic: No historical revenue comparison recorded; do not fabricate from operating margin
+      cashFlowStability: analysis.health.overallScore,
+      loanEligibility: analysis.funding.eligibilityTier,
       estimatedCreditLimit: analysis.funding.estimatedCreditLimit,
-      dscrRatio: analysis.financials.dscr ?? 2.0,
-      runwayMonths: analysis.financials.runwayMonths ?? 6,
+      dscrRatio: analysis.financials.dscr,
+      runwayMonths: analysis.financials.runwayMonths,
     };
   }, [activeOrg, analysis]);
 
@@ -231,30 +236,34 @@ export const App: React.FC = () => {
           ? org.businessProfile.annualTurnover
           : orgAnalysis.financials.annualRevenue;
 
+        const hasUdyam = Boolean((org.businessProfile as any)?.udyamNumber || (org.complianceProfile as any)?.udyamRegistration);
+        const udyamVal = hasUdyam ? ((org.businessProfile as any)?.udyamNumber || 'Registered') : null;
+        const gstinVal = (org.businessProfile as any)?.gstin || (org.complianceProfile as any)?.gstin || (org.complianceProfile?.gstRegistered ? 'GST-Registered' : null);
+
         return {
           id: org.id,
           name: org.businessProfile.businessName || org.name,
           industry: org.businessProfile.industry || 'Enterprise',
           sector: org.businessProfile.businessType || 'MSME',
-          udyamNumber: 'UDYAM-REGISTERED',
-          gstin: org.complianceProfile.gstRegistered ? '27AABCS1429B1ZX' : 'NOT-REGISTERED',
+          udyamNumber: udyamVal,
+          gstin: gstinVal,
           incorporationYear: typeof org.businessProfile.yearEstablished === 'number' 
             ? org.businessProfile.yearEstablished 
-            : 2020,
+            : (org.businessProfile.yearEstablished ? Number(org.businessProfile.yearEstablished) : null),
           location: org.businessProfile.location || 'India',
           employees: typeof org.businessProfile.numberOfEmployees === 'number' 
             ? org.businessProfile.numberOfEmployees 
-            : 10,
+            : (org.businessProfile.numberOfEmployees ? Number(org.businessProfile.numberOfEmployees) : null),
           turnover: formatINR(turnoverNum),
           creditScore: Math.round(550 + (orgAnalysis.health.overallScore * 2.5)),
           healthScore: orgAnalysis.health.overallScore,
           fundingReadinessScore: orgAnalysis.funding.overallScore,
-          revenueGrowth: orgAnalysis.financials.operatingMarginPercent ? Math.min(25, Math.max(5, orgAnalysis.financials.operatingMarginPercent)) : 12.4,
-          cashFlowStability: Math.min(99, Math.max(60, orgAnalysis.health.overallScore + 5)),
-          loanEligibility: orgAnalysis.funding.eligibilityTier === 'High' ? 'High' : orgAnalysis.funding.eligibilityTier === 'Medium' ? 'Medium' : 'Low',
+          revenueGrowth: null,
+          cashFlowStability: orgAnalysis.health.overallScore,
+          loanEligibility: orgAnalysis.funding.eligibilityTier,
           estimatedCreditLimit: orgAnalysis.funding.estimatedCreditLimit,
-          dscrRatio: orgAnalysis.financials.dscr ?? 2.0,
-          runwayMonths: orgAnalysis.financials.runwayMonths ?? 6,
+          dscrRatio: orgAnalysis.financials.dscr,
+          runwayMonths: orgAnalysis.financials.runwayMonths,
         };
       });
     }
@@ -266,30 +275,34 @@ export const App: React.FC = () => {
         ? org.businessProfile.annualTurnover
         : orgAnalysis.financials.annualRevenue;
 
+      const hasUdyam = Boolean((org.businessProfile as any)?.udyamNumber);
+      const udyamVal = hasUdyam ? ((org.businessProfile as any)?.udyamNumber) : null;
+      const gstinVal = (org.businessProfile as any)?.gstin || (org.complianceProfile?.gstRegistered ? 'GST-Registered' : null);
+
       return {
         id: org.id,
         name: org.businessProfile.businessName || org.name,
         industry: org.businessProfile.industry || 'Enterprise',
         sector: org.businessProfile.businessType || 'MSME',
-        udyamNumber: 'UDYAM-REGISTERED',
-        gstin: org.complianceProfile.gstRegistered ? '27AABCS1429B1ZX' : 'NOT-REGISTERED',
+        udyamNumber: udyamVal,
+        gstin: gstinVal,
         incorporationYear: typeof org.businessProfile.yearEstablished === 'number' 
           ? org.businessProfile.yearEstablished 
-          : 2020,
+          : (org.businessProfile.yearEstablished ? Number(org.businessProfile.yearEstablished) : null),
         location: org.businessProfile.location || 'India',
         employees: typeof org.businessProfile.numberOfEmployees === 'number' 
           ? org.businessProfile.numberOfEmployees 
-          : 10,
+          : (org.businessProfile.numberOfEmployees ? Number(org.businessProfile.numberOfEmployees) : null),
         turnover: formatINR(turnoverNum),
         creditScore: Math.round(550 + (orgAnalysis.health.overallScore * 2.5)),
         healthScore: orgAnalysis.health.overallScore,
         fundingReadinessScore: orgAnalysis.funding.overallScore,
-        revenueGrowth: orgAnalysis.financials.operatingMarginPercent ? Math.min(25, Math.max(5, orgAnalysis.financials.operatingMarginPercent)) : 12.4,
-        cashFlowStability: Math.min(99, Math.max(60, orgAnalysis.health.overallScore + 5)),
-        loanEligibility: orgAnalysis.funding.eligibilityTier === 'High' ? 'High' : orgAnalysis.funding.eligibilityTier === 'Medium' ? 'Medium' : 'Low',
+        revenueGrowth: null,
+        cashFlowStability: orgAnalysis.health.overallScore,
+        loanEligibility: orgAnalysis.funding.eligibilityTier,
         estimatedCreditLimit: orgAnalysis.funding.estimatedCreditLimit,
-        dscrRatio: orgAnalysis.financials.dscr ?? 2.0,
-        runwayMonths: orgAnalysis.financials.runwayMonths ?? 6,
+        dscrRatio: orgAnalysis.financials.dscr,
+        runwayMonths: orgAnalysis.financials.runwayMonths,
       };
     });
   }, [user, userOrgs, activeOrg.id, currentProfile, analysis]);
@@ -297,14 +310,24 @@ export const App: React.FC = () => {
   // Handle switching active organization
   const handleSelectProfile = (profile: MSMEProfile) => {
     if (user) {
-      setActiveUserOrgId(profile.id);
-      saveSelectedUserOrgId(user.uid, profile.id);
-      setIsAppMode(true);
-      setActiveTab('dashboard');
+      // Phase 8 Hardening: User can ONLY switch to an organization they actually own
+      const isOwned = userOrgs.some((o) => o.id === profile.id);
+      if (isOwned) {
+        setActiveUserOrgId(profile.id);
+        saveSelectedUserOrgId(user.uid, profile.id);
+        setIsAppMode(true);
+        setActiveTab('dashboard');
+      } else {
+        console.warn('Security Warning: Attempted unauthorized switch to non-owned organization:', profile.id);
+      }
     } else {
-      setSelectedDemoOrgId(profile.id);
-      setIsAppMode(true);
-      setActiveTab('dashboard');
+      // Unauthenticated visitor selecting demo profile
+      const isDemo = DEMO_ORGANIZATIONS.some((d) => d.id === profile.id);
+      if (isDemo) {
+        setSelectedDemoOrgId(profile.id);
+        setIsAppMode(true);
+        setActiveTab('dashboard');
+      }
     }
   };
 
@@ -482,6 +505,7 @@ export const App: React.FC = () => {
           <AIAssistantView
             profile={currentProfile}
             analysis={analysis}
+            organization={activeOrg}
             currentLanguage={language}
             onSelectLanguage={(lang) => setLanguage(lang as 'en' | 'ta')}
             onNavigate={(tab) => setActiveTab(tab)}
@@ -604,22 +628,14 @@ export const App: React.FC = () => {
     );
   }
 
-  // Explicit Registration View
+  // Explicit Registration View (Stage A: Account Creation)
   if (authView === 'register') {
     return (
       <RegisterPage
-        onSuccess={(registeredOrg) => {
+        onSuccess={() => {
           setAuthView('none');
-          if (registeredOrg) {
-            setUserOrgs([registeredOrg]);
-            setActiveUserOrgId(registeredOrg.id);
-            setIsAppMode(true);
-            setActiveTab('dashboard');
-            setShowOnboarding(false);
-          } else if (!isAdmin) {
-            setIsAppMode(true);
-            setActiveTab('dashboard');
-          }
+          // Once Firebase account is created, transition directly to Stage B — MSME Onboarding
+          setShowOnboarding(true);
         }}
         onSwitchToLogin={() => setAuthView('login')}
         onGoHome={() => {
@@ -630,8 +646,26 @@ export const App: React.FC = () => {
     );
   }
 
-  // Onboarding screen overlay
+  // Onboarding screen overlay - Strictly requires authenticated Firebase user (Stage B)
   if (showOnboarding) {
+    if (!user) {
+      // Unauthenticated access strictly blocked: redirect to Registration
+      return (
+        <RegisterPage
+          onSuccess={() => {
+            setAuthView('none');
+            setShowOnboarding(true);
+          }}
+          onSwitchToLogin={() => setAuthView('login')}
+          onGoHome={() => {
+            setShowOnboarding(false);
+            setAuthView('none');
+            setIsAppMode(false);
+          }}
+        />
+      );
+    }
+
     return (
       <OnboardingWizard
         onExit={() => {
@@ -739,23 +773,30 @@ export const App: React.FC = () => {
           />
         </main>
       ) : (
-        <div className="flex-1 flex overflow-hidden">
-          
-          {/* Sidebar */}
-          <Sidebar
-            activeTab={activeTab}
-            onSelectTab={(tab) => {
-              setActiveTab(tab);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            fundingScore={analysis.funding.overallScore}
-          />
-
-          {/* Dashboard Viewport */}
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
+        // Phase 8 Subscription Gate: If user is authenticated MSME but has no active paid subscription,
+        // render full-screen subscription payment gateway without sidebar access.
+        user && !isAdmin && !canAccessPlatform(user, activeOrg?.subscription, isAdmin) ? (
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto max-w-5xl mx-auto w-full">
             {renderActiveDashboardView()}
           </main>
-        </div>
+        ) : (
+          <div className="flex-1 flex overflow-hidden">
+            {/* Sidebar */}
+            <Sidebar
+              activeTab={activeTab}
+              onSelectTab={(tab) => {
+                setActiveTab(tab);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              fundingScore={analysis.funding.overallScore}
+            />
+
+            {/* Dashboard Viewport */}
+            <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
+              {renderActiveDashboardView()}
+            </main>
+          </div>
+        )
       )}
 
       {/* Footer (Landing mode only) */}

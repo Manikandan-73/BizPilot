@@ -51,6 +51,11 @@ export async function saveOrganizationRecord(record: OnboardingRecord): Promise<
   const ownerId = record.organization.ownerId || record.ownerId || record.user.id;
   const ownerEmail = record.organization.ownerEmail || record.ownerEmail || record.user.email;
 
+  // Phase 8 Hardening: Reject missing or fake fallback UIDs
+  if (!ownerId || ownerId.startsWith('user-') || ownerId.trim() === '') {
+    throw new Error('Security Error: An authenticated Firebase user UID is strictly required to create an organization. Fake user IDs are not permitted.');
+  }
+
   const organization: Organization = {
     ...record.organization,
     ownerId,
@@ -81,16 +86,28 @@ export async function saveOrganizationRecord(record: OnboardingRecord): Promise<
  * Update an existing organization in Firestore.
  */
 export async function updateOrganizationRecord(organization: Organization): Promise<void> {
-  const updatedOrganization: Organization = {
+  const orgDocRef = doc(getOrganizationCollection(), organization.id);
+  const existingSnap = await getDoc(orgDocRef);
+  const existingData = existingSnap.exists() ? (existingSnap.data() as any) : null;
+  const existingOrg: Organization | undefined = existingData?.organization || existingData;
+
+  // Phase 8 Hardening: Protect sensitive billing and ownership fields from client-side tampering
+  const sanitizedOrganization: Organization = {
     ...organization,
+    ownerId: existingOrg?.ownerId || organization.ownerId,
+    ownerEmail: existingOrg?.ownerEmail || organization.ownerEmail,
+    subscription: existingOrg?.subscription || organization.subscription,
+    accessStatus: existingOrg?.accessStatus || organization.accessStatus,
+    accountStatus: existingOrg?.accountStatus || organization.accountStatus,
+    registrationStatus: existingOrg?.registrationStatus || organization.registrationStatus,
     updatedAt: new Date().toISOString(),
   };
 
-  await updateDoc(doc(getOrganizationCollection(), organization.id), {
-    organization: updatedOrganization,
-    updatedAt: updatedOrganization.updatedAt,
-    ...(updatedOrganization.ownerId ? { ownerId: updatedOrganization.ownerId } : {}),
-    ...(updatedOrganization.ownerEmail ? { ownerEmail: updatedOrganization.ownerEmail } : {}),
+  await updateDoc(orgDocRef, {
+    organization: sanitizedOrganization,
+    updatedAt: sanitizedOrganization.updatedAt,
+    ...(sanitizedOrganization.ownerId ? { ownerId: sanitizedOrganization.ownerId } : {}),
+    ...(sanitizedOrganization.ownerEmail ? { ownerEmail: sanitizedOrganization.ownerEmail } : {}),
   });
 }
 

@@ -146,7 +146,7 @@ export const CreditPassportModal: React.FC<CreditPassportModalProps> = ({
                 <span>•</span>
                 <span>{t('business.vintage', 'Vintage')}: <strong className="text-slate-200">{vintageYears ? `${vintageYears} ${t('common.years', 'Years')}` : 'Not provided'}</strong></span>
                 <span>•</span>
-                <span>GSTIN: <strong className="text-slate-200">{profile.gstin || '29AAAAA0000A1Z5'}</strong></span>
+                <span>GSTIN: <strong className="text-slate-200">{profile.gstin || (language === 'ta' ? 'வழங்கப்படவில்லை' : 'Not registered')}</strong></span>
               </div>
             </div>
 
@@ -350,6 +350,17 @@ export const CreditPassportModal: React.FC<CreditPassportModalProps> = ({
                 </>
               )}
             </div>
+          </div>
+
+          {/* Institutional Regulatory Disclaimer */}
+          <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 flex items-start gap-2.5 text-xs text-slate-400">
+            <Info className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+            <p className="leading-relaxed text-[11px]">
+              <strong className="text-slate-300 font-semibold">{language === 'ta' ? 'அறிவிப்பு: ' : 'Disclaimer: '}</strong>
+              {language === 'ta' 
+                ? 'இது ஒரு சுட்டிக்காட்டும் வணிக நுண்ணறிவு மதிப்பீடு மட்டுமே, அதிகாரப்பூர்வ கடன் பணியக அறிக்கை அல்லது கடன் வழங்கும் முடிவு அல்ல.'
+                : 'This is an indicative business intelligence assessment, not an official credit bureau report or lender decision.'}
+            </p>
           </div>
 
         </div>
